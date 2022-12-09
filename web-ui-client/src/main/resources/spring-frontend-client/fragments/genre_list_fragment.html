@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="genreList(genrePageDto)" th:remove="tag">
+    <div class="Tags">
+        <div class="Tags-title">
+            <a th:href="'/genres/' + ${genrePageDto.slug}" th:text="${genrePageDto.name}" href="/genres/slug.html">Лёгкое чтение
+                <span th:text="'(' + ${genrePageDto.bookCount} + ')'" class="undefined-amount">(15638)</span>
+            </a>
+        </div>
+        <div th:each="child : ${genrePageDto.childGenrePageDtos}"  th:remove="tag">
+            <div th:if="${#lists.isEmpty(child.childGenrePageDtos)}" class="Tag">
+                <a th:href="'/genres/' + ${child.slug}" th:text="${child.name}" href="/genres/slug.html">Лёгкое чтение
+                    <span th:text="'(' + ${child.bookCount} + ')'" class="undefined-amount">(15638)</span>
+                </a>
+            </div>
+            <div th:unless="${#lists.isEmpty(child.childGenrePageDtos)}" th:remove="tag">
+                <div th:replace="~{fragments/genre_list_fragment :: genreList(${child})}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

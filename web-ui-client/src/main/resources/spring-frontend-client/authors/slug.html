@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common_head_fragment.html :: head(title='Автор', description=${authorPageDto.name})}">
+</head>
+<body class="Site">
+<header class="Header"
+        th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
+<div class="Middle">
+    <div class="wrap">
+        <main class="Middle-main">
+            <ul class="breadcrumbs"
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(rootText='Авторы', rootUrl='/authors',category=${authorPageDto.name})}"></ul>
+            <div th:replace="~{fragments/author_article_fragment :: article(${authorPageDto})}"></div>
+            <div class="Section"
+                 th:replace="~{fragments/book_slider_fragment :: bookSlider('Книги автора', ${authorBooks}, '')}"></div>
+            <footer class="Section-footer"><a class="Author-books" th:href="'/books/author/' + ${authorPageDto.slug}" href="/books/author.html">Все
+                книги автора<span
+                        class="Author-amount" th:text="${authorPageDto.bookCount}">(55)</span></a>
+            </footer>
+        </main>
+    </div>
+</div>
+<footer class="Footer" th:replace="~{fragments/common_footer_fragment :: footer}"></footer>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+</body>
+</html>

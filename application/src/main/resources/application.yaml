@@ -1,0 +1,118 @@
+com:
+  goganesh:
+    bookshop:
+      webui-client:
+        template-prefix: classpath:/spring-frontend-client/
+        template-suffix: .html
+        static-resources-prefix: classpath:/spring-frontend-client/
+      webui-admin:
+        template-prefix: classpath:/spring-frontend-admin/
+        template-suffix: .html
+        static-resources-prefix: classpath:/spring-frontend-admin/
+      auth:
+        token:
+          lifetime: 3600000
+          name: token
+          secret: 2328e199-b75d-4c2f-a10b-4fdc59263c6f
+      code-generator:
+        symbols: 6
+      cookie:
+        lifetime-day: 1
+      download:
+        path: C:\Users\gbasiladze\Desktop\download
+      filestorage-service:
+        book:
+          image:
+            directory: /home/roox/IdeaProjects/bookshop/web-ui-client/src/main/resources/spring-frontend-client/assets/img/book
+      login-attempt:
+        max-attempt: 5
+        block-time-minutes: 60
+      mail-service:
+        provider: disable
+        otp-expire-second: 60
+        email: some
+        password: some
+      popularity-service:
+        rate:
+          paid: 1.0d
+          cart: 0.7d
+          kept: 0.4d
+          viewed: 0.1d
+          default: 0.0d
+        viewed-time-limit-minutes: 60
+      sms-service:
+        provider: disable
+        otp-expire-second: 60
+        twilio:
+          account-sid: ???
+          auth-token: ???
+          twilio-number: ???
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+server:
+  port: ${PORT:8085}
+  servlet:
+    session:
+      tracking-modes: cookie
+
+spring:
+  application:
+    name: bookshop
+  boot:
+    admin:
+      client:
+        instance:
+          service-url: http://localhost:8085
+          health-url: http://localhost:8085/actuator/health
+          management-url: http://localhost:8085/actuator
+        url: http://localhost:8080
+        username: admin
+        password: password
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    driverClassName: ${SPRING_DATASOURCE_DRIVER:org.postgresql.Driver}
+    username: ${SPRING_DATASOURCE_USERN:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres1}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 250
+        format_sql: true
+  liquibase:
+    enabled: true
+    drop-first: false
+    change-log: classpath:/changelog/changelog-root.xml
+    default-schema: public
+  messages:
+    basename: lang.messages
+  output:
+    ansi:
+      enabled: always
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 530698636958-k2l2j8egturgj6tu82pkde826jm13t7v.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

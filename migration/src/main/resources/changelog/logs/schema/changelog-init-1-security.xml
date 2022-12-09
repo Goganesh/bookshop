@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.5.xsd">
+    <changeSet id="init-db-security-entity" author="basiladze-gt">
+
+        <createTable tableName="users" remarks="пользователь магазина">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="hash" type="VARCHAR(255)"
+                    remarks="хэш пользователя, используемый для внешней идентификации пользователя с целью скрытия его ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reg_time" type="DATETIME" remarks="дата и время регистрации">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" defaultValueComputed="0" type="INTEGER"
+                    remarks="баланс личного счёта, по умолчанию 0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="имя пользователя">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="is_enabled" type="BOOLEAN" remarks="признак удаления" defaultValueBoolean="true"/>
+            <column name="role" type="VARCHAR(255)" remarks="роль"/>
+        </createTable>
+
+        <createTable tableName="user_contact" remarks="контакты пользователя">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="идентификатор пользователя, к которому относится данный контакт">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_type" type="VARCHAR(255)" remarks="тип контакта (PHONE, EMAIL)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="approved" type="BOOLEAN" defaultValue="false" remarks="признак подтверженного контакта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact" type="VARCHAR(255)" remarks="контакт (e-mail или телефон)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)" remarks="код подтверждения"/>
+            <column name="code_time" type="DATETIME" remarks="дата/время формирования кода подтверждения"/>
+        </createTable>
+
+        <createTable tableName="login_attempt" remarks="Не удачные попытки логина в систему">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="идентификатор пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login_type" type="VARCHAR(255)" remarks="тип контакта (PHONE, EMAIL)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attempt_count" defaultValue="0" type="INTEGER" remarks="кол-во попыток входа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attempt_time" type="DATETIME" remarks="дата/время попытки">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="invalid_token" remarks="невалидные токены">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="token" type="VARCHAR(255)" remarks="невалидный токен">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_contact"
+                                 constraintName="fk_user_contact_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="login_attempt"
+                                 constraintName="fk_login_attempt_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+
+    </changeSet>
+</databaseChangeLog>

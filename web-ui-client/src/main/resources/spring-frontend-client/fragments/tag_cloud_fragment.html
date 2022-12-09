@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="Tags" id="tags" th:fragment="cloud(${tags})">
+    <div th:remove="tag" th:each="tag : ${tags}">
+
+        <div th:if="${tag.size == 'XS'}" class="Tag Tag_xs">
+            <a th:href="'/tags/' + ${tag.slug}" th:text="${tag.name + ' ' +  tag.count}" href="/tags/index.html">зарубежная литература</a>
+        </div>
+
+        <div th:if="${tag.size == 'SM'}" class="Tag Tag_sm">
+            <a th:href="'/tags/' + ${tag.slug}" th:text="${tag.name + ' ' +  tag.count}" href="/tags/index.html">зарубежная литература</a>
+        </div>
+
+        <div th:if="${tag.size == 'M'}" class="Tag">
+            <a th:href="'/tags/' + ${tag.slug}" th:text="${tag.name + ' ' +  tag.count}" href="/tags/index.html">зарубежная литература</a>
+        </div>
+
+        <div th:if="${tag.size == 'MD'}" class="Tag Tag_md">
+            <a th:href="'/tags/' + ${tag.slug}" th:text="${tag.name + ' ' +  tag.count}" href="/tags/index.html">зарубежная литература</a>
+        </div>
+
+        <div th:if="${tag.size == 'LG'}" class="Tag Tag_lg">
+            <a th:href="'/tags/' + ${tag.slug}" th:text="${tag.name + ' ' +  tag.count}" href="/tags/index.html">зарубежная литература</a>
+        </div>
+    </div>
+</div>
+</html>

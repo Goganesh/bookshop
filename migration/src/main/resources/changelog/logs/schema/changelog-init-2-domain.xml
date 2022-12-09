@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.5.xsd">
+    <changeSet id="init-db-business-entity" author="basiladze-gt">
+
+        <createTable tableName="book_file_type" remarks="типы файлов книг">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="наименование">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT" remarks="описание типов файлов">
+            </column>
+        </createTable>
+
+        <createTable tableName="book_file" remarks="файлы книг">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="hash" type="VARCHAR(255)"
+                    remarks="случайный хэш, предназначенный для идентификации файла при скачивании">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_id" type="INTEGER" remarks="тип файла">
+                <constraints nullable="false"/>
+            </column>
+            <column name="path" type="VARCHAR(255)" remarks="путь к файлу">
+            </column>
+            <column name="book_id" type="INTEGER" remarks="идентификатор книги">
+            </column>
+        </createTable>
+
+        <createTable tableName="book" remarks="книги">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="pub_date" type="DATE" remarks="дата публикации">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_bestseller" type="BOOLEAN" remarks="книга очень популярна, является бестселлером">
+                <constraints nullable="false"/>
+            </column>
+            <column name="slug" type="VARCHAR(255)" remarks="мнемонический идентификатор книги">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)" remarks="название книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image" type="VARCHAR(255)" remarks="изображение обложки">
+            </column>
+            <column name="description" type="TEXT" remarks="описание типов файлов">
+            </column>
+            <column name="price" type="INTEGER" remarks="цена в рублях основная">
+                <constraints nullable="false"/>
+            </column>
+            <column name="discount" type="DOUBLE" defaultValueComputed="0"
+                    remarks="скидка в процентах или 0, если её нет">
+                <constraints nullable="false"/>
+            </column>
+            <column name="popularity" type="DOUBLE" defaultValueComputed="0" remarks="коэффицинт популярности">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="author" remarks="авторы книг">
+            <column name="id" type="INTEGER" autoIncrement="true" startWith="100">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="photo" type="VARCHAR(255)" remarks="изображение с фотографией автора">
+            </column>
+            <column name="slug" type="VARCHAR(255)"
+                    remarks="мнемонический идентификатор автора, который будет отображаться в ссылке на его страницу">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="имя и фамилия автора">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT" remarks="описание (биография, характеристика)">
+            </column>
+        </createTable>
+
+        <createTable tableName="file_download" remarks="кол-во скачиваний книги юзером">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="идентификатор пользователя, скачавшего книгу">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_id" type="INTEGER" remarks="идентификатор скачанной книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="INTEGER" defaultValueComputed="1" remarks="кол-во скачиваний">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="book2author" remarks="привязка авторов к книгам">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="book_id" type="INTEGER" remarks="идентификатор книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="INTEGER" remarks="идентификатор автора">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sort_index" type="INTEGER" defaultValueComputed="0" remarks="порядковый номер автора">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="book2genre" remarks="привязка книг к жанрам">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="book_id" type="INTEGER" remarks="идентификатор книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="genre_id" type="INTEGER" remarks="идентификатор жанра">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="book2user" remarks="привязки книг к юзерам">
+            <column name="id" type="INTEGER" autoIncrement="true" startWith="1500" incrementBy="1">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="time" type="DATETIME" remarks="дата и время возникновения привязки">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_id" type="INTEGER" remarks="тип привязки книги к пользователю">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_id" type="INTEGER" remarks="идентификатор книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="идентификатор пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_enabled" type="BOOLEAN" remarks="признак удаления" defaultValueBoolean="true"/>
+        </createTable>
+
+        <createTable tableName="book2user_type" remarks="типы привязок книг к юзерам">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="code" type="VARCHAR(255)" remarks="код типа привязки">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="наименование типа привязки">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="book_review" remarks="отзывы о книгах">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="book_id" type="INTEGER" remarks="идентификатор книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="идентификатор пользователя, который написал данный отзыв">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="DATETIME" remarks="время, когда оставлен отзыв">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="TEXT" remarks="текст отзыва">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="book_review_like" remarks="лайки и дизлайки отзывов">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="review_id" type="INTEGER" remarks="идентификатор отзыва">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="идентификатор пользователя, поставившего лайк или дизлайк">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="DATETIME" remarks="дата и время, в которое поставлен лайк или дизлайк">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="TINYINT" remarks="лайк (1) или дизлайк (-1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                columnNames="review_id, user_id"
+                constraintName="book_review_like_review_id_user_id"
+                tableName="book_review_like"
+        />
+
+        <createTable tableName="message" remarks="сообщения в форму обратной связи">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="time" type="DATETIME" remarks="дата и время отправки сообщения">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="если пользователь был авторизован">
+            </column>
+            <column name="email" type="VARCHAR(255)"
+                    remarks="электронная почта пользователя, если он не был авторизован">
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="имя пользователя, если он не был авторизован">
+            </column>
+            <column name="subject" type="VARCHAR(255)" remarks="тема сообщения">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="TEXT" remarks="текст сообщения">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="genre" remarks="жанры (дерево)">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="parent_id" type="INTEGER"
+                    remarks="идентификатор родительского жанра или NULL, если жанр является корневым">
+            </column>
+            <column name="slug" type="VARCHAR(255)"
+                    remarks="мнемонический код жанра, используемый в ссылках на страницу данного жанра">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="наименование жанра">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="document" remarks="документы">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="sort_index" defaultValueComputed="0" type="INTEGER"
+                    remarks="порядковый номер документа (для вывода на странице списка документов)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="slug" type="VARCHAR(255)"
+                    remarks="мнемонический код документа, отображаемый в ссылке на страницу документа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)" remarks="наименование документа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="TEXT" remarks="текст документа в формате HTML">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="faq" remarks="частые вопросы и ответы на них">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="sort_index" defaultValueComputed="0" type="INTEGER"
+                    remarks="порядковый номер вопроса в списке вопросов на странице “Помощь”">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question" type="VARCHAR(255)" remarks="вопрос">
+                <constraints nullable="false"/>
+            </column>
+            <column name="answer" type="TEXT" remarks="ответ в формате HTML">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="balance_transaction" remarks="транзакции по счетам пользователей">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="идентификатор пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="DATETIME" remarks="дата и время транзакции">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" defaultValueComputed="0" type="INTEGER"
+                    remarks="размер транзакции (положительный — зачисление, отрицательный — списание)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_id" type="INTEGER" remarks="книга, за покупку которой произошло списание, или NULL"/>
+            <column name="description" type="TEXT"
+                    remarks="описание транзакции: если зачисление, то откуда, если списание, то на что">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="tag" remarks="справочник тэгов">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="slug" type="VARCHAR(255)" remarks="код тэга">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="наименование тэга">
+            </column>
+        </createTable>
+
+        <createTable tableName="book2tag" remarks="типы привязок книг к тэгам">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="book_id" type="INTEGER" remarks="идентификатор книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tag_id" type="INTEGER" remarks="идентификатор тэга">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="book_rating" remarks="рейтинги книг">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="book_id" type="INTEGER" remarks="идентификатор книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER" remarks="идентификатор пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="INTEGER" remarks="значение от 1 до 5">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="DATETIME" remarks="время, когда была оставлена оценка">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                columnNames="book_id, user_id"
+                constraintName="book_rating_book_id_user_id"
+                tableName="book_rating"
+        />
+
+        <createTable tableName="activity" remarks="активность на сайте">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="activity" type="VARCHAR(255)" remarks="наименование активности">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="DATE" remarks="дата активности">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="INTEGER" remarks="кол-во вызовов">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                columnNames="activity, date"
+                constraintName="activity_activity_date"
+                tableName="activity"
+        />
+
+    </changeSet>
+
+    <changeSet id="init-db-link-entity" author="basiladze-gt">
+
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="book_rating"
+                                 constraintName="fk_book_rating_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="book"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="book_rating"
+                                 constraintName="fk_book_rating_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="book2tag"
+                                 constraintName="fk_book2tag_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="book"/>
+
+        <addForeignKeyConstraint baseColumnNames="tag_id"
+                                 baseTableName="book2tag"
+                                 constraintName="fk_book2tag_tag_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tag"/>
+
+        <addForeignKeyConstraint baseColumnNames="author_id"
+                                 baseTableName="book2author"
+                                 constraintName="fk_book2author_author_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="author"/>
+
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="book2author"
+                                 constraintName="fk_book2author_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="book"/>
+
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="book2genre"
+                                 constraintName="fk_book2genre_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="book"/>
+
+        <addForeignKeyConstraint baseColumnNames="genre_id"
+                                 baseTableName="book2genre"
+                                 constraintName="fk_book2genre_genre_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="genre"/>
+
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="book2user"
+                                 constraintName="fk_book2user_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="book"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="book2user"
+                                 constraintName="fk_book2user_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+        <addForeignKeyConstraint baseColumnNames="type_id"
+                                 baseTableName="book2user"
+                                 constraintName="fk_book2user_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="book2user_type"/>
+
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="book_file"
+                                 constraintName="fk_book_file_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="book"/>
+
+        <addForeignKeyConstraint baseColumnNames="type_id"
+                                 baseTableName="book_file"
+                                 constraintName="fk_book_file_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="book_file_type"/>
+
+    </changeSet>
+</databaseChangeLog>

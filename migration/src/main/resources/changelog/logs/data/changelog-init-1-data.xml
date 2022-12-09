@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+      http://www.liquibase.org/xml/ns/pro
+      http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.5.xsd">
+
+    <changeSet id="init-data-book2user_type" author="basiladze-gt">
+        <insert tableName="book2user_type">
+            <column name="id" value="1"/>
+            <column name="code" value="KEPT"/>
+            <column name="name" value="Отложена"/>
+        </insert>
+        <insert tableName="book2user_type">
+            <column name="id" value="2"/>
+            <column name="code" value="CART"/>
+            <column name="name" value="В корзине"/>
+        </insert>
+        <insert tableName="book2user_type">
+            <column name="id" value="3"/>
+            <column name="code" value="PAID"/>
+            <column name="name" value="Кулена"/>
+        </insert>
+        <insert tableName="book2user_type">
+            <column name="id" value="4"/>
+            <column name="code" value="ARCHIVED"/>
+            <column name="name" value="В архиве"/>
+        </insert>
+        <insert tableName="book2user_type">
+            <column name="id" value="5"/>
+            <column name="code" value="VIEWED"/>
+            <column name="name" value="Просмотрена"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init-data-book_file_type" author="basiladze-gt">
+        <insert tableName="book_file_type">
+            <column name="id" value="1"/>
+            <column name="name" value="PDF"/>
+            <column name="description"
+                    value="межплатформенный открытый формат электронных документов (Portable Document Format), изначально разработанный фирмой Adobe Systems"/>
+        </insert>
+        <insert tableName="book_file_type">
+            <column name="id" value="2"/>
+            <column name="name" value="EPUB"/>
+            <column name="description"
+                    value="открытый формат файлов для электронных книг, разработанный Международной ассоциацией цифрового книгоиздания (International Digital Publishing Forum, IDPF)"/>
+        </insert>
+        <insert tableName="book_file_type">
+            <column name="id" value="3"/>
+            <column name="name" value="FB2"/>
+            <column name="description"
+                    value="файл с расширением FB2 является файлом FictionBook eBook. Формат был создан для обработки художественных произведений, но, конечно, его можно использовать для хранения электронных книг любого типа."/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

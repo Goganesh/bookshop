@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="Cards Cards_refresh" th:fragment="pool(category, refreshId, booksList)">
+    <div class="Card" th:each="bookPageDto : ${booksList}">
+        <div class="Card-picture">
+            <a th:href="${bookPageDto.slug}" href="#">
+                <img th:src="${bookPageDto.image}" src="/assets/img/content/main/card.jpg" alt="card.jpg"/>
+            </a>
+        </div>
+        <div class="Card-content">
+            <strong class="Card-title"><a th:text="${bookPageDto.title}" href="#">Техника</a>
+            </strong>
+            <div th:text="${bookPageDto.authors}" class="Card-description">Кондратенко Александр Петрович
+            </div>
+            <div class="Card-cost">
+                <span th:if="${bookPageDto.discountPrice} != 0" th:text="${bookPageDto.price}" class="Card-priceOld">₽300.00</span>
+                <span th:text="${bookPageDto.discountPrice} != 0 ? ${bookPageDto.discountPrice} : ${bookPageDto.price}" class="Card-price">₽190.00</span>
+            </div>
+        </div>
+    </div>
+    <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary" href="#"
+                                                     th:attr="data-refreshshow = ${category}, data-refreshid = ${refreshId}"
+                                                     data-refreshshow="recent"
+                                                     data-refreshoffset="20" data-refreshlimit="20">Показать еще</a>
+    </div>
+</div>
+</html>
