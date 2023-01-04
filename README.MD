@@ -8,16 +8,12 @@ sudo docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --pu
 14.stylequide 
 2 add methods how to test module
 
-vaadin+spring
-https://github.com/vaadin/flow-spring-examples
-https://vaadin.com/docs/v14/tools/mpr/configuration/production-mode
-
-1)add vaadin install feature to readme
 
 Доделки
 todo:
 
 common
+add slug validation or generator
 how to security work -- describe logic
 8.add test for data layer
 9.add test for business layer

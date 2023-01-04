@@ -13,6 +13,7 @@ import com.goganesh.bookshop.webapi.client.exception.NoSuchGenreException;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchTagException;
 import com.goganesh.bookshop.webapi.client.mapper.BookMapper;
 import com.goganesh.bookshop.webapi.client.service.BookRestService;
+import com.goganesh.bookshop.webapi.client.validation.NoPathTraversal;
 import com.goganesh.security.service.UserRegisterService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

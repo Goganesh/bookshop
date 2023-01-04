@@ -16,8 +16,9 @@ public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
+    //todo replace this to service
     @OneToMany
     @JoinColumn(name= "parent_id")
     @ToString.Exclude

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header class="Header" th:fragment="head">
+
+    <div class="Header-rowMain">
+        <div class="wrap">
+            <div class="row">
+                <div class="row-block Header-logo"><a class="logo" th:href="@{/}" href="/"><img class="logo-image"
+                                                                                                src="/assets/img/logo.png"
+                                                                                                alt="logo.png"/><span
+                        class="logo-text">BOOKSHOP</span></a>
+                </div>
+
+                <div class="row-block Header-trigger"><a class="menuTrigger" href="#navigate">
+                    <div class="menuTrigger-content">Показать навигацию
+                    </div>
+                    <span></span><span></span><span></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Header-menu">
+        <div class="wrap">
+            <nav class="menuModal" id="navigate">
+                <ul class="menu menu_main">
+                    <li class="menu-item" th:class="${main}"><a class="menu-link"
+                                                                th:href="@{/admin/books}"
+                                                                href="/index.html">Справочник книг</a>
+                    </li>
+                    <li class="menu-item" th:class="${genres}"><a class="menu-link"
+                                                                  th:href="@{/admin/genres}"
+                                                                  href="admin/genres/index.html">Справочник жанров</a>
+                    </li>
+                    <li class="menu-item" th:class="${authors}"><a class="menu-link"
+                                                                   th:href="@{/admin/authors}"
+                                                                   href="/authors/index.html">Справочник авторов</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+</header>
+</html>

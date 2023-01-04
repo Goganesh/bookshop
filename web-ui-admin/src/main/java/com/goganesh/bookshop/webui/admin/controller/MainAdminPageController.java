@@ -2,13 +2,16 @@ package com.goganesh.bookshop.webui.admin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@Controller
-public class MainPageController {
+@Controller()
+@RequestMapping("/admin")
+public class MainAdminPageController {
 
-    @GetMapping("/admin")
+    @GetMapping()
     public String getMainPage() {
         return "admin/index";
     }
+
 }

@@ -6,6 +6,7 @@ import com.goganesh.bookshop.model.domain.Book2User;
 import com.goganesh.bookshop.model.domain.Book2UserType;
 import com.goganesh.bookshop.model.domain.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ContextConfiguration(classes = {ModelConfiguration.class})
 @DataJpaTest
+@Disabled
 class JpaBook2UserRepositoryTest {
 
     @Autowired

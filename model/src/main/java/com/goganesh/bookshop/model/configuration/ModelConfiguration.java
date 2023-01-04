@@ -124,6 +124,11 @@ public class ModelConfiguration {
     }
 
     @Bean
+    public GenreWriteRepository genreWriteRepository(JpaGenreRepository jpaGenreRepository) {
+        return new JpaGenreWriteRepository(jpaGenreRepository);
+    }
+
+    @Bean
     public TagReadRepository tagReadRepository(JpaTagRepository jpaTagRepository) {
         return new JpaTagReadRepository(jpaTagRepository);
     }

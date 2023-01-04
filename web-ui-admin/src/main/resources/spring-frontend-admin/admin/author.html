@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/common_head_fragment.html :: head(title='Автор', description=${authorPageDto.name})}">
+<head th:replace="~{admin/fragments/common_head_fragment.html :: head(title='Автор', description=${authorPageDto.name})}">
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
+        th:replace="~{admin/fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">

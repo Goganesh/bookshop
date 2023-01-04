@@ -15,12 +15,15 @@ import com.goganesh.bookshop.webapi.client.exception.NoSuchAuthorException;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchBookException;
 import com.goganesh.bookshop.webapi.client.mapper.AuthorApiMapper;
 import com.goganesh.bookshop.webapi.client.mapper.BookApiMapper;
+import com.goganesh.bookshop.webapi.client.validation.NoPathTraversal;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -48,6 +51,12 @@ public class AdminController {
     решить как организовать ответ общий - TemplateResponse
     добавить validation api
      */
+
+    @Validated
+    @GetMapping("test/{path}")
+    public String test(@Valid @PathVariable @NoPathTraversal String path) {
+        return path;
+    }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PatchMapping("authors")
@@ -83,7 +92,7 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("books/{slug}/img")
     public void changeCoverForBook(@RequestParam("file") MultipartFile file,
-                                   @PathVariable("slug")String slug) throws IOException {
+                                   @PathVariable("slug") String slug) throws IOException {
         InputStream inputStream = file.getInputStream();
         String originalFileName = file.getOriginalFilename();
 

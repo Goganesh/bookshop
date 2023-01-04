@@ -9,10 +9,13 @@ import com.goganesh.bookshop.model.service.*;
 import com.goganesh.bookshop.webapi.client.controller.*;
 import com.goganesh.bookshop.webapi.client.converter.ChangeBookStatusDtoDeserializer;
 import com.goganesh.bookshop.webapi.client.mapper.*;
+import com.goganesh.bookshop.webapi.client.service.GenreRestService;
 import com.goganesh.bookshop.webapi.client.service.impl.BalanceTransactionRestServiceImpl;
 import com.goganesh.bookshop.webapi.client.service.impl.BookRestServiceImpl;
 import com.goganesh.bookshop.webapi.client.service.BalanceTransactionRestService;
 import com.goganesh.bookshop.webapi.client.service.BookRestService;
+import com.goganesh.bookshop.webapi.client.service.impl.GenreRestServiceImpl;
+import com.goganesh.bookshop.webapi.client.validation.NoPathTraversalValidator;
 import com.goganesh.security.configuration.SecurityConfiguration;
 import com.goganesh.security.configuration.SecurityServiceConfiguration;
 import com.goganesh.security.service.UserRegisterService;
@@ -25,8 +28,19 @@ import org.springframework.context.annotation.Import;
 public class WebApiClientConfiguration {
 
     @Bean
+    public NoPathTraversalValidator noPathTraversalValidator() {
+        return new NoPathTraversalValidator();
+    }
+
+    @Bean
     public BookRestService bookRestService(BookReadRepository bookReadRepository) {
         return new BookRestServiceImpl(bookReadRepository);
+    }
+
+    @Bean
+    public GenreRestService genreRestService(GenreReadRepository genreReadRepository,
+                                             GenreWriteRepository genreWriteRepository) {
+        return new GenreRestServiceImpl(genreReadRepository, genreWriteRepository);
     }
 
     @Bean
@@ -40,6 +54,13 @@ public class WebApiClientConfiguration {
         bookMapper.setBookRatingService(bookRatingService);
 
         return bookMapper;
+    }
+
+    @Bean
+    public GenreApiMapper genreApiMapper(GenreReadRepository genreReadRepository) {
+        GenreApiMapper genreApiMapper = new GenreApiMapperImpl();
+
+        return genreApiMapper;
     }
 
     @Bean
@@ -65,6 +86,12 @@ public class WebApiClientConfiguration {
                                                UserRegisterService userRegisterService,
                                                BookMapper bookMapper) {
         return new DataApiController(bookRestService, genreReadRepository, authorReadRepository, tagReadRepository, userRegisterService, bookMapper);
+    }
+
+    @Bean
+    public GenreController genreController(GenreRestService genreRestService,
+                                           GenreApiMapper genreApiMapper) {
+        return new GenreController(genreRestService, genreApiMapper);
     }
 
     @Bean
@@ -123,7 +150,6 @@ public class WebApiClientConfiguration {
     public ChangeBookStatusDtoDeserializer changeBookStatusDtoDeserializer() {
         return new ChangeBookStatusDtoDeserializer();
     }
-
 
 
 }
