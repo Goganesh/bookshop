@@ -11,7 +11,7 @@ sudo docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --pu
 
 Доделки
 todo:
-
+genre - find clildrens replace to service from model
 common
 add slug validation or generator
 how to security work -- describe logic

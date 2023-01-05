@@ -14,5 +14,5 @@ public interface GenreRestService {
 
     void delete(Genre genre);
 
-    Genre post(Genre genre);
+    Genre save(Genre genre);
 }

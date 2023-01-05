@@ -4,6 +4,8 @@ import com.goganesh.bookshop.model.domain.Author;
 import com.goganesh.bookshop.model.repository.JpaAuthorRepository;
 import com.goganesh.bookshop.model.service.AuthorReadRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,5 +28,10 @@ public class JpaAuthorReadRepository implements AuthorReadRepository {
     @Override
     public Optional<Author> findBySlug(String slug) {
         return authorRepository.findBySlug(slug);
+    }
+
+    @Override
+    public Page<Author> findAll(Pageable pageable) {
+        return authorRepository.findAll(pageable);
     }
 }

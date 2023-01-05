@@ -1,26 +1,54 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{admin/fragments/common_head_fragment.html :: head(title='Автор', description=${authorPageDto.name})}">
+<head th:replace="~{admin/fragments/common_head_fragment.html :: head(title='Автор', description='Автор')}">
 </head>
 <body class="Site">
 <header class="Header"
         th:replace="~{admin/fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
 <div class="Middle">
-    <div class="wrap">
-        <main class="Middle-main">
-            <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(rootText='Авторы', rootUrl='/authors',category=${authorPageDto.name})}"></ul>
-            <div th:replace="~{fragments/author_article_fragment :: article(${authorPageDto})}"></div>
-            <div class="Section"
-                 th:replace="~{fragments/book_slider_fragment :: bookSlider('Книги автора', ${authorBooks}, '')}"></div>
-            <footer class="Section-footer"><a class="Author-books" th:href="'/books/author/' + ${authorPageDto.slug}" href="/books/author.html">Все
-                книги автора<span
-                        class="Author-amount" th:text="${authorPageDto.bookCount}">(55)</span></a>
-            </footer>
-        </main>
+
+    <div class="container-sm">
+
+        <h4 class="mb-3">Создание/Редактирование Автора</h4>
+
+        <div class="row">
+            <div class="container-sm">
+                <div class="mb-3">
+                    <label for="id-input">ID:</label>
+                    <input id="id-input" name="id" type="number" value="-1" readonly="readonly"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="slug-input" >Имя в пути:</label>
+                    <input id="slug-input" class="form-control"
+                           name="name" type="text" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name-input" >Наименование:</label>
+                    <input id="name-input" class="form-control"
+                           name="name" type="text" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description-input" >Описание:</label>
+                    <input id="description-input" class="form-control"
+                           name="description" type="text"/>
+                </div>
+
+                <button onclick="saveAuthor()" class="btn btn-primary" type="submit">Сохранить</button>
+            </div>
+        </div>
+
     </div>
+
 </div>
-<footer class="Footer" th:replace="~{fragments/common_footer_fragment :: footer}"></footer>
 <script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/assets/js/action.js"></script>
+<script>
+    $(function () {
+        fillAuthor();
+    });
+</script>
 </body>
 </html>

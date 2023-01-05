@@ -9,7 +9,11 @@ function deleteEntity(id, type){
     $.ajax({
         url: path,
         type: "DELETE",
-        contentType: 'application/json'
+        contentType: 'application/json',
+
+        success: function(data, status, xhr){
+            window.location.replace("/admin/genres");
+        }
     })
 }
 
@@ -23,6 +27,19 @@ function fillGenre(){
         $('#parent-id-input').val(data.parentId);
         $('#slug-input').val(data.slug);
         $('#name-input').val(data.name);
+    })
+}
+
+function fillAuthor(){
+    let url = window.location.pathname;
+    let pathArray = url.split("/");
+    let id = pathArray[3];
+
+    $.get(generatePath("authors/" + id)).done(function (data) {
+        $('#id-input').attr('value', data.id);
+        $('#slug-input').val(data.slug);
+        $('#name-input').val(data.name);
+        $('#description-input').val(data.description);
     })
 }
 
@@ -46,7 +63,32 @@ function saveGenre(){
         contentType: 'application/json',
 
         success: function(data, status, xhr){
-            window.location.replace("/admin/genres/" + data.id);
+            window.location.replace("/admin/genres");
+        }
+    })
+}
+
+function saveAuthor(){
+    let obj = new Object();
+    obj.id = $("#id-input").attr("value");
+    obj.slug = $("#slug-input").val();
+    obj.name = $("#name-input").val();
+    obj.description = $("#description-input").val();
+
+    if(obj.name == '' || obj.slug == ''){
+        alert('Не заполнены обязательные атрибуты');
+        return;
+    }
+
+    let json = JSON.stringify(obj);
+    $.ajax({
+        url: "http://localhost:8085/api/v1/authors",
+        type: "POST",
+        data: json,
+        contentType: 'application/json',
+
+        success: function(data, status, xhr){
+            window.location.replace("/admin/authors");
         }
     })
 }

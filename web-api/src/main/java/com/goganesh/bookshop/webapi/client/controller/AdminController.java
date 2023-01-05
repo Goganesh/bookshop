@@ -8,7 +8,6 @@ import com.goganesh.bookshop.model.service.AuthorWriteRepository;
 import com.goganesh.bookshop.model.service.BookReadRepository;
 import com.goganesh.bookshop.model.service.BookWriteRepository;
 import com.goganesh.bookshop.webapi.client.dto.AuthorChangeDto;
-import com.goganesh.bookshop.webapi.client.dto.AuthorResponseDto;
 import com.goganesh.bookshop.webapi.client.dto.BookChangeDto;
 import com.goganesh.bookshop.webapi.client.dto.BookResponseDto;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchAuthorException;
@@ -59,25 +58,11 @@ public class AdminController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PatchMapping("authors")
-    public AuthorResponseDto changeAuthor(@RequestBody AuthorChangeDto authorChangeDto) {
-        Author author = authorReadRepository.findById(authorChangeDto.getId())
-                .orElseThrow(() -> new NoSuchAuthorException("No such author with slug " + authorChangeDto.getId()));
-
-        mergeAuthor(author, authorChangeDto);
-        authorWriteRepository.save(author);
-
-        return authorApiMapper.toDto(authorReadRepository.findById(author.getId()).get());
-
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PatchMapping("books")
     public BookResponseDto changeBook(@RequestBody BookChangeDto bookChangeDto) {
         Book book = bookReadRepository.findById(bookChangeDto.getId())
                 .orElseThrow(() -> new NoSuchBookException("No such book with id - " + bookChangeDto.getId()));
 
-        mergeBook(book, bookChangeDto);
         bookWriteRepository.save(book);
 
         return bookApiMapper.toDto(bookReadRepository.findById(book.getId()).get());
@@ -103,35 +88,6 @@ public class AdminController {
         bookWriteRepository.save(book);
     }
 
-    private void mergeAuthor(Author author, AuthorChangeDto authorChangeDto) {
-
-        if (StringUtils.isNotBlank(authorChangeDto.getName())) {
-            author.setName(authorChangeDto.getName());
-        }
-
-        if (StringUtils.isNotBlank(authorChangeDto.getDescription())) {
-            author.setDescription(authorChangeDto.getDescription());
-        }
-    }
-
-    private void mergeBook(Book book, BookChangeDto bookChangeDto) {
-        if (StringUtils.isNotBlank(bookChangeDto.getTitle())) {
-            book.setTitle(bookChangeDto.getTitle());
-        }
-
-        if (StringUtils.isNotBlank(bookChangeDto.getDescription())) {
-            book.setDescription(bookChangeDto.getDescription());
-        }
-
-        if (Objects.nonNull(bookChangeDto.getPrice())) {
-            book.setPrice(bookChangeDto.getPrice());
-        }
-
-        if (Objects.nonNull(bookChangeDto.getDiscount())) {
-            book.setDiscount(bookChangeDto.getDiscount());
-        }
-
-    }
 
     /*
     @PreAuthorize("hasAnyRole('USER','TEMP_USER')")

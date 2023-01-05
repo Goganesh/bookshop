@@ -11,7 +11,12 @@ public class JpaAuthorWriteRepository implements AuthorWriteRepository {
     private final JpaAuthorRepository jpaAuthorRepository;
 
     @Override
-    public void save(Author author) {
-        jpaAuthorRepository.save(author);
+    public Author save(Author author) {
+        return jpaAuthorRepository.save(author);
+    }
+
+    @Override
+    public void delete(Author author) {
+        jpaAuthorRepository.delete(author);
     }
 }

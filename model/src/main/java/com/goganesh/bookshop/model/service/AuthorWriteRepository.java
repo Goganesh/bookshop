@@ -4,5 +4,7 @@ import com.goganesh.bookshop.model.domain.Author;
 
 public interface AuthorWriteRepository {
 
-    void save(Author author);
+    Author save(Author author);
+
+    void delete(Author author);
 }

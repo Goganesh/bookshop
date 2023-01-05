@@ -9,7 +9,9 @@ import com.goganesh.bookshop.model.service.*;
 import com.goganesh.bookshop.webapi.client.controller.*;
 import com.goganesh.bookshop.webapi.client.converter.ChangeBookStatusDtoDeserializer;
 import com.goganesh.bookshop.webapi.client.mapper.*;
+import com.goganesh.bookshop.webapi.client.service.AuthorRestService;
 import com.goganesh.bookshop.webapi.client.service.GenreRestService;
+import com.goganesh.bookshop.webapi.client.service.impl.AuthorRestServiceImpl;
 import com.goganesh.bookshop.webapi.client.service.impl.BalanceTransactionRestServiceImpl;
 import com.goganesh.bookshop.webapi.client.service.impl.BookRestServiceImpl;
 import com.goganesh.bookshop.webapi.client.service.BalanceTransactionRestService;
@@ -41,6 +43,12 @@ public class WebApiClientConfiguration {
     public GenreRestService genreRestService(GenreReadRepository genreReadRepository,
                                              GenreWriteRepository genreWriteRepository) {
         return new GenreRestServiceImpl(genreReadRepository, genreWriteRepository);
+    }
+
+    @Bean
+    public AuthorRestService authorRestService(AuthorReadRepository authorReadRepository,
+                                               AuthorWriteRepository authorWriteRepository) {
+        return new AuthorRestServiceImpl(authorReadRepository, authorWriteRepository);
     }
 
     @Bean
@@ -92,6 +100,12 @@ public class WebApiClientConfiguration {
     public GenreController genreController(GenreRestService genreRestService,
                                            GenreApiMapper genreApiMapper) {
         return new GenreController(genreRestService, genreApiMapper);
+    }
+
+    @Bean
+    public AuthorController authorController(AuthorRestService authorRestService,
+                                             AuthorApiMapper authorApiMapper) {
+        return new AuthorController(authorRestService, authorApiMapper);
     }
 
     @Bean

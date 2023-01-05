@@ -50,7 +50,7 @@ public class GenreController {
         }
 
         Genre genre = genreApiMapper.toModel(genreApiRequestDto);
-        genre = genreRestService.post(genre);
+        genre = genreRestService.save(genre);
 
         return genreApiMapper.toDto(genre);
     }

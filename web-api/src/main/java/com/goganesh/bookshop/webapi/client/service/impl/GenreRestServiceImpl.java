@@ -18,11 +18,8 @@ public class GenreRestServiceImpl implements GenreRestService {
     private final GenreWriteRepository genreWriteRepository;
 
     @Override
-    public Genre post(Genre genre) {
-
-        Genre savedGenre = genreWriteRepository.save(genre);
-
-        return savedGenre;
+    public Genre save(Genre genre) {
+        return genreWriteRepository.save(genre);
     }
 
     @Override
