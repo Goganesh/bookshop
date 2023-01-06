@@ -4,6 +4,8 @@ import com.goganesh.bookshop.model.domain.*;
 
 public interface BookWriteRepository {
 
-    void save(Book book);
+    Book save(Book book);
     void deleteById(Integer id);
+
+    void delete(Book book);
 }

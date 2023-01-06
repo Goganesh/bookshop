@@ -17,6 +17,8 @@ public interface AuthorApiMapper {
             source = "author.slug")
     @Mapping(target="description",
             source = "author.description")
+    @Mapping(target="photo",
+            source = "author.photo")
     AuthorApiResponseDto toDto(Author author);
 
     @Mapping(target="id",

@@ -8,4 +8,5 @@ public class AuthorApiResponseDto {
     private String slug;
     private String name;
     private String description;
+    private String photo;
 }

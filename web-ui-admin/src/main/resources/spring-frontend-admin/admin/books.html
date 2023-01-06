@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{admin/fragments/common_head_fragment.html :: head(title='Авторы', description='Авторы')}">
+<head th:replace="~{admin/fragments/common_head_fragment.html :: head(title='Книги', description='Книги')}">
 </head>
 <body class="Site">
 <header class="Header"
@@ -9,20 +9,25 @@
 <div class="container-sm">
 
     <!--Заголовок-->
-    <h4>Авторы</h4>
+    <h4>Книги</h4>
 
     <button id="delete-button" type="button" class="btn btn-primary">Удалить</button>
     <button id="update-button" type="button" class="btn btn-primary">Редактировать</button>
-    <button id="create-button" type="button" class="btn btn-primary" onclick="window.location.href = '/admin/authors/-1';">Создать</button>
+    <button id="create-button" type="button" class="btn btn-primary" onclick="window.location.href = '/admin/books/-1';">Создать</button>
 
     <table id="example" class="table table-striped" width="100%" cellspacing="0">
         <thead>
         <tr>
             <th>id</th>
             <th>Имя в пути</th>
-            <th>Наименование</th>
+            <th>Название</th>
             <th>Описание</th>
             <th>Изображение</th>
+            <th>Цена</th>
+            <th>Скидка</th>
+            <th>Бестселлер</th>
+            <th>Популярность</th>
+            <th>Дата публикации</th>
         </tr>
         </thead>
     </table>
@@ -45,7 +50,7 @@
             "orderMulti": false, // for disable multiple column at once
             "ajax": {
                 "draw": "1",
-                "url":"http://localhost:8085/api/v1/authors",
+                "url":"http://localhost:8085/api/v1/books",
                 "type": "GET",
                 "dataSrc": function ( json ) {
                     return json.content;
@@ -54,9 +59,14 @@
             "columns": [
                 { "data": 'id' },
                 { "data": 'slug' },
-                { "data": 'name' },
+                { "data": 'title' },
                 { "data": 'description' },
-                { "data": 'photo' }
+                { "data": 'image' },
+                { "data": 'price' },
+                { "data": 'discount' },
+                { "data": 'isBestseller' },
+                { "data": 'popularity' },
+                { "data": 'pubDate' }
             ]
         } );
 
@@ -84,7 +94,7 @@
                 return item
             });
 
-            deleteEntity(ids[0], "authors");
+            deleteEntity(ids[0], "books");
         } );
 
     } );

@@ -7,6 +7,7 @@ sudo docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --pu
 13.delete ususes imports
 14.stylequide 
 2 add methods how to test module
+удалить admincontroller
 
 
 Доделки

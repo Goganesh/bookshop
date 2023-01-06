@@ -1,6 +1,7 @@
 package com.goganesh.bookshop.webui.admin.configuration;
 
 import com.goganesh.bookshop.webui.admin.controller.AuthorAdminPageController;
+import com.goganesh.bookshop.webui.admin.controller.BookAdminPageController;
 import com.goganesh.bookshop.webui.admin.controller.GenreAdminPageController;
 import com.goganesh.bookshop.webui.admin.controller.MainAdminPageController;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,5 +58,10 @@ public class WebUiAdminConfiguration implements WebMvcConfigurer {
     @Bean
     public GenreAdminPageController genreAdminPageController() {
         return new GenreAdminPageController();
+    }
+
+    @Bean
+    public BookAdminPageController bookAdminPageController() {
+        return new BookAdminPageController();
     }
 }

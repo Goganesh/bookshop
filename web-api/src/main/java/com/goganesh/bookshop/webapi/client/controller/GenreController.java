@@ -25,12 +25,12 @@ public class GenreController {
     private final GenreApiMapper genreApiMapper;
 
     @GetMapping()
-    public Page<GenreApiResponseDto> getGenresPage(@PageableDefault(value = 20) Pageable pageable) {
+    public Page<GenreApiResponseDto> getGenres(@PageableDefault(value = 20) Pageable pageable) {
         return genreRestService.findAll(pageable).map(genreApiMapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public GenreApiResponseDto getGenresPage(@PathVariable("id") Integer id) {
+    public GenreApiResponseDto getGenre(@PathVariable("id") Integer id) {
         Genre genre = genreRestService.findById(id).orElseThrow(() -> new NoSuchGenreException("No such genre with id " + id));
         return genreApiMapper.toDto(genre);
     }

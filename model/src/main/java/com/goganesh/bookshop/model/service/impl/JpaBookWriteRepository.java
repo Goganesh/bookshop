@@ -11,12 +11,17 @@ public class JpaBookWriteRepository implements BookWriteRepository {
     private final JpaBookRepository jpaBookRepository;
 
     @Override
-    public void save(Book book) {
-        jpaBookRepository.save(book);
+    public Book save(Book book) {
+        return jpaBookRepository.save(book);
     }
 
     @Override
     public void deleteById(Integer id) {
         jpaBookRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(Book book) {
+        jpaBookRepository.delete(book);
     }
 }

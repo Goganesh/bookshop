@@ -43,6 +43,22 @@ function fillAuthor(){
     })
 }
 
+function fillBook(){
+    let url = window.location.pathname;
+    let pathArray = url.split("/");
+    let id = pathArray[3];
+
+    $.get(generatePath("books/" + id)).done(function (data) {
+        $('#id-input').attr('value', data.id);
+        $('#slug-input').val(data.slug);
+        $('#title-input').val(data.title);
+        $('#description-input').val(data.description);
+        $('#pub-date-input').val(data.pubDate);
+        $('#price-input').val(data.price);
+        $('#discount-input').val(data.discount);
+    })
+}
+
 function saveGenre(){
     let obj = new Object();
     obj.id = $("#id-input").attr("value");
@@ -89,6 +105,34 @@ function saveAuthor(){
 
         success: function(data, status, xhr){
             window.location.replace("/admin/authors");
+        }
+    })
+}
+
+function saveBook(){
+    let obj = new Object();
+    obj.id = $("#id-input").attr("value");
+    obj.slug = $("#slug-input").val();
+    obj.title = $("#title-input").val();
+    obj.description = $("#description-input").val();
+    obj.pubDate = $("#pub-date-input").val();
+    obj.price = $("#price-input").val();
+    obj.discount = $("#discount-input").val();
+
+    if(obj.name == '' || obj.slug == ''){
+        alert('Не заполнены обязательные атрибуты');
+        return;
+    }
+
+    let json = JSON.stringify(obj);
+    $.ajax({
+        url: "http://localhost:8085/api/v1/books",
+        type: "POST",
+        data: json,
+        contentType: 'application/json',
+
+        success: function(data, status, xhr){
+            window.location.replace("/admin/books");
         }
     })
 }

@@ -17,7 +17,6 @@ import com.goganesh.bookshop.webapi.client.service.impl.BookRestServiceImpl;
 import com.goganesh.bookshop.webapi.client.service.BalanceTransactionRestService;
 import com.goganesh.bookshop.webapi.client.service.BookRestService;
 import com.goganesh.bookshop.webapi.client.service.impl.GenreRestServiceImpl;
-import com.goganesh.bookshop.webapi.client.validation.NoPathTraversalValidator;
 import com.goganesh.security.configuration.SecurityConfiguration;
 import com.goganesh.security.configuration.SecurityServiceConfiguration;
 import com.goganesh.security.service.UserRegisterService;
@@ -30,13 +29,9 @@ import org.springframework.context.annotation.Import;
 public class WebApiClientConfiguration {
 
     @Bean
-    public NoPathTraversalValidator noPathTraversalValidator() {
-        return new NoPathTraversalValidator();
-    }
-
-    @Bean
-    public BookRestService bookRestService(BookReadRepository bookReadRepository) {
-        return new BookRestServiceImpl(bookReadRepository);
+    public BookRestService bookRestService(BookReadRepository bookReadRepository,
+                                           BookWriteRepository bookWriteRepository) {
+        return new BookRestServiceImpl(bookReadRepository, bookWriteRepository);
     }
 
     @Bean
@@ -109,6 +104,12 @@ public class WebApiClientConfiguration {
     }
 
     @Bean
+    public BookController bookController(BookRestService bookRestService,
+                                         BookApiMapper bookApiMapper) {
+        return new BookController(bookRestService, bookApiMapper);
+    }
+
+    @Bean
     public PaymentController paymentController(UserRegisterService userRegisterService,
                                                BalanceTransactionRestService balanceTransactionRestService,
                                                BalanceTransactionWriteRepository balanceTransactionWriteRepository,
@@ -153,10 +154,6 @@ public class WebApiClientConfiguration {
         return new AdminController(
                 bookWriteRepository,
                 bookReadRepository,
-                authorReadRepository,
-                authorWriteRepository,
-                authorApiMapper,
-                bookApiMapper,
                 imageService);
     }
 

@@ -27,18 +27,18 @@ public class AuthorController {
     private final AuthorApiMapper authorApiMapper;
 
     @GetMapping()
-    public Page<AuthorApiResponseDto> getAuthorsPage(@PageableDefault(value = 20) Pageable pageable) {
+    public Page<AuthorApiResponseDto> getAuthors(@PageableDefault(value = 20) Pageable pageable) {
         return authorRestService.findAll(pageable).map(authorApiMapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public AuthorApiResponseDto getGenresPage(@PathVariable("id") Integer id) {
+    public AuthorApiResponseDto getAuthor(@PathVariable("id") Integer id) {
         Author author = authorRestService.findById(id).orElseThrow(() -> new NoSuchAuthorException("No such author with id " + id));
         return authorApiMapper.toDto(author);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGenre(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteAuthor(@PathVariable("id") Integer id) {
         Author author = authorRestService.findById(id).orElseThrow(() -> new NoSuchAuthorException("No such author with id " + id));
         authorRestService.delete(author);
 
@@ -46,7 +46,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public AuthorApiResponseDto postGenre(@Validated @RequestBody AuthorApiRequestDto authorApiRequestDto) {
+    public AuthorApiResponseDto postAuthor(@Validated @RequestBody AuthorApiRequestDto authorApiRequestDto) {
         Author existedAuthor = null;
         
         if (authorApiRequestDto.getId() == -1 || Objects.isNull(authorApiRequestDto.getId())) {

@@ -1,31 +1,17 @@
 package com.goganesh.bookshop.webapi.client.controller;
 
 import com.goganesh.bookshop.common.service.ImageService;
-import com.goganesh.bookshop.model.domain.Author;
 import com.goganesh.bookshop.model.domain.Book;
-import com.goganesh.bookshop.model.service.AuthorReadRepository;
-import com.goganesh.bookshop.model.service.AuthorWriteRepository;
 import com.goganesh.bookshop.model.service.BookReadRepository;
 import com.goganesh.bookshop.model.service.BookWriteRepository;
-import com.goganesh.bookshop.webapi.client.dto.AuthorChangeDto;
-import com.goganesh.bookshop.webapi.client.dto.BookChangeDto;
-import com.goganesh.bookshop.webapi.client.dto.BookResponseDto;
-import com.goganesh.bookshop.webapi.client.exception.NoSuchAuthorException;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchBookException;
-import com.goganesh.bookshop.webapi.client.mapper.AuthorApiMapper;
-import com.goganesh.bookshop.webapi.client.mapper.BookApiMapper;
-import com.goganesh.bookshop.webapi.client.validation.NoPathTraversal;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 
 @RestController
 @AllArgsConstructor
@@ -34,10 +20,6 @@ public class AdminController {
 
     private final BookWriteRepository bookWriteRepository;
     private final BookReadRepository bookReadRepository;
-    private final AuthorReadRepository authorReadRepository;
-    private final AuthorWriteRepository authorWriteRepository;
-    private final AuthorApiMapper authorApiMapper;
-    private final BookApiMapper bookApiMapper;
     private final ImageService imageService;
 
     /*
@@ -51,28 +33,6 @@ public class AdminController {
     добавить validation api
      */
 
-    @Validated
-    @GetMapping("test/{path}")
-    public String test(@Valid @PathVariable @NoPathTraversal String path) {
-        return path;
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PatchMapping("books")
-    public BookResponseDto changeBook(@RequestBody BookChangeDto bookChangeDto) {
-        Book book = bookReadRepository.findById(bookChangeDto.getId())
-                .orElseThrow(() -> new NoSuchBookException("No such book with id - " + bookChangeDto.getId()));
-
-        bookWriteRepository.save(book);
-
-        return bookApiMapper.toDto(bookReadRepository.findById(book.getId()).get());
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @DeleteMapping("books/{id}")
-    public void deleteBook(@PathVariable(value = "id") Integer id) {
-        bookWriteRepository.deleteById(id);
-    }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("books/{slug}/img")

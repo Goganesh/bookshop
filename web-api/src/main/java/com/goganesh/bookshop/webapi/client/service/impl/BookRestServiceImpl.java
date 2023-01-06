@@ -2,6 +2,7 @@ package com.goganesh.bookshop.webapi.client.service.impl;
 
 import com.goganesh.bookshop.model.domain.*;
 import com.goganesh.bookshop.model.service.BookReadRepository;
+import com.goganesh.bookshop.model.service.BookWriteRepository;
 import com.goganesh.bookshop.webapi.client.service.BookRestService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,11 +11,33 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class BookRestServiceImpl implements BookRestService {
 
     private final BookReadRepository bookReadRepository;
+    private final BookWriteRepository bookWriteRepository;
+
+    @Override
+    public Page<Book> findAll(Pageable pageable) {
+        return bookReadRepository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Book> findById(Integer id) {
+        return bookReadRepository.findById(id);
+    }
+
+    @Override
+    public void delete(Book book) {
+        bookWriteRepository.delete(book);
+    }
+
+    @Override
+    public Book save(Book book) {
+        return bookWriteRepository.save(book);
+    }
 
     @Override
     public Page<Book> getPageBooksPageByUserAndTypeCode(User user, String typeCode, Integer offset, Integer limit) {
