@@ -6,5 +6,5 @@ import java.io.InputStream;
 
 public interface FileStorageService {
 
-    String saveFile(InputStream initialStream, String slug, String originalFileName) throws IOException;
+    String saveFile(InputStream initialStream, String directory, String originalFileName) throws IOException;
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/fragments/common_head_fragment.html :: head(title='Обложка книги', description='Обложка книги')}">
+</head>
+<body class="Site">
+<header class="Header"
+        th:replace="~{admin/fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
+<div class="Middle">
+
+    <div class="container-sm">
+
+        <h4 class="mb-3">Обложка Книги</h4>
+
+        <img id="book-image" src="" alt="">
+
+        <div class="row">
+
+            <div class="container-sm">
+                <form id="fileUploadForm" method="post" enctype="multipart/form-data">
+                    <label for="image-input">Изображение для книги:</label>
+                    <input id="image-input" class="form-control mb-3"
+                           name="image" type="file" required/>
+                    <button onclick="uploadFile()" class="btn btn-primary" type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/assets/js/action.js"></script>
+<script>
+    $(function () {
+        fillBookImage();
+    });
+</script>
+</body>
+</html>

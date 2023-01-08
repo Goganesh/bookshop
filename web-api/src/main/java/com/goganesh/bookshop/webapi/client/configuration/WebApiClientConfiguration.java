@@ -144,14 +144,14 @@ public class WebApiClientConfiguration {
     }
 
     @Bean
-    public AdminController adminController(BookWriteRepository bookWriteRepository,
-                                           BookReadRepository bookReadRepository,
-                                           AuthorReadRepository authorReadRepository,
-                                           AuthorWriteRepository authorWriteRepository,
-                                           AuthorApiMapper authorApiMapper,
-                                           BookApiMapper bookApiMapper,
-                                           ImageService imageService) {
-        return new AdminController(
+    public FileUploadController adminController(BookWriteRepository bookWriteRepository,
+                                                BookReadRepository bookReadRepository,
+                                                AuthorReadRepository authorReadRepository,
+                                                AuthorWriteRepository authorWriteRepository,
+                                                AuthorApiMapper authorApiMapper,
+                                                BookApiMapper bookApiMapper,
+                                                ImageService imageService) {
+        return new FileUploadController(
                 bookWriteRepository,
                 bookReadRepository,
                 imageService);

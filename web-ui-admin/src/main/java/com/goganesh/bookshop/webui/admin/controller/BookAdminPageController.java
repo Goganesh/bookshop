@@ -19,4 +19,9 @@ public class BookAdminPageController {
         return "admin/book";
     }
 
+    @GetMapping("/{id}/image")
+    public String getBookImagePage(@PathVariable Integer id) {
+        return "admin/book_image";
+    }
+
 }

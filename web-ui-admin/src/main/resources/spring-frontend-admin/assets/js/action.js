@@ -59,6 +59,16 @@ function fillBook(){
     })
 }
 
+function fillBookImage(){
+    let url = window.location.pathname;
+    let pathArray = url.split("/");
+    let id = pathArray[3];
+
+    $.get(generatePath("books/" + id)).done(function (data) {
+        $('#book-image').attr('src', data.image);
+    })
+}
+
 function saveGenre(){
     let obj = new Object();
     obj.id = $("#id-input").attr("value");
@@ -135,4 +145,29 @@ function saveBook(){
             window.location.replace("/admin/books");
         }
     })
+}
+
+function uploadFile() {
+    let form = $('#fileUploadForm')[0];
+    let data = new FormData(form);
+
+    let url = window.location.pathname;
+    let pathArray = url.split("/");
+    let id = pathArray[3];
+
+    $.ajax({
+        url: "http://localhost:8085/api/v1/books/" + id + "/image",
+        type: "POST",
+        enctype: 'multipart/form-data',
+        data: data,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            window.location.replace("/admin/books");
+        },
+        error: function(jqXHR, textStatus, errorMessage) {
+            console.log(errorMessage); // Optional
+        }
+    });
 }
