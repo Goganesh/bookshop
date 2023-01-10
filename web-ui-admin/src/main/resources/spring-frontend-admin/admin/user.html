@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/fragments/common_head_fragment.html :: head(title='Пользователь', description='Пользователь')}">
+</head>
+<body class="Site">
+<header class="Header"
+        th:replace="~{admin/fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
+<div class="Middle">
+
+    <div class="container-sm">
+
+        <h4 class="mb-3">Редактирование Пользователя</h4>
+
+        <div class="row">
+            <div class="container-sm">
+                <div class="mb-3">
+                    <label for="id-input">ID:</label>
+                    <input id="id-input" name="id" type="number" value="-1" readonly="readonly"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="hash-input" >Хэш:</label>
+                    <input id="hash-input" class="form-control"
+                           name="hash" type="text" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name-input" >Наименование:</label>
+                    <input id="name-input" class="form-control"
+                           name="name" type="text" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="balance-input" >Баланс:</label>
+                    <input id="balance-input" class="form-control"
+                           name="balance" type="number" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="role-input" >Роль:</label>
+                    <input id="role-input" class="form-control"
+                           name="role" type="text" required/>
+                </div>
+
+                <button onclick="saveUser()" class="btn btn-primary" type="submit">Сохранить</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/assets/js/action.js"></script>
+<script>
+    $(function () {
+        fillUser();
+    });
+</script>
+</body>
+</html>

@@ -9,14 +9,8 @@ import com.goganesh.bookshop.model.service.*;
 import com.goganesh.bookshop.webapi.client.controller.*;
 import com.goganesh.bookshop.webapi.client.converter.ChangeBookStatusDtoDeserializer;
 import com.goganesh.bookshop.webapi.client.mapper.*;
-import com.goganesh.bookshop.webapi.client.service.AuthorRestService;
-import com.goganesh.bookshop.webapi.client.service.GenreRestService;
-import com.goganesh.bookshop.webapi.client.service.impl.AuthorRestServiceImpl;
-import com.goganesh.bookshop.webapi.client.service.impl.BalanceTransactionRestServiceImpl;
-import com.goganesh.bookshop.webapi.client.service.impl.BookRestServiceImpl;
-import com.goganesh.bookshop.webapi.client.service.BalanceTransactionRestService;
-import com.goganesh.bookshop.webapi.client.service.BookRestService;
-import com.goganesh.bookshop.webapi.client.service.impl.GenreRestServiceImpl;
+import com.goganesh.bookshop.webapi.client.service.*;
+import com.goganesh.bookshop.webapi.client.service.impl.*;
 import com.goganesh.security.configuration.SecurityConfiguration;
 import com.goganesh.security.configuration.SecurityServiceConfiguration;
 import com.goganesh.security.service.UserRegisterService;
@@ -52,6 +46,12 @@ public class WebApiClientConfiguration {
     }
 
     @Bean
+    public UserRestService userRestService(UserReadRepository userReadRepository,
+                                           UserWriteRepository userWriteRepository) {
+        return new UserRestServiceImpl(userReadRepository, userWriteRepository);
+    }
+
+    @Bean
     public BookMapper bookMapper(BookRatingService bookRatingService) {
         BookMapper bookMapper = new BookMapperImpl();
         bookMapper.setBookRatingService(bookRatingService);
@@ -79,6 +79,11 @@ public class WebApiClientConfiguration {
     @Bean
     public BookApiMapper bookApiMapper() {
         return new BookApiMapperImpl();
+    }
+
+    @Bean
+    public UserApiMapper userApiMapper() {
+        return new UserApiMapperImpl();
     }
 
     @Bean
@@ -144,17 +149,16 @@ public class WebApiClientConfiguration {
     }
 
     @Bean
-    public FileUploadController adminController(BookWriteRepository bookWriteRepository,
+    public FileUploadController fileUploadController(BookWriteRepository bookWriteRepository,
                                                 BookReadRepository bookReadRepository,
-                                                AuthorReadRepository authorReadRepository,
-                                                AuthorWriteRepository authorWriteRepository,
-                                                AuthorApiMapper authorApiMapper,
-                                                BookApiMapper bookApiMapper,
                                                 ImageService imageService) {
-        return new FileUploadController(
-                bookWriteRepository,
-                bookReadRepository,
-                imageService);
+        return new FileUploadController(bookWriteRepository, bookReadRepository, imageService);
+    }
+
+    @Bean
+    public UserController userController(UserRestService userRestService,
+                                         UserApiMapper userApiMapper) {
+        return new UserController(userRestService, userApiMapper);
     }
 
     @Bean

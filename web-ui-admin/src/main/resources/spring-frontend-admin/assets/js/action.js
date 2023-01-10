@@ -12,7 +12,7 @@ function deleteEntity(id, type){
         contentType: 'application/json',
 
         success: function(data, status, xhr){
-            window.location.replace("/admin/genres");
+            window.location.replace("/admin/" + type);
         }
     })
 }
@@ -56,6 +56,20 @@ function fillBook(){
         $('#pub-date-input').val(data.pubDate);
         $('#price-input').val(data.price);
         $('#discount-input').val(data.discount);
+    })
+}
+
+function fillUser(){
+    let url = window.location.pathname;
+    let pathArray = url.split("/");
+    let id = pathArray[3];
+
+    $.get(generatePath("users/" + id)).done(function (data) {
+        $('#id-input').attr('value', data.id);
+        $('#hash-input').val(data.hash);
+        $('#name-input').val(data.name);
+        $('#balance-input').val(data.balance);
+        $('#role-input').val(data.role);
     })
 }
 
@@ -129,7 +143,7 @@ function saveBook(){
     obj.price = $("#price-input").val();
     obj.discount = $("#discount-input").val();
 
-    if(obj.name == '' || obj.slug == ''){
+    if(obj.title == '' || obj.slug == ''){
         alert('Не заполнены обязательные атрибуты');
         return;
     }
@@ -143,6 +157,32 @@ function saveBook(){
 
         success: function(data, status, xhr){
             window.location.replace("/admin/books");
+        }
+    })
+}
+
+function saveUser(){
+    let obj = new Object();
+    obj.id = $("#id-input").attr("value");
+    obj.hash = $("#hash-input").val();
+    obj.name = $("#name-input").val();
+    obj.balance = $("#balance-input").val();
+    obj.role = $("#role-input").val();
+
+    if(obj.name == '' || obj.hash == '' || obj.role == ''){
+        alert('Не заполнены обязательные атрибуты');
+        return;
+    }
+
+    let json = JSON.stringify(obj);
+    $.ajax({
+        url: "http://localhost:8085/api/v1/users",
+        type: "POST",
+        data: json,
+        contentType: 'application/json',
+
+        success: function(data, status, xhr){
+            window.location.replace("/admin/users");
         }
     })
 }

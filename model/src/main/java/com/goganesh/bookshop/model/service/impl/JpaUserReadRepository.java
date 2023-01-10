@@ -4,6 +4,8 @@ import com.goganesh.bookshop.model.domain.User;
 import com.goganesh.bookshop.model.repository.JpaUserRepository;
 import com.goganesh.bookshop.model.service.UserReadRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +14,16 @@ import java.util.Optional;
 public class JpaUserReadRepository implements UserReadRepository {
 
     private final JpaUserRepository jpaUserRepository;
+
+    @Override
+    public Optional<User> findById(Integer id) {
+        return jpaUserRepository.findById(id);
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return jpaUserRepository.findAll(pageable);
+    }
 
     @Override
     public Optional<User> findByEmail(String email) {

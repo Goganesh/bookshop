@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/fragments/common_head_fragment.html :: head(title='Пользователи', description='Пользователи')}">
+</head>
+<body class="Site">
+<header class="Header"
+        th:replace="~{admin/fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
+
+<div class="container-sm">
+
+    <!--Заголовок-->
+    <h4>Пользователи</h4>
+
+    <button id="delete-button" type="button" class="btn btn-primary">Удалить</button>
+    <button id="update-button" type="button" class="btn btn-primary">Редактировать</button>
+
+    <table id="example" class="table table-striped" width="100%" cellspacing="0">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Хэш</th>
+            <th>Время регистрации</th>
+            <th>Баланс</th>
+            <th>Имя</th>
+            <th>Активный</th>
+            <th>Роль</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
+<footer></footer>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/assets/js/action.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable( {
+            "ordering": false, // for disable order column
+            "paging": false, // for show paging
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server sid
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "draw": "1",
+                "url":"http://localhost:8085/api/v1/users",
+                "type": "GET",
+                "dataSrc": function ( json ) {
+                    return json.content;
+                },
+            },
+            "columns": [
+                { "data": 'id' },
+                { "data": 'hash' },
+                { "data": 'regTime' },
+                { "data": 'balance' },
+                { "data": 'name' },
+                { "data": 'enabled' },
+                { "data": 'role' }
+            ]
+        } );
+
+        var table = $('#example').DataTable();
+
+        $('#example tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        } );
+
+        $('#update-button').click( function () {
+            var ids = $.map(table.row('.selected').data(), function (item) {
+                return item
+            });
+            window.location.href = (window.location.pathname + "/" + ids[0]);
+        } );
+
+        $('#delete-button').click( function () {
+            var ids = $.map(table.row('.selected').data(), function (item) {
+                return item
+            });
+
+            deleteEntity(ids[0], "users");
+        } );
+
+    } );
+</script>
+</body>
+</html>
