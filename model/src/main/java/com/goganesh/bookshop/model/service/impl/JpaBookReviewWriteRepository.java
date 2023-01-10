@@ -11,7 +11,12 @@ public class JpaBookReviewWriteRepository implements BookReviewWriteRepository {
     private final JpaBookReviewRepository jpaBookReviewRepository;
 
     @Override
-    public void save(BookReview bookReview) {
-        jpaBookReviewRepository.save(bookReview);
+    public BookReview save(BookReview bookReview) {
+        return jpaBookReviewRepository.save(bookReview);
+    }
+
+    @Override
+    public void delete(BookReview bookReview) {
+        jpaBookReviewRepository.delete(bookReview);
     }
 }

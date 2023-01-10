@@ -66,4 +66,9 @@ public class WebUiAdminConfiguration implements WebMvcConfigurer {
     public UserAdminPageController userAdminPageController() {
         return new UserAdminPageController();
     }
+
+    @Bean
+    public ReviewAdminPageController reviewAdminPageController() {
+        return new ReviewAdminPageController();
+    }
 }

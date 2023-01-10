@@ -4365,6 +4365,7 @@ insert into book2tag (id, book_id, tag_id) values (998, 998, 1);
 insert into book2tag (id, book_id, tag_id) values (999, 999, 3);
 insert into book2tag (id, book_id, tag_id) values (1000, 1000, 3);
 
+insert into book_review(id, book_id, user_id, time, text) values(1, 1, 1, '2023-01-01', 'very good book');
 --insert into book_file(id, hash, path, type_id, book_id) values (1, 'sdsdfafsd', '/book.pdf', 1, 1);
 --insert into book_file(id, hash, path, type_id, book_id) values (2, 'sdsdfaasd', 'erer', 2, 1);
 --insert into book_file(id, hash, path, type_id, book_id) values (3, 'sdsdfadff', 'erer', 3, 1);

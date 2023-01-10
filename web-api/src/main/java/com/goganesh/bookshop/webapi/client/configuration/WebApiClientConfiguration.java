@@ -52,6 +52,12 @@ public class WebApiClientConfiguration {
     }
 
     @Bean
+    public ReviewRestService reviewRestService(BookReviewWriteRepository bookReviewWriteRepository,
+                                               BookReviewReadRepository bookReviewReadRepository) {
+        return new ReviewRestServiceImpl(bookReviewWriteRepository, bookReviewReadRepository);
+    }
+
+    @Bean
     public BookMapper bookMapper(BookRatingService bookRatingService) {
         BookMapper bookMapper = new BookMapperImpl();
         bookMapper.setBookRatingService(bookRatingService);
@@ -84,6 +90,11 @@ public class WebApiClientConfiguration {
     @Bean
     public UserApiMapper userApiMapper() {
         return new UserApiMapperImpl();
+    }
+
+    @Bean
+    public ReviewApiMapper reviewApiMapper() {
+        return new ReviewApiMapperImpl();
     }
 
     @Bean
@@ -131,14 +142,14 @@ public class WebApiClientConfiguration {
     }
 
     @Bean
-    public ReviewController reviewController(BookReviewWriteRepository bookReviewWriteRepository,
-                                             BookReviewReadRepository bookReviewReadRepository,
-                                             BookReviewLikeReadRepository bookReviewLikeReadRepository,
+    public ReviewController reviewController(BookReviewLikeReadRepository bookReviewLikeReadRepository,
                                              BookReviewLikeWriteRepository bookReviewLikeWriteRepository,
                                              BookReadRepository bookReadRepository,
-                                             UserRegisterService userRegisterService) {
-        return new ReviewController(bookReviewWriteRepository, bookReviewReadRepository, bookReviewLikeReadRepository,
-                bookReviewLikeWriteRepository, bookReadRepository, userRegisterService);
+                                             UserRegisterService userRegisterService,
+                                             ReviewRestService reviewRestService,
+                                             ReviewApiMapper reviewApiMapper) {
+        return new ReviewController(bookReviewLikeReadRepository, bookReviewLikeWriteRepository, bookReadRepository,
+                userRegisterService, reviewRestService, reviewApiMapper);
     }
 
     @Bean

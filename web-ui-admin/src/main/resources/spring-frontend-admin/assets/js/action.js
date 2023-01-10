@@ -83,6 +83,27 @@ function fillBookImage(){
     })
 }
 
+function fillReview(){
+    let url = window.location.pathname;
+    let pathArray = url.split("/");
+    let id = pathArray[3];
+
+    $.get(generatePath("reviews/" + id)).done(function (data) {
+        $('#id-input').attr('value', data.id);
+        $('#text-input').val(data.text);
+    })
+}
+
+function fillBookImage(){
+    let url = window.location.pathname;
+    let pathArray = url.split("/");
+    let id = pathArray[3];
+
+    $.get(generatePath("books/" + id)).done(function (data) {
+        $('#book-image').attr('src', data.image);
+    })
+}
+
 function saveGenre(){
     let obj = new Object();
     obj.id = $("#id-input").attr("value");
@@ -183,6 +204,29 @@ function saveUser(){
 
         success: function(data, status, xhr){
             window.location.replace("/admin/users");
+        }
+    })
+}
+
+function saveReview(){
+    let obj = new Object();
+    obj.id = $("#id-input").attr("value");
+    obj.text = $("#text-input").val();
+
+    if(obj.text == ''){
+        alert('Не заполнены обязательные атрибуты');
+        return;
+    }
+
+    let json = JSON.stringify(obj);
+    $.ajax({
+        url: "http://localhost:8085/api/v1/reviews",
+        type: "POST",
+        data: json,
+        contentType: 'application/json',
+
+        success: function(data, status, xhr){
+            window.location.replace("/admin/reviews");
         }
     })
 }

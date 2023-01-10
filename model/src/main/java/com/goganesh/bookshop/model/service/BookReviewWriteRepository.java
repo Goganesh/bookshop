@@ -4,5 +4,7 @@ import com.goganesh.bookshop.model.domain.BookReview;
 
 public interface BookReviewWriteRepository {
 
-    void save(BookReview bookReview);
+    BookReview save(BookReview bookReview);
+
+    void delete(BookReview bookReview);
 }

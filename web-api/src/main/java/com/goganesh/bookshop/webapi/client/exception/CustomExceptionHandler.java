@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {NoJwtTokenException.class, NoSuchBookActionException.class, NoSuchBookException.class,
-            NoSuchBookReviewException.class, NoSuchAuthorException.class, NoSuchGenreException.class})
+            NoSuchReviewException.class, NoSuchAuthorException.class, NoSuchGenreException.class})
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
 
         ResponseDto cardActionResponse = ResponseDto.builder()
