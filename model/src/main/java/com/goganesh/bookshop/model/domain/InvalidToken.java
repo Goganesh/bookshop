@@ -11,11 +11,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "invalid_token")
-public class InvalidToken {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class InvalidToken extends BaseEntity {
 
     private String token;
 }

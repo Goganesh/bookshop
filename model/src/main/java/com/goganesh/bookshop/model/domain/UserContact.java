@@ -12,10 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "user_contact")
-public class UserContact {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class UserContact extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")

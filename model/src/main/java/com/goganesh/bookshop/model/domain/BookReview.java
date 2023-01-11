@@ -7,18 +7,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "book_review")
-public class BookReview {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class BookReview extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
@@ -35,4 +30,13 @@ public class BookReview {
     @ToString.Exclude
     @OneToMany(mappedBy = "bookReview", fetch = FetchType.LAZY)
     private List<BookReviewLike> bookReviewLikes = new ArrayList<>();
+
+    @Builder
+    public BookReview(Integer id, Book book, User user, LocalDateTime time, String text, List<BookReviewLike> bookReviewLikes) {
+        this.book = book;
+        this.user = user;
+        this.time = time;
+        this.text = text;
+        this.bookReviewLikes = bookReviewLikes;
+    }
 }

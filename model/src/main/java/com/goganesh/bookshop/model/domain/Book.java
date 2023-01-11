@@ -7,18 +7,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "book")
 @Entity
-public class Book {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Book extends BaseEntity {
 
     @Column(name = "pub_date")
     private LocalDate pubDate;
@@ -43,4 +38,19 @@ public class Book {
     @ToString.Exclude
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<Book2Author> book2Authors = new ArrayList<>();
+
+    @Builder
+    public Book(Integer id, LocalDate pubDate, boolean isBestseller, String slug, String title, String image, String description, int price, double discount, double popularity, List<Book2Author> book2Authors) {
+        super.setId(id);
+        this.pubDate = pubDate;
+        this.isBestseller = isBestseller;
+        this.slug = slug;
+        this.title = title;
+        this.image = image;
+        this.description = description;
+        this.price = price;
+        this.discount = discount;
+        this.popularity = popularity;
+        this.book2Authors = book2Authors;
+    }
 }

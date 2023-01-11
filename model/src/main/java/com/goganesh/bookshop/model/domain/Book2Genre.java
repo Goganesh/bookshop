@@ -11,11 +11,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "book2genre")
-public class Book2Genre {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Book2Genre extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "book_id")

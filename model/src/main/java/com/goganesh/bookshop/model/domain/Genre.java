@@ -4,18 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "genre")
-public class Genre {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Genre extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
@@ -24,4 +19,12 @@ public class Genre {
     private String slug;
 
     private String name;
+
+    @Builder
+    public Genre(Integer id, Genre parent, String slug, String name) {
+        super.setId(id);
+        this.parent = parent;
+        this.slug = slug;
+        this.name = name;
+    }
 }

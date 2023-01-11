@@ -12,11 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "message")
-public class Message {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Message extends BaseEntity {
 
     private LocalDateTime time;
 

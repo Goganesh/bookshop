@@ -4,18 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Table(name = "author")
 @Entity
-public class Author {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Author extends BaseEntity {
 
     private String photo;
 
@@ -25,4 +20,12 @@ public class Author {
 
     private String description;
 
+    @Builder
+    public Author(Integer id, String photo, String slug, String name, String description) {
+        super.setId(id);
+        this.photo = photo;
+        this.slug = slug;
+        this.name = name;
+        this.description = description;
+    }
 }

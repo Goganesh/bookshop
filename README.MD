@@ -1,6 +1,7 @@
 sudo docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --publish 5432:5432 -d postgres
 
 35.common entity id
+user entity move //todo maybe remove to service layer
 34.soft delete  + field is_active
 32.audit fields created_at, created_by, updated_at, updated_by
 

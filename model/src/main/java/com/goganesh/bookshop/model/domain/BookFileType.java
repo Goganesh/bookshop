@@ -11,11 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "book_file_type")
-public class BookFileType {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class BookFileType extends BaseEntity {
 
     private String name;
 

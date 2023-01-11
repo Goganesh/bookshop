@@ -12,11 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Table(name = "activity")
 @Entity
-public class Activity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Activity extends BaseEntity {
 
     private String activity;
 

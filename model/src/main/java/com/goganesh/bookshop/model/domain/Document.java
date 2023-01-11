@@ -11,11 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "document")
-public class Document {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Document extends BaseEntity {
 
     @Column(name = "sort_index")
     private int sortIndex;

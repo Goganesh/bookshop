@@ -11,11 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "file_download")
-public class FileDownload {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class FileDownload extends BaseEntity {
 
     @Column(name = "user_id")
     private int userId;

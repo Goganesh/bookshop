@@ -12,11 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "book_rating")
-public class BookRating {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class BookRating extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "book_id")

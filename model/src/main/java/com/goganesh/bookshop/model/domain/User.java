@@ -8,18 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
 @Entity
 @Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class User extends BaseEntity {
 
     @Column(name = "reg_time")
     private LocalDateTime regTime;
@@ -36,6 +31,18 @@ public class User {
     @ToString.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserContact> contacts = new ArrayList<>();
+
+    @Builder
+    public User(Integer id, LocalDateTime regTime, String hash, int balance, String name, boolean isEnabled, String role, List<UserContact> contacts) {
+        super.setId(id);
+        this.regTime = regTime;
+        this.hash = hash;
+        this.balance = balance;
+        this.name = name;
+        this.isEnabled = isEnabled;
+        this.role = role;
+        this.contacts = contacts;
+    }
 
     //todo maybe remove to service layer
     public String getEmail() {

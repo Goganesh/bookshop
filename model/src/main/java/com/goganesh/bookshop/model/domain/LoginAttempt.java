@@ -12,10 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "login_attempt")
-public class LoginAttempt {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class LoginAttempt extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -11,11 +11,7 @@ import javax.persistence.*;
 @Setter
 @Table(name = "book_file")
 @Entity
-public class BookFile {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class BookFile extends BaseEntity {
 
     private String hash;
 
