@@ -15,6 +15,16 @@ public class JpaUserContactReadRepository implements UserContactReadRepository {
     private final JpaUserContactRepository jpaUserContactRepository;
 
     @Override
+    public Optional<UserContact> getApprovedEmail(User user) {
+        return jpaUserContactRepository.findByContactTypeAndApprovedAndUser(UserContact.ContactType.EMAIL, true, user);
+    }
+
+    @Override
+    public Optional<UserContact> getApprovedPhone(User user) {
+        return jpaUserContactRepository.findByContactTypeAndApprovedAndUser(UserContact.ContactType.PHONE, true, user);
+    }
+
+    @Override
     public Optional<UserContact> getApprovedContact(String contact, UserContact.ContactType contactType) {
         return jpaUserContactRepository.findByContactAndContactTypeAndApproved(contact, contactType, true);
     }
@@ -27,16 +37,6 @@ public class JpaUserContactReadRepository implements UserContactReadRepository {
     @Override
     public List<UserContact> getApprovedContacts(User user) {
         return jpaUserContactRepository.findByUserAndApproved(user, true);
-    }
-
-    @Override
-    public Optional<UserContact> findContact(User user, String contact, UserContact.ContactType contactType) {
-        return jpaUserContactRepository.findByUserAndContactAndContactType(user, contact, contactType);
-    }
-
-    @Override
-    public List<UserContact> findContacts(User user) {
-        return jpaUserContactRepository.findByUser(user);
     }
 
     @Override

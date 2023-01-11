@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,23 +41,5 @@ public class User extends BaseEntity {
         this.isEnabled = isEnabled;
         this.role = role;
         this.contacts = contacts;
-    }
-
-    //todo maybe remove to service layer
-    public String getEmail() {
-        return Optional.ofNullable(contacts.stream()
-                .filter(contact -> contact.getContactType() == UserContact.ContactType.EMAIL && contact.isApproved())
-                .findFirst()
-                .get()
-                .getContact()).orElse("some mail"); //todo
-    }
-
-    //todo maybe remove to service layer
-    public String getPhone() {
-        return Optional.ofNullable(contacts.stream()
-                .filter(contact -> contact.getContactType() == UserContact.ContactType.PHONE && contact.isApproved())
-                .findFirst()
-                .get()
-                .getContact()).orElse("some phone"); //todo
     }
 }

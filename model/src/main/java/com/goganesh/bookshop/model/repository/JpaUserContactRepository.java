@@ -16,7 +16,8 @@ public interface JpaUserContactRepository extends JpaRepository<UserContact, Int
 
     Optional<UserContact> findByContactAndContactTypeAndApprovedAndUser(String contact, UserContact.ContactType contactType, boolean approved, User user);
 
+    Optional<UserContact> findByContactTypeAndApprovedAndUser(UserContact.ContactType contactType, boolean approved, User user);
+
     List<UserContact> findByUserAndApproved(User user, boolean approved);
 
-    Optional<UserContact> findByUserAndContactAndContactType(User user, String contact, UserContact.ContactType contactType);
 }

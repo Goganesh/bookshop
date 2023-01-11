@@ -26,13 +26,13 @@ public class OtpConfiguration {
         return new CodeGeneratorServiceImpl(symbols);
     }
 
-    @Bean
+    @Bean("mailNoOpService")
     @ConditionalOnProperty(name = "com.goganesh.bookshop.mail-service.provider", havingValue = "disable")
     public MailService mailService() {
         return new MailNoOpServiceImpl();
     }
 
-    @Bean
+    @Bean("javaMailSender")
     @ConditionalOnProperty(name = "com.goganesh.bookshop.mail-service.provider", havingValue = "enable")
     public MailService mailService(@Value("${com.goganesh.bookshop.mail-service.email") String email,
                                    @Value("${com.goganesh.bookshop.mail-service.password") String password) {

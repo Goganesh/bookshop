@@ -2,6 +2,7 @@ package com.goganesh.bookshop.webui.client.mapper;
 
 import com.goganesh.bookshop.model.domain.User;
 import com.goganesh.bookshop.model.service.Book2UserReadRepository;
+import com.goganesh.bookshop.model.service.UserContactReadRepository;
 import com.goganesh.bookshop.webui.client.dto.UserPageDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,14 +18,17 @@ public abstract class UserMapper {
     @Autowired
     protected Book2UserReadRepository book2UserReadRepository;
 
+    @Autowired
+    protected UserContactReadRepository userContactReadRepository;
+
     @Mapping(target = "name",
             source = "user.name"
     )
     @Mapping(target = "email",
-            expression = "java( user.getRole().equals(\"TEMP_USER\") ? \"\" : user.getEmail() )"
+            expression = "java( user.getRole().equals(\"TEMP_USER\") ? \"\" : userContactReadRepository.getApprovedEmail(user).get().getContact() )"
     )
     @Mapping(target = "phone",
-            expression = "java( user.getRole().equals(\"TEMP_USER\") ? \"\" : user.getPhone() )"
+            expression = "java( user.getRole().equals(\"TEMP_USER\") ? \"\" : userContactReadRepository.getApprovedPhone(user).get().getContact() )"
     )
     @Mapping(target = "balance",
             source = "user.balance"
