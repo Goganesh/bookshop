@@ -48,19 +48,19 @@ public class AuthorController {
     @PostMapping
     public AuthorApiResponseDto postAuthor(@Validated @RequestBody AuthorApiRequestDto authorApiRequestDto) {
         Author existedAuthor = null;
-        
+
         if (authorApiRequestDto.getId() == -1 || Objects.isNull(authorApiRequestDto.getId())) {
             authorApiRequestDto.setId(null);
         } else {
             existedAuthor = authorRestService.findById(authorApiRequestDto.getId())
                     .orElseThrow(() -> new NoSuchAuthorException("No such author with id " + authorApiRequestDto.getId()));
         }
-        
+
         Author author = authorApiMapper.toModel(authorApiRequestDto);
         if (Objects.nonNull(existedAuthor)) {
             author.setPhoto(existedAuthor.getPhoto());
         }
-        
+
         author = authorRestService.save(author);
 
         return authorApiMapper.toDto(author);

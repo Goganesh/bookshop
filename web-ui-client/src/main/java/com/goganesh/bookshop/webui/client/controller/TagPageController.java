@@ -33,19 +33,19 @@ public class TagPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/tags/{slug}")
     public String authorsPage(@PathVariable(value = "slug", required = true) String slug,
-                              Model model){
+                              Model model) {
         Tag tag = tagReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchTagPageException("No such tag with slag - " + slug));
         model.addAttribute("tagPageDto", tagMapper.toDto(tag));
         model.addAttribute("tagBooks", new BooksPageDto(bookRestService.getPageOfTagBooks(tag, 0, 20).getContent()

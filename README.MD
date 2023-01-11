@@ -1,34 +1,28 @@
 sudo docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --publish 5432:5432 -d postgres
 
-делаю Диплом
-3)локализация
+14.stylequide
+genre - find clildrens replace to service from model
 4)readme.md
+13.delete ususes files
+13.add readme with project description
+22.remove unused import, classes, methods
+34.soft delete  + field is_active
+32.audit fields created_at, created_by, updated_at, updated_by
+35.common entity id
+
+делаю Диплом
 5)download book function
 13.delete ususes imports
-14.stylequide 
 2 add methods how to test module
-удалить admincontroller
-
-
-Доделки
-todo:
-genre - find clildrens replace to service from model
-common
 add slug validation or generator
 how to security work -- describe logic
 8.add test for data layer
 9.add test for business layer
 11.todo in code
-13.delete ususes files
-13.add readme with project description
 14.full localization
 16.buy book function
 17.rating book function
-22.remove unused import, classes, methods
 26.add module notification
-34.soft delete  + field is_active
-32.audit fields created_at, created_by, updated_at, updated_by
-35.common entity id
 
 monitor-logging
 1.secure actuator //add monitor user to system and extra config

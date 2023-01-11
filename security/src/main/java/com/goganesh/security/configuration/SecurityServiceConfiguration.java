@@ -23,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityServiceConfiguration {
 
     @Bean
-    public CustomLogoutHandler customLogoutHandler(@Value("${com.goganesh.bookshop.auth.token.name}")String authTokenName,
+    public CustomLogoutHandler customLogoutHandler(@Value("${com.goganesh.bookshop.auth.token.name}") String authTokenName,
                                                    InvalidTokenWriteRepository invalidTokenWriteRepository,
                                                    CookieService cookieService) {
         return new CustomLogoutHandler(authTokenName, invalidTokenWriteRepository, cookieService);
@@ -31,16 +31,15 @@ public class SecurityServiceConfiguration {
 
     @Bean
     public CustomOAuth2UserService customOAuth2UserService(UserReadRepository userReadRepository,
-                                                     UserWriteRepository userWriteRepository,
-                                                     UserContactWriteRepository userContactWriteRepository) {
+                                                           UserWriteRepository userWriteRepository,
+                                                           UserContactWriteRepository userContactWriteRepository) {
         return new CustomOAuth2UserService(userReadRepository, userWriteRepository, userContactWriteRepository);
     }
 
 
-
     @Bean
-    public LoginAttemptService loginAttemptService(@Value("${com.goganesh.bookshop.login-attempt.max-attempt}")int maxAttempt,
-                                                   @Value("${com.goganesh.bookshop.login-attempt.block-time-minutes}")int blockTimeMinutes,
+    public LoginAttemptService loginAttemptService(@Value("${com.goganesh.bookshop.login-attempt.max-attempt}") int maxAttempt,
+                                                   @Value("${com.goganesh.bookshop.login-attempt.block-time-minutes}") int blockTimeMinutes,
                                                    LoginAttemptReadRepository loginAttemptReadRepository,
                                                    LoginAttemptWriteRepository loginAttemptWriteRepository) {
         return new LoginAttemptServiceImpl(maxAttempt, blockTimeMinutes, loginAttemptReadRepository, loginAttemptWriteRepository);
@@ -102,7 +101,7 @@ public class SecurityServiceConfiguration {
     }
 
     @Bean
-    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler(@Value("${com.goganesh.bookshop.auth.token.name}")String authTokenName,
+    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler(@Value("${com.goganesh.bookshop.auth.token.name}") String authTokenName,
                                                                                  JwtService jwtService,
                                                                                  CookieService cookieService,
                                                                                  @Value("${com.goganesh.bookshop.cookie.lifetime-day}") int cookieLifetimeDay,
@@ -117,7 +116,7 @@ public class SecurityServiceConfiguration {
     }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -132,8 +131,8 @@ public class SecurityServiceConfiguration {
                                            LoginService loginService,
                                            OtpService otpService,
                                            CookieService cookieService,
-                                           @Value("${com.goganesh.bookshop.auth.token.name}")String authTokenName,
-                                           @Value("${com.goganesh.bookshop.cookie.lifetime-day}")int cookieLifetimeDay) {
+                                           @Value("${com.goganesh.bookshop.auth.token.name}") String authTokenName,
+                                           @Value("${com.goganesh.bookshop.cookie.lifetime-day}") int cookieLifetimeDay) {
         return LoginController.builder()
                 .userContactReadRepository(userContactReadRepository)
                 .phoneNumberService(phoneNumberService)
@@ -148,8 +147,8 @@ public class SecurityServiceConfiguration {
     @Bean
     public RegisterUserController registerUserController(UserRegisterService userRegisterService,
                                                          CookieService cookieService,
-                                                         @Value("${com.goganesh.bookshop.auth.token.name}")String authTokenName,
-                                                         @Value("${com.goganesh.bookshop.cookie.lifetime-day}")int cookieLifetimeDay) {
+                                                         @Value("${com.goganesh.bookshop.auth.token.name}") String authTokenName,
+                                                         @Value("${com.goganesh.bookshop.cookie.lifetime-day}") int cookieLifetimeDay) {
         return RegisterUserController.builder()
                 .userRegisterService(userRegisterService)
                 .authTokenName(authTokenName)

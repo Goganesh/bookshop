@@ -26,26 +26,26 @@ public class GenresPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @ModelAttribute("genres")
-    public List<GenrePageDto> genresList(){
-         return genreReadRepository.findRootGenres()
+    public List<GenrePageDto> genresList() {
+        return genreReadRepository.findRootGenres()
                 .stream()
                 .map(genreMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/genres")
-    public String genresPage(){
+    public String genresPage() {
         return "genres/index";
     }
 }

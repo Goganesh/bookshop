@@ -27,18 +27,18 @@ public class SearchPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("searchResults")
-    public BooksPageDto searchResults(){
+    public BooksPageDto searchResults() {
         return new BooksPageDto();
     }
 
-    @GetMapping(value = { "/search", "/search/{searchWord}"})
-    public String getSearchResults(@PathVariable(value = "searchWord", required = false)String searchWord,
+    @GetMapping(value = {"/search", "/search/{searchWord}"})
+    public String getSearchResults(@PathVariable(value = "searchWord", required = false) String searchWord,
                                    Model model) {
         model.addAttribute("searchWordDto", new SearchWordDto(searchWord));
         model.addAttribute("searchResults", new BooksPageDto(bookRestService.getPageOfSearchResultBooks(searchWord, 0, 20).getContent()

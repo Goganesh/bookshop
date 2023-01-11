@@ -48,7 +48,7 @@ public class UserController {
     @PostMapping
     public UserApiResponseDto postUser(@Validated @RequestBody UserApiRequestDto userApiRequestDto) {
         User existedUser = null;
-        
+
         if (userApiRequestDto.getId() == -1 || Objects.isNull(userApiRequestDto.getId())) {
             userApiRequestDto.setId(null);
         } else {

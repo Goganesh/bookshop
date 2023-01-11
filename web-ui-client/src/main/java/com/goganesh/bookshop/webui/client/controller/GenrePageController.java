@@ -33,22 +33,22 @@ public class GenrePageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/genres/{slug}")
     public String genrePage(@PathVariable(value = "slug", required = true) String slug,
-                             Model model){
+                            Model model) {
         Genre genre = genreReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchGenrePageException("No such genre with slug " + slug));
         model.addAttribute("genrePageDto", genreMapper.toDto(genre));
-        model.addAttribute("genreBooks", new BooksPageDto(bookRestService.getPageOfGenreBooks(genre,0, 20).getContent()
+        model.addAttribute("genreBooks", new BooksPageDto(bookRestService.getPageOfGenreBooks(genre, 0, 20).getContent()
                 .stream()
                 .map(bookMapper::toDto)
                 .collect(Collectors.toList())));

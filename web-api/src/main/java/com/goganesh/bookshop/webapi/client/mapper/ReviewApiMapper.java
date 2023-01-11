@@ -9,21 +9,21 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface ReviewApiMapper {
 
-    @Mapping(target="id",
+    @Mapping(target = "id",
             source = "bookReview.id")
-    @Mapping(target="bookId",
+    @Mapping(target = "bookId",
             source = "bookReview.book.id")
-    @Mapping(target="userId",
+    @Mapping(target = "userId",
             source = "bookReview.user.id")
-    @Mapping(target="time",
+    @Mapping(target = "time",
             source = "bookReview.time")
-    @Mapping(target="text",
+    @Mapping(target = "text",
             source = "bookReview.text")
     ReviewApiResponseDto toDto(BookReview bookReview);
 
-    @Mapping(target="id",
+    @Mapping(target = "id",
             source = "reviewApiRequestDto.id")
-    @Mapping(target="text",
+    @Mapping(target = "text",
             source = "reviewApiRequestDto.text")
     BookReview toModel(ReviewApiRequestDto reviewApiRequestDto);
 }

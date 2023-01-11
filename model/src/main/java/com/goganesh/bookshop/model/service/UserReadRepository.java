@@ -12,10 +12,12 @@ public interface UserReadRepository {
     Optional<User> findById(Integer id);
 
     Optional<User> findByEmail(String email);
+
     Optional<User> findByPhone(String phone);
 
     Optional<User> findByHash(String hash);
 
     List<User> findAll();
+
     Page<User> findAll(Pageable pageable);
 }

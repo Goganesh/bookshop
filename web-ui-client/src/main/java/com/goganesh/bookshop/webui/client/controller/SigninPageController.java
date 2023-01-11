@@ -19,18 +19,18 @@ public class SigninPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/signin")
-    public String signinPage(){
+    public String signinPage() {
         return "signin";
     }
 }

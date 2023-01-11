@@ -11,7 +11,7 @@ public interface CookieService {
 
     Optional<Cookie> getCookie(HttpServletRequest request, String name);
 
-    void addCookie (HttpServletResponse response, String name, String value, Duration maxAge);
+    void addCookie(HttpServletResponse response, String name, String value, Duration maxAge);
 
     void deleteCookie(HttpServletResponse response, String name);
 

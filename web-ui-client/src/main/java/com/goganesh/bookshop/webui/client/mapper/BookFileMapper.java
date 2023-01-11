@@ -8,11 +8,11 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface BookFileMapper {
 
-    @Mapping(target="hash",
+    @Mapping(target = "hash",
             source = "bookFile.hash")
-    @Mapping(target="path",
+    @Mapping(target = "path",
             source = "bookFile.path")
-    @Mapping(target="type",
+    @Mapping(target = "type",
             source = "bookFile.type.name")
     BookFilePageDto toDto(BookFile bookFile);
 }

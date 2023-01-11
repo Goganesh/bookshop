@@ -32,13 +32,13 @@ public class ProfilePageController {
     }
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("balanceTransactionDtos")
-    public List<BalanceTransactionDto> balanceTransactionDtos(){
+    public List<BalanceTransactionDto> balanceTransactionDtos() {
         User user = userRegisterService.getCurrentUser();
         int offset = 0;
         int limit = 50;
@@ -51,7 +51,7 @@ public class ProfilePageController {
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 

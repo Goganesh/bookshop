@@ -54,7 +54,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 
     }
 
-    private void mergeTempUserToUser(User tempUser, User realUser){
+    private void mergeTempUserToUser(User tempUser, User realUser) {
         mergeContactData(tempUser, realUser);
         //todo business data should be another place
         mergeBook2UserData(tempUser, realUser);
@@ -99,7 +99,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
         final String phone = phoneNumberService.formatPhoneNumber(registrationForm.getPhone());
 
         User tempUser = getCurrentUser();
-        if  (userContactReadRepository.getApprovedContact(phone, UserContact.ContactType.PHONE, tempUser).isPresent() &&
+        if (userContactReadRepository.getApprovedContact(phone, UserContact.ContactType.PHONE, tempUser).isPresent() &&
                 userContactReadRepository.getApprovedContact(email, UserContact.ContactType.EMAIL, tempUser).isPresent()) {
             User realUser = new User();
             realUser.setName(registrationForm.getName());

@@ -116,7 +116,7 @@ public class ReviewController {
         byte value = (byte) bookReviewRateDto.getValue();
 
         BookReviewLike bookReviewLike = bookReviewLikeReadRepository.findByUserAndBookReview(user, bookReview).orElse(null);
-        if (Objects.isNull(bookReviewLike)){
+        if (Objects.isNull(bookReviewLike)) {
             bookReviewLike = BookReviewLike.builder()
                     .user(user)
                     .bookReview(bookReview)

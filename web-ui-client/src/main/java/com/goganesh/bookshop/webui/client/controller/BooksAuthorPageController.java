@@ -33,19 +33,19 @@ public class BooksAuthorPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/books/author/{slug}")
     public String booksAuthorPage(@PathVariable(value = "slug", required = true) String slug,
-                                  Model model){
+                                  Model model) {
         Author author = authorReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchAuthorPageException("No such authr with slug - " + slug));
         model.addAttribute("authorPageDto", authorMapper.toDto(author));
         model.addAttribute("authorBooks", new BooksPageDto(bookRestService.getPageOfAuthorBooks(author, 0, 20).getContent()

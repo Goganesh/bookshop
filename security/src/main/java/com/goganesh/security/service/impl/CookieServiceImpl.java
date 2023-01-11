@@ -34,7 +34,7 @@ public class CookieServiceImpl implements CookieService {
     }
 
     @Override
-    public void addCookie (HttpServletResponse response, String name, String value, Duration maxAge) {
+    public void addCookie(HttpServletResponse response, String name, String value, Duration maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath(PATH);
         cookie.setHttpOnly(HTTP_ONLY);
@@ -61,7 +61,7 @@ public class CookieServiceImpl implements CookieService {
     @Override
     public <T> T deserialize(Cookie cookie, Class<T> cls) {
         return cls.cast(SerializationUtils.deserialize(
-                        Base64.getUrlDecoder().decode(cookie.getValue())));
+                Base64.getUrlDecoder().decode(cookie.getValue())));
     }
 
 

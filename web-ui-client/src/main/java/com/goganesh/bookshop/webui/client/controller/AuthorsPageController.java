@@ -29,26 +29,26 @@ public class AuthorsPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("authorsMap")
-    public Map<String,List<Author>> authorsMap(){
+    public Map<String, List<Author>> authorsMap() {
         return new TreeMap(authorReadRepository.findAll()
                 .stream()
                 .map(authorMapper::toDto)
-                .collect(Collectors.groupingBy((AuthorPageDto a) -> a.getName().substring(0,1))));
+                .collect(Collectors.groupingBy((AuthorPageDto a) -> a.getName().substring(0, 1))));
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/authors")
-    public String authorsPage(){
+    public String authorsPage() {
         return "authors/index";
     }
 }

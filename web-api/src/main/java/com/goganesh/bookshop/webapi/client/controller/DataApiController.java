@@ -116,7 +116,7 @@ public class DataApiController {
     @GetMapping("/books/viewed")
     @ResponseBody
     public BooksDto getViewedUserBooks(@RequestParam("offset") Integer offset,
-                                    @RequestParam("limit") Integer limit) {
+                                       @RequestParam("limit") Integer limit) {
         User user = userRegisterService.getCurrentUser();
         return new BooksDto(bookRestService.getPageBooksPageByUserAndTypeCode(user, "VIEWED", offset, limit).getContent()
                 .stream()
@@ -146,7 +146,7 @@ public class DataApiController {
     public BooksDto getNextSearchPage(
             @RequestParam("offset") Integer offset,
             @RequestParam("limit") Integer limit,
-            @PathVariable(value = "searchWord", required = true) String searchWord){
+            @PathVariable(value = "searchWord", required = true) String searchWord) {
         return new BooksDto(bookRestService.getPageOfSearchResultBooks(searchWord, offset, limit).getContent()
                 .stream()
                 .map(bookMapper::toDto)

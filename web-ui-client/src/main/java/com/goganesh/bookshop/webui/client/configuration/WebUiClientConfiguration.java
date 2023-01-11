@@ -22,7 +22,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -44,9 +43,9 @@ public class WebUiClientConfiguration implements WebMvcConfigurer {
     private final String templateSuffix;
     private final String staticResourcePrefix;
 
-    public WebUiClientConfiguration(@Value("${com.goganesh.bookshop.webui-client.template-prefix}")String templatePrefix,
-                                    @Value("${com.goganesh.bookshop.webui-client.template-suffix}")String templateSuffix,
-                                    @Value("${com.goganesh.bookshop.webui-client.static-resources-prefix}")String staticResourcesPrefix) {
+    public WebUiClientConfiguration(@Value("${com.goganesh.bookshop.webui-client.template-prefix}") String templatePrefix,
+                                    @Value("${com.goganesh.bookshop.webui-client.template-suffix}") String templateSuffix,
+                                    @Value("${com.goganesh.bookshop.webui-client.static-resources-prefix}") String staticResourcesPrefix) {
         this.templatePrefix = templatePrefix;
         this.templateSuffix = templateSuffix;
         this.staticResourcePrefix = staticResourcesPrefix;
@@ -73,14 +72,14 @@ public class WebUiClientConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public LocaleResolver localeResolver(){
+    public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         return localeResolver;
     }
 
     @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor(){
+    public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         return localeChangeInterceptor;
@@ -417,10 +416,10 @@ public class WebUiClientConfiguration implements WebMvcConfigurer {
 
     @Bean
     public GenreMapper genreMapper(BookReadRepository bookReadRepository) {
-         GenreMapper genreMapper = new GenreMapperImpl();
-         genreMapper.setBookReadRepository(bookReadRepository);
+        GenreMapper genreMapper = new GenreMapperImpl();
+        genreMapper.setBookReadRepository(bookReadRepository);
 
-         return genreMapper;
+        return genreMapper;
     }
 
     @Bean

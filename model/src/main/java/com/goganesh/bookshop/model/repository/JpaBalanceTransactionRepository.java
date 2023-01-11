@@ -10,5 +10,6 @@ import java.util.List;
 
 public interface JpaBalanceTransactionRepository extends JpaRepository<BalanceTransaction, Integer> {
     List<BalanceTransaction> findByUser(User user);
+
     Page<BalanceTransaction> findByUser(User user, Pageable nextPage);
 }

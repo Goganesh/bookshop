@@ -25,13 +25,14 @@ public class BooksViewedPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
-        User user = userRegisterService.getCurrentUser();;
+    public UserPageDto user() {
+        User user = userRegisterService.getCurrentUser();
+        ;
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("viewedBooks")
-    public BooksPageDto bookList(){
+    public BooksPageDto bookList() {
         User user = userRegisterService.getCurrentUser();
         return new BooksPageDto(bookRestService.getPageBooksPageByUserAndTypeCode(user, "VIEWED", 0, 20).getContent()
                 .stream()
@@ -40,12 +41,12 @@ public class BooksViewedPageController {
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/viewed")
-    public String booksPopularPage(){
+    public String booksPopularPage() {
         return "viewed";
     }
 }

@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface JpaGenreRepository extends JpaRepository<Genre, Integer> {
 
     List<Genre> findByParentIsNull();
+
     Optional<Genre> findBySlug(String slug);
 }

@@ -15,23 +15,23 @@ public abstract class GenreApiMapper {
     @Autowired
     protected GenreReadRepository genreReadRepository;
 
-    @Mapping(target="id",
+    @Mapping(target = "id",
             source = "genre.id")
-    @Mapping(target="parentId",
+    @Mapping(target = "parentId",
             source = "genre.parent.id")
-    @Mapping(target="name",
+    @Mapping(target = "name",
             source = "genre.name")
-    @Mapping(target="slug",
+    @Mapping(target = "slug",
             source = "genre.slug")
     public abstract GenreApiResponseDto toDto(Genre genre);
 
-    @Mapping(target="id",
+    @Mapping(target = "id",
             source = "genreApiRequestDto.id")
-    @Mapping(target="parent",
+    @Mapping(target = "parent",
             expression = "java( genreReadRepository.findById(genreApiRequestDto.getParentId()).orElseThrow(() -> new NoSuchGenreException(\"No such genre with id \" + genreApiRequestDto.getParentId())) )")
-    @Mapping(target="name",
+    @Mapping(target = "name",
             source = "genreApiRequestDto.name")
-    @Mapping(target="slug",
+    @Mapping(target = "slug",
             source = "genreApiRequestDto.slug")
     public abstract Genre toModel(GenreApiRequestDto genreApiRequestDto);
 }

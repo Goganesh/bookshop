@@ -10,7 +10,10 @@ import java.util.Optional;
 public interface AuthorReadRepository {
 
     Optional<Author> findById(Integer id);
+
     Optional<Author> findBySlug(String slug);
+
     List<Author> findAll();
+
     Page<Author> findAll(Pageable pageable);
 }

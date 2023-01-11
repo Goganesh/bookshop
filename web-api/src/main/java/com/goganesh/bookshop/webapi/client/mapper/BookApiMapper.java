@@ -8,41 +8,41 @@ import org.mapstruct.Mapping;
 
 @Mapper
 public interface BookApiMapper {
-    @Mapping(target="id",
+    @Mapping(target = "id",
             source = "book.id")
-    @Mapping(target="pubDate",
+    @Mapping(target = "pubDate",
             source = "book.pubDate")
-    @Mapping(target="isBestseller",
+    @Mapping(target = "isBestseller",
             source = "book.bestseller")
-    @Mapping(target="slug",
+    @Mapping(target = "slug",
             source = "book.slug")
-    @Mapping(target="title",
+    @Mapping(target = "title",
             source = "book.title")
-    @Mapping(target="image",
+    @Mapping(target = "image",
             source = "book.image")
-    @Mapping(target="description",
+    @Mapping(target = "description",
             source = "book.description")
-    @Mapping(target="price",
+    @Mapping(target = "price",
             source = "book.price")
-    @Mapping(target="discount",
+    @Mapping(target = "discount",
             source = "book.discount")
-    @Mapping(target="popularity",
+    @Mapping(target = "popularity",
             source = "book.popularity")
     BookApiResponseDto toDto(Book book);
 
-    @Mapping(target="id",
+    @Mapping(target = "id",
             source = "bookApiRequestDto.id")
-    @Mapping(target="pubDate",
+    @Mapping(target = "pubDate",
             source = "bookApiRequestDto.pubDate")
-    @Mapping(target="slug",
+    @Mapping(target = "slug",
             source = "bookApiRequestDto.slug")
-    @Mapping(target="title",
+    @Mapping(target = "title",
             source = "bookApiRequestDto.title")
-    @Mapping(target="description",
+    @Mapping(target = "description",
             source = "bookApiRequestDto.description")
-    @Mapping(target="price",
+    @Mapping(target = "price",
             source = "bookApiRequestDto.price")
-    @Mapping(target="discount",
+    @Mapping(target = "discount",
             source = "bookApiRequestDto.discount")
     Book toModel(BookApiRequestDto bookApiRequestDto);
 }

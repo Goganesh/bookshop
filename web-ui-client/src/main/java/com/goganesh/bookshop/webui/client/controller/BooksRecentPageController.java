@@ -26,26 +26,26 @@ public class BooksRecentPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("recentBooks")
-    public BooksPageDto bookList(){
-        return new BooksPageDto(bookRestService.getPageOfRecentBooks(LocalDate.now().minusDays(30), LocalDate.now(),0, 20).getContent()
+    public BooksPageDto bookList() {
+        return new BooksPageDto(bookRestService.getPageOfRecentBooks(LocalDate.now().minusDays(30), LocalDate.now(), 0, 20).getContent()
                 .stream()
                 .map(bookMapper::toDto)
                 .collect(Collectors.toList()));
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/books/recent")
-    public String booksRecentPage(){
+    public String booksRecentPage() {
         return "books/recent";
     }
 }

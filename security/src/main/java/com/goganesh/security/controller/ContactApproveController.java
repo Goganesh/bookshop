@@ -54,13 +54,13 @@ public class ContactApproveController {
                     response.setResult("false");
                     logger.info(String.format("Can not send confirmation otp for approved contact - %s", userContact));
                 },
-                () ->{
+                () -> {
                     UserContact userContact = UserContact.builder()
-                        .contactType(contactType)
-                        .contact(contact)
-                        .user(userRegisterService.getCurrentUser())
-                        .approved(false)
-                        .build();
+                            .contactType(contactType)
+                            .contact(contact)
+                            .user(userRegisterService.getCurrentUser())
+                            .approved(false)
+                            .build();
 
                     userContactWriteRepository.save(userContact);
                     otpService.sendOtp(userContact);

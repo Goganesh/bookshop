@@ -41,49 +41,49 @@ public class BookRestServiceImpl implements BookRestService {
 
     @Override
     public Page<Book> getPageBooksPageByUserAndTypeCode(User user, String typeCode, Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset,limit);
+        Pageable nextPage = PageRequest.of(offset, limit);
         return bookReadRepository.findByUserAndTypeCode(user, typeCode, nextPage);
     }
 
     @Override
     public Page<Book> getPageOfTagBooks(Tag tag, Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset,limit);
+        Pageable nextPage = PageRequest.of(offset, limit);
         return bookReadRepository.findByTag(tag, nextPage);
     }
 
     @Override
     public Page<Book> getPageOfAuthorBooks(Author author, Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset,limit);
+        Pageable nextPage = PageRequest.of(offset, limit);
         return bookReadRepository.findByAuthor(author, nextPage);
     }
 
     @Override
     public Page<Book> getPageOfGenreBooks(Genre genre, Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset,limit);
+        Pageable nextPage = PageRequest.of(offset, limit);
         return bookReadRepository.findByGenre(genre, nextPage);
     }
 
     @Override
-    public Page<Book> getPageOfRecommendedBooks(Integer offset, Integer limit){
-        Pageable nextPage = PageRequest.of(offset,limit);
+    public Page<Book> getPageOfRecommendedBooks(Integer offset, Integer limit) {
+        Pageable nextPage = PageRequest.of(offset, limit);
         return bookReadRepository.findAll(nextPage);
     }
 
     @Override
     public Page<Book> getPageOfPopularBooks(Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset,limit, Sort.by("popularity").descending());
+        Pageable nextPage = PageRequest.of(offset, limit, Sort.by("popularity").descending());
         return bookReadRepository.findAll(nextPage);
     }
 
     @Override
     public Page<Book> getPageOfRecentBooks(LocalDate from, LocalDate to, Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset,limit);
+        Pageable nextPage = PageRequest.of(offset, limit);
         return bookReadRepository.findByPubDateBetween(from, to, nextPage);
     }
 
     @Override
     public Page<Book> getPageOfSearchResultBooks(String searchWord, Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset,limit);
+        Pageable nextPage = PageRequest.of(offset, limit);
         return bookReadRepository.findByTitleContaining(searchWord, nextPage);
     }
 }

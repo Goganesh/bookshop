@@ -12,7 +12,9 @@ public interface UserRegisterService {
     User getCurrentUser();
 
     User registerTempUser(String email);
+
     void blockTempUser(User tempUser, User realUser);
+
     void deleteBlockedTempUser(User tempUser);
 
     Optional<User> getUserByHash(String hash);

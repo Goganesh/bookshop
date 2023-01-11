@@ -34,7 +34,7 @@ public class User {
     private String role;
 
     @ToString.Exclude
-    @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserContact> contacts = new ArrayList<>();
 
     //todo maybe remove to service layer

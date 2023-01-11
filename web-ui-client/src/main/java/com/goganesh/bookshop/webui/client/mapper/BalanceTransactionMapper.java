@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface BalanceTransactionMapper {
 
-    @Mapping(target="description",
+    @Mapping(target = "description",
             source = "balanceTransaction.description")
     @Mapping(target = "sum",
             expression = "java( (balanceTransaction.getBook() == null ? \"+\" : \"-\") + String.format(\"%s р.\", balanceTransaction.getValue()) )")

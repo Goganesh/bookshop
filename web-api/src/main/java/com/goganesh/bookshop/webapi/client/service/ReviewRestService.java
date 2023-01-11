@@ -9,8 +9,10 @@ import java.util.Optional;
 public interface ReviewRestService {
 
     Page<BookReview> findAll(Pageable pageable);
+
     Optional<BookReview> findById(Integer id);
 
     void delete(BookReview bookReview);
+
     BookReview save(BookReview bookReview);
 }

@@ -19,7 +19,7 @@ import org.springframework.security.core.Authentication;
 public class LoginServiceImpl implements LoginService {
 
     private final UserRegisterService userRegisterService;
-    private final AuthenticationManager AuthenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PhoneNumberService phoneNumberService;
 
@@ -46,7 +46,7 @@ public class LoginServiceImpl implements LoginService {
                 throw new RuntimeException("ddf");//todo
         }
 
-        authentication = AuthenticationManager.authenticate(authentication);
+        authentication = authenticationManager.authenticate(authentication);
 
         UserDetailsImpl realUserDetails = (UserDetailsImpl) authentication.getPrincipal();
 

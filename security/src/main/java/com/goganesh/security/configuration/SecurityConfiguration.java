@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final PhoneNumberService phoneNumberService;
 
     public SecurityConfiguration(UserDetailsService userDetailsService,
-                                 @Value("${com.goganesh.bookshop.auth.token.name}")String authTokenName,
+                                 @Value("${com.goganesh.bookshop.auth.token.name}") String authTokenName,
                                  CustomLogoutHandler logoutHandler,
                                  JwtTokenAuthenticationProvider jwtTokenAuthenticationProvider,
                                  OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                  JwtService jwtService,
                                  JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler,
                                  UserRegisterService userRegisterService,
-                                 @Value("${com.goganesh.bookshop.cookie.lifetime-day}")int cookieLifetimeDay,
+                                 @Value("${com.goganesh.bookshop.cookie.lifetime-day}") int cookieLifetimeDay,
                                  CookieService cookieService,
                                  PhoneNumberService phoneNumberService
 
@@ -95,14 +95,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return LoginServiceImpl.builder()
                 .phoneNumberService(phoneNumberService)
                 .jwtService(jwtService)
-                .AuthenticationManager(authenticationManagerBean())
+                .authenticationManager(authenticationManagerBean())
                 .userRegisterService(userRegisterService)
                 .build();
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
@@ -119,27 +119,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors()
-                    .and()
+                .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .csrf()
-                    .disable();
+                .disable();
 
         http
                 .authorizeRequests()
-                    .antMatchers("/my", "/myarchive", "/profile", "/viewed").hasRole("USER")
-                    .antMatchers("/**").permitAll()
+                .antMatchers("/my", "/myarchive", "/profile", "/viewed").hasRole("USER")
+                .antMatchers("/**").permitAll()
                 .and()
-                    .formLogin()
-                        .loginPage("/signin")
-                        .failureUrl("/signin")
+                .formLogin()
+                .loginPage("/signin")
+                .failureUrl("/signin")
                 .and()
-                    .logout()
-                        .logoutUrl("/logout")
-                        .addLogoutHandler(logoutHandler)
-                        .logoutSuccessUrl("/signin")
-                        .deleteCookies(authTokenName);
+                .logout()
+                .logoutUrl("/logout")
+                .addLogoutHandler(logoutHandler)
+                .logoutSuccessUrl("/signin")
+                .deleteCookies(authTokenName);
         http
                 .addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -33,6 +33,6 @@ public class BookReview {
     private String text;
 
     @ToString.Exclude
-    @OneToMany(mappedBy="bookReview", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "bookReview", fetch = FetchType.LAZY)
     private List<BookReviewLike> bookReviewLikes = new ArrayList<>();
 }

@@ -20,7 +20,7 @@ public class Genre {
 
     //todo replace this to service
     @OneToMany
-    @JoinColumn(name= "parent_id")
+    @JoinColumn(name = "parent_id")
     @ToString.Exclude
     private List<Genre> childGenres;
 

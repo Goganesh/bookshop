@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface JpaBookRatingRepository extends JpaRepository<BookRating, Integer> {
 
     Optional<BookRating> findByUserAndBook(User user, Book book);
+
     List<BookRating> findByBook(Book book);
 }

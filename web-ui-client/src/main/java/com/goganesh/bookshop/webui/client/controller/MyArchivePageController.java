@@ -24,7 +24,7 @@ public class MyArchivePageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 

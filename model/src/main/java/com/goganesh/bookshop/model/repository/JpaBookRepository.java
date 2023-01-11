@@ -23,15 +23,20 @@ public interface JpaBookRepository extends JpaRepository<Book, Integer> {
 
     @Query("SELECT bg.book FROM Book2Genre bg WHERE bg.genre = :genre")
     Page<Book> findByGenre(@Param("genre") Genre genre, Pageable nextPage);
+
     @Query("SELECT ba.book FROM Book2Author ba WHERE ba.author = :author")
     Page<Book> findByAuthor(@Param("author") Author author, Pageable nextPage);
+
     @Query("SELECT bt.book FROM Book2Tag bt WHERE bt.tag = :tag")
     Page<Book> findByTag(@Param("tag") Tag tag, Pageable nextPage);
+
     @Query("SELECT bu.book FROM Book2User bu WHERE bu.user = :user and bu.book2UserType.code = :typeCode")
     Page<Book> findByUserAndTypeCode(@Param("user") User user, @Param("typeCode") String typeCode, Pageable nextPage);
 
     Optional<Book> findBySlug(String slug);
+
     Page<Book> findByTitleContaining(String bookTitle, Pageable nextPage);
+
     Page<Book> findByPubDateBetween(LocalDate pubDateStart, LocalDate pubDateFinish, Pageable nextPage);
 
 

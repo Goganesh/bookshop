@@ -41,6 +41,6 @@ public class Book {
     private double popularity;
 
     @ToString.Exclude
-    @OneToMany(mappedBy="book", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<Book2Author> book2Authors = new ArrayList<>();
 }

@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface JpaBookFileRepository extends JpaRepository<BookFile, Integer> {
+
     List<BookFile> findByBook(Book book);
+
     BookFile findByHash(String hash);
 }

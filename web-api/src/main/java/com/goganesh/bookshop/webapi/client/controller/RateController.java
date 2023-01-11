@@ -43,7 +43,7 @@ public class RateController {
 
         BookRating bookRating = bookRatingReadRepository.findByUserAndBook(user, book).orElse(null);
         if (Objects.isNull(bookRating)) {
-            bookRating =BookRating.builder()
+            bookRating = BookRating.builder()
                     .user(user)
                     .book(book)
                     .build();

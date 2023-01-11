@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface BookRatingReadRepository {
 
     Optional<BookRating> findByUserAndBook(User user, Book book);
+
     List<BookRating> findByBook(Book book);
 }

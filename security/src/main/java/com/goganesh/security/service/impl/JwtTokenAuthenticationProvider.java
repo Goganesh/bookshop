@@ -39,7 +39,7 @@ public class JwtTokenAuthenticationProvider implements AuthenticationProvider {
                 return authentication;
             }
         } catch (Exception ex) {
-            if(ex instanceof AuthenticationServiceException)
+            if (ex instanceof AuthenticationServiceException)
                 throw ex;
         }
         return authentication;

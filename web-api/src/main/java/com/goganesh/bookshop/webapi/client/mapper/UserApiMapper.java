@@ -9,31 +9,31 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface UserApiMapper {
 
-    @Mapping(target="id",
+    @Mapping(target = "id",
             source = "user.id")
-    @Mapping(target="regTime",
+    @Mapping(target = "regTime",
             source = "user.regTime")
-    @Mapping(target="hash",
+    @Mapping(target = "hash",
             source = "user.hash")
-    @Mapping(target="balance",
+    @Mapping(target = "balance",
             source = "user.balance")
-    @Mapping(target="name",
+    @Mapping(target = "name",
             source = "user.name")
-    @Mapping(target="enabled",
+    @Mapping(target = "enabled",
             source = "user.enabled")
-    @Mapping(target="role",
+    @Mapping(target = "role",
             source = "user.role")
     UserApiResponseDto toDto(User user);
 
-    @Mapping(target="id",
+    @Mapping(target = "id",
             source = "userApiRequestDto.id")
-    @Mapping(target="name",
+    @Mapping(target = "name",
             source = "userApiRequestDto.name")
-    @Mapping(target="hash",
+    @Mapping(target = "hash",
             source = "userApiRequestDto.hash")
-    @Mapping(target="balance",
+    @Mapping(target = "balance",
             source = "userApiRequestDto.balance")
-    @Mapping(target="role",
+    @Mapping(target = "role",
             source = "userApiRequestDto.role")
     User toModel(UserApiRequestDto userApiRequestDto);
 

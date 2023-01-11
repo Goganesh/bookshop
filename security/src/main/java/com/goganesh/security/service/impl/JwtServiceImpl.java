@@ -18,8 +18,8 @@ public class JwtServiceImpl implements JwtService {
     private final int lifetime;
 
     @Override
-    public String extractUsername(String token){
-        return extractClaim(token,Claims::getSubject);
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
     @Override
@@ -29,12 +29,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token){
+    private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 

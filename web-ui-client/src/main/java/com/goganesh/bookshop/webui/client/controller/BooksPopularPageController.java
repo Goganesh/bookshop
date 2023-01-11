@@ -25,13 +25,13 @@ public class BooksPopularPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("popularBooks")
-    public BooksPageDto bookList(){
+    public BooksPageDto bookList() {
         return new BooksPageDto(bookRestService.getPageOfPopularBooks(0, 20).getContent()
                 .stream()
                 .map(bookMapper::toDto)
@@ -39,12 +39,12 @@ public class BooksPopularPageController {
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/books/popular")
-    public String booksPopularPage(){
+    public String booksPopularPage() {
         return "books/popular";
     }
 }

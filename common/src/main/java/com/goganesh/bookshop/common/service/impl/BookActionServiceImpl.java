@@ -15,7 +15,7 @@ public class BookActionServiceImpl implements BookActionService {
     private final BookActionKept bookActionKept;
     private final BookActionUnlink bookActionUnlink;
     private final BookActionCart bookActionCart;
-    
+
     @Override
     public void execute(String action, User user, List<Book> books) {
         BookAction bookAction;

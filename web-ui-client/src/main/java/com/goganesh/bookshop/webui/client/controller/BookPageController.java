@@ -39,13 +39,13 @@ public class BookPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/books/{slug}")
     public String booksRecentPage(@PathVariable(value = "slug", required = true) String slug,
-                                  Model model){
+                                  Model model) {
         Book book = bookReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchBookPageException("Where is no book with slug - " + slug));
 
         User user = userRegisterService.getCurrentUser();

@@ -32,13 +32,13 @@ public class IndexPageController {
     private final UserMapper userMapper;
 
     @ModelAttribute("currentUser")
-    public UserPageDto user(){
+    public UserPageDto user() {
         User user = userRegisterService.getCurrentUser();
         return userMapper.toDto(user);
     }
 
     @ModelAttribute("recommendedBooks")
-    public BooksPageDto recommendedBooks(){
+    public BooksPageDto recommendedBooks() {
         return new BooksPageDto(bookRestService.getPageOfRecommendedBooks(1, 20).getContent()
                 .stream()
                 .map(bookMapper::toDto)
@@ -46,7 +46,7 @@ public class IndexPageController {
     }
 
     @ModelAttribute("recentBooks")
-    public BooksPageDto recentBooks(){
+    public BooksPageDto recentBooks() {
         return new BooksPageDto(bookRestService.getPageOfRecentBooks(LocalDate.of(2020, 1, 8), LocalDate.of(2020, 1, 8), 1, 20).getContent()
                 .stream()
                 .map(bookMapper::toDto)
@@ -54,7 +54,7 @@ public class IndexPageController {
     }
 
     @ModelAttribute("popularBooks")
-    public BooksPageDto popularBooks(){
+    public BooksPageDto popularBooks() {
         return new BooksPageDto(bookRestService.getPageOfPopularBooks(0, 20).getContent()
                 .stream()
                 .map(bookMapper::toDto)
@@ -62,7 +62,7 @@ public class IndexPageController {
     }
 
     @ModelAttribute("tags")
-    public List<TagPageDto> tags(){
+    public List<TagPageDto> tags() {
         return tagReadRepository.findAll()
                 .stream()
                 .map(tagMapper::toDto)
@@ -70,12 +70,12 @@ public class IndexPageController {
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @GetMapping("/")
-    public String mainPage(){
+    public String mainPage() {
         return "index";
     }
 
