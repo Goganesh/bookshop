@@ -1,14 +1,14 @@
 sudo docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --publish 5432:5432 -d postgres
 
-14.stylequide
-genre - find clildrens replace to service from model
-4)readme.md
-13.delete ususes files
-13.add readme with project description
-22.remove unused import, classes, methods
+35.common entity id
 34.soft delete  + field is_active
 32.audit fields created_at, created_by, updated_at, updated_by
-35.common entity id
+
+4)readme.md with project description
+13.delete ususes files
+13.add readme
+22.remove unused classes, methods
+поднять сервер по честному
 
 делаю Диплом
 5)download book function

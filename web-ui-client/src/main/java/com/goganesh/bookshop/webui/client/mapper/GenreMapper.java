@@ -2,6 +2,7 @@ package com.goganesh.bookshop.webui.client.mapper;
 
 import com.goganesh.bookshop.model.domain.Genre;
 import com.goganesh.bookshop.model.service.BookReadRepository;
+import com.goganesh.bookshop.model.service.GenreReadRepository;
 import com.goganesh.bookshop.webui.client.dto.GenrePageDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,9 @@ public abstract class GenreMapper {
     @Autowired
     protected BookReadRepository bookReadRepository;
 
+    @Autowired
+    protected GenreReadRepository genreReadRepository;
+
     @Mapping(target = "name",
             source = "genre.name"
     )
@@ -29,7 +33,7 @@ public abstract class GenreMapper {
             expression = "java( bookReadRepository.countBooksByGenre(genre) )"
     )
     @Mapping(target = "childGenrePageDtos",
-            expression = "java( genre.getChildGenres().stream().map(this::toDto).collect(Collectors.toList()) )"
+            expression = "java( genreReadRepository.findChildrenGenresByParent(genre).stream().map(this::toDto).collect(Collectors.toList()) )"
     )
     public abstract GenrePageDto toDto(Genre genre);
 }

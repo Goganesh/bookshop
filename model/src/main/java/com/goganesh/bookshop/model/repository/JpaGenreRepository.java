@@ -11,4 +11,6 @@ public interface JpaGenreRepository extends JpaRepository<Genre, Integer> {
     List<Genre> findByParentIsNull();
 
     Optional<Genre> findBySlug(String slug);
+
+    List<Genre> findAllByParent(Genre genre);
 }

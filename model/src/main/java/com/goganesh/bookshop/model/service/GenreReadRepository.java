@@ -11,6 +11,8 @@ public interface GenreReadRepository {
 
     List<Genre> findRootGenres();
 
+    List<Genre> findChildrenGenresByParent(Genre genre);
+
     Page<Genre> findAll(Pageable pageable);
 
     Optional<Genre> findBySlug(String slug);

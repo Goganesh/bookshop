@@ -16,6 +16,11 @@ public class JpaGenreReadRepository implements GenreReadRepository {
     private final JpaGenreRepository jpaGenreRepository;
 
     @Override
+    public List<Genre> findChildrenGenresByParent(Genre genre) {
+        return jpaGenreRepository.findAllByParent(genre);
+    }
+
+    @Override
     public List<Genre> findRootGenres() {
         return jpaGenreRepository.findByParentIsNull();
     }
