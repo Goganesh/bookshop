@@ -1,4 +1,4 @@
-package com.goganeah.bookshop.app.configuration;
+package com.goganesh.bookshop.app.configuration;
 
 import com.goganesh.bookshop.model.configuration.ModelConfiguration;
 import com.goganesh.bookshop.webapi.client.configuration.WebApiClientConfiguration;

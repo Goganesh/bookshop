@@ -1,4 +1,4 @@
-package com.goganeah.bookshop.app;
+package com.goganesh.bookshop.app;
 
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

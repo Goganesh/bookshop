@@ -1,64 +1,10 @@
-sudo docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --publish 5432:5432 -d postgres
-
-34.soft delete  + field is_active
-32.audit fields created_at, created_by, updated_at, updated_by
-
-4)readme.md with project description
-13.delete ususes files
-13.add readme
-22.remove unused classes, methods
-поднять сервер по честному
-
-делаю Диплом
-5)download book function
-13.delete ususes imports
-2 add methods how to test module
-add slug validation or generator
-how to security work -- describe logic
-8.add test for data layer
-9.add test for business layer
-11.todo in code
-14.full localization
-16.buy book function
-17.rating book function
-26.add module notification
-
-monitor-logging
-1.secure actuator //add monitor user to system and extra config
-2.how to lunch boot admin maybe in docker https://www.baeldung.com/spring-boot-admin
-add logging system to file and console
-
-security
-5.get token model where read token from string
-6.block attempt login/regin
-https://www.baeldung.com/spring-security-block-brute-force-authentication-attempts
-https://www.javadevjournal.com/spring-security/spring-security-brute-force-protection/
-“Число попыток подтверждения превышено, повторите попытку через 5 минут”
-20.clean security
-18.security - if not allow - redirect to login page
-19.delete temp user function
-21.move security to module https://books.sonatype.com/mvnex-book/reference/multimodule-web-spring.html
-23.add ddos security - ip black list https://stackoverflow.com/questions/32575924/how-to-stop-hack-dos-attack-on-web-api
-http://www.infosecwriters.com/text_resources/pdf/Defense_DDoS.pdf
-27.add oauth2.0 mail.ru
-28.add oauth2.0 vk
-29.parse data from oauth2.0
-30.create user from oauth2.0
-36.get solution validation from PrincipalRegistrationForm
-37.PasswordValidationService
-38.restore Password
-
-
 # bookshop
-
 
 ## Навигация
 
 - [Бизнес требования](#Бизнес-требования)
 - [Архитектура приложения](#Архитектура-приложения)
-    - [Пояснительная записка](#Пояснительная-записка)
-- [Навигация по проекту](#Навигация-по-проекту)
-- [Обзор технологий](#Обзор-технологий)
+- [Модель данных](#Модель-данных)
 - [Точки доступа](#Точки-доступа)
     - [Адреса и порты](#Адреса-и-порты)
     - [Учетные записи](#Учетные-записи)
@@ -66,111 +12,89 @@ http://www.infosecwriters.com/text_resources/pdf/Defense_DDoS.pdf
     - [Запуск приложения](#Запуск-приложения)
     - [Frontend запросы](#Frontend-запросы)
     - [Подключение к БД](#Подключение-к-БД)
-        - [Создание БД в Docker](#Создание-БД-в-Docker)
-    - [Запуск приложения на Heroku](#Запуск-приложения-на-Heroku)
-        - [Подключение к БД Heroku](#Подключение-к-БД-Heroku)
+      - [Создание БД в Docker](#Создание-БД-в-Docker)
+- [Backlog](#Backlog)
+
 
 ## Бизнес требования
 
-[Дипломный проект. Разработка поискового движка.pdf](https://github.com/Goganesh/searchEngine/blob/master/docs/%D0%94%D0%B8%D0%BF%D0%BB%D0%BE%D0%BC%D0%BD%D1%8B%D0%B9%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82.%20%D0%A0%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0%20%D0%BF%D0%BE%D0%B8%D1%81%D0%BA%D0%BE%D0%B2%D0%BE%D0%B3%D0%BE%20%D0%B4%D0%B2%D0%B8%D0%B6%D0%BA%D0%B0.pdf)
+[Техническое задание.docx](https://github.com/Goganesh/bookshop/blob/master/docs/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5%20%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%B4%D0%BB%D1%8F%20%D1%81%D1%82%D1%83%D0%B4%D0%B5%D0%BD%D1%82%D0%BE%D0%B2.docx)
+
+[Диплом часть 1.pdf](https://github.com/Goganesh/bookshop/blob/master/docs/%D0%94%D0%B8%D0%BF%D0%BB%D0%BE%D0%BC.%20%D0%A7%D0%B0%D1%81%D1%82%D1%8C%201.pdf)
+
+[Диплом часть 2.pdf](https://github.com/Goganesh/bookshop/blob/master/docs/%D0%94%D0%B8%D0%BF%D0%BB%D0%BE%D0%BC.%20%D0%A7%D0%B0%D1%81%D1%82%D1%8C%202.pdf)
 
 Приложение выполняет следующие бизнес-функции:
+- сайт - магазин книг;
 - панель администратора:
-    - запуск индексации - все сайты;
-    - запуск индексации - страница сайта;
-    - остановка индексации;
-    - просмотр текущей статистики по сайтам;
-    - поисковый запрос;
+  - CRUD жанров;
+  - CRUD книг;
+  - Смена изображения для книг;
+  - CRUD авторов;
+  - RUD пользователей;
+  - RUD отзывов;
 
 ## Архитектура приложения
-![image](docs/arch.png)
 
-### Пояснительная записка
-Приложение написано с использованием Spring-Boot фреймворка и состоит из следующих слоев:
-- View - слой отвечающий за отображение web-страниц в браузере. Слой состоит из статических HTML файлов и клиентской
-  логики написанной с использованием Java Script. В качестве web-сервера выступает само приложение,
-  которое раздает статику с помощью Spring MVC
-- Controller - слой отвечает за принятие REST запросов из браузера клиента и передаче управления слою Service.
-- API Spec - описание API выполняется по спецификации openapi.
-- Service - слой обработки бизнес-логики.
-- Repository - слой доступа к базе данных.
-- Migration - миграция данных выполняется средствами Liquibase.
-- Security - отдельная сущность, которая может быть применена к любому слою, ответственность - обеспечение безопасности.
+Приложение написано с использованием Spring-Boot фреймворка. 
+
+В качестве сборщика проекта выбран Maven.
 
 В качестве базы данных используется PostgreSQl.
 
-## Навигация по проекту
-![image](docs/project_structure.png)
+Мультимодульный проект:
 
-- controller - пакет, в котором находятся классы, отвечающие за обработку REST запросов
-- domain - пакет с сущностями, которые проецируют реляционную структуру таблиц в нашей базе данных на объектно-ориентированные Java-классы
-- exception - пакет с бизнес-исключениями, которые могут быть выброшены из нашего прикладного кода
-- dto - пакет с классами для отображения данных на фронте
-- repository - пакет с DAO слоем
-- configuration - пакет с конфигурацией (java based) приложения: Spring Security, Spring MVC
-- service - пакет с классами, имплементирующими бизнес-логику
-- resources
-    - static - директория со статическими файлами: css, js, fonts, img
-    - templates - директория с HTML шаблонами
-    - application.yaml - конфигурация приложения
-    - db - директория для хранения логов Liquibase
+| Модуль        | Обязанность                                                                                                                                                                           |                  
+|:--------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| application   | Запуск приложения. Содержит конфигурацию всего проекта.                                                                                                                               |
+| common        | Обработка бизнес логики.                                                                                                                                                              |
+| migration     | Миграция стуктуры и данных в СУБД. Миграция данных выполняется средствами Liquibase.                                                                                                  |
+| model         | Взаимодейстие с СУБД. Содержит pojo модель (Entity) и реализацию взаимодейстивя с СУБД. Слой доступа к БД.                                                                            |
+| otp           | Рассылки одноразовых паролей. Рассылка поддерживается по телефону и эл. почте.                                                                                                        |
+| security      | Аутентификация и авторизация. Может быть применена к любому слою для обеспечения безопасности.                                                                                        |
+| web-api       | Предоставление API. Слой отвечает за принятие REST запросов из браузера клиента.                                                                                                      |
+| web-ui-admin  | Отображение web страниц панели администратора. Состоит из статических HTML файлов и клиентской логики с использованием Java Script. В качестве web-сервера выступает само приложение. |
+| web-ui-client | Отображение web страниц сайта. Состоит из статических HTML файлов и клиентской логики с использованием Java Script. В качестве web-сервера выступает само приложение.                 |
 
-## Обзор технологий
-- Frontend:
-    - HTML
-    - CSS
-    - Java Script
-- Backend:
-    - Java 11
-    - Spring Boot:
-        - Spring MVC
-        - Spring Data JPA
-        - Spring Security
-- Database:
-    - PostgreSQL
-    - Liquibase
-- DevOps
-    - Maven
-    - Swagger
+## Модель данных
+![image](docs/skillbox_java_framework_spring_db_img.png)
+[Стуктура БД.docx](https://github.com/Goganesh/bookshop/blob/master/docs/%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%20%D0%91%D0%94%20%E2%80%94%20%D0%B4%D0%B8%D0%BF%D0%BB%D0%BE%D0%BC%20Spring.docx)
+
 
 ## Точки доступа
 
 ### Адреса и порты
 | Функция                        | Адрес          |                  
 |:-------------------------------|:---------------|
-|   Точка доступа к приложению   | localhost:8080 | 
+|   Точка доступа к приложению   | localhost:8085 | 
 
 ### Учетные записи
-| Логин       | Пароль   | Роль      |                  
-|:------------|:---------|:----------|
-|  admin      | admin    |  ADMIN    |
+Аутентификация выполняется при помощи ОТП паролей
+
+| Почта             | Телефон    | Пароль                               | Роль  |                  
+|:------------------|:-----------|:-------------------------------------|:------|
+| admin@mail.ru     | 9267777777 | ОТП пароль смотри в логах приложения | ADMIN |
+| basiladze@mail.ru | 9168313181 | ОТП пароль смотри в логах приложения | USER  |
 
 ## Как запустить
 
 ### Запуск приложения
 
 Для сборки и запуска приложения вам понадобиться:
-- JDK 11
+- JDK 13
 - Maven
 
-Команды ниже нужно выполнять в корневой директории с проектом.
+Запустить цикл **install** в модуле **application**.
 
-Для сборки:
-`mvn clean install`
-
-Для запуска:
-`java -jar target/search-engine-1.0-SNAPSHOT.jar`
-
-Для пользователей Windows может быть полезен git-bash, который является частью утилиты git [Скачать тут](https://git-scm.com/downloads)
+В результате получим исполняемый **jar** файл в директории **target**.  
 
 ### Frontend запросы
 
-Вся информация подгружается на вкладки путём запросов страницы к
-API. Чтобы изменить источник данных - измените в коде страницы “index.html” значение переменной
-“backendApiUrl” на путь к хосту, на котором у вас размещено
-веб-приложение:
+swagger ui доступен по ресурсу -  /swagger-ui.html
 
-var backendApiUrl = 'https://goganesh-search-engine.herokuapp.com/api'
+openapi спецификация доступна по ресурсу - /api-docs
+
+[ТЗ на разработку API](https://github.com/Goganesh/bookshop/blob/master/docs/swagger.yaml)
 
 ### Подключение к БД
 
@@ -189,27 +113,30 @@ var backendApiUrl = 'https://goganesh-search-engine.herokuapp.com/api'
 #### Создание БД в Docker
 1. Загрузка image БД PostgreSQL`docker pull postgres`
 2. Запуск контейнера `docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --publish 5432:5432 -d postgres`
-3. Вызов контейнера `docker exec -it myContainer bash`
-4. Переключение на пользователя `su postgres`
-5. Вызов консоли `psql`
-6. Создание базы данных для приложения `CREATE DATABASE search_engine;`
+3. Для дополнительного доступа к СУБД (для создания бд/схемы):
+   1. Вызов контейнера `docker exec -it myContainer bash`
+   2. Переключение на пользователя `su postgres`
+   3. Вызов консоли `psql`
 
-### Запуск приложения на Heroku
-
-[Инструкция для запуска java приложения на Heroku](https://skillbox.ru/media/base/kak-razmestit-spring-boot-prilozhenie-na-heroku-com-poshagovaya-instruktsiya/)
-
-
-#### Подключение к БД Heroku
-
-При создании БД в Heroku, будет создан параметры подключения в Config Vars приложения.
-Переменная подключения по умолчанию DATABASE_URL не подходит.
-
-Требуется создать свои переменные окружения для подключения к БД и заполнить значениями из DATABASE_URL.
-
-Пример:
-DATABASE_URL=postgres://nwbzloznxrrm:10d9a8893bc1eff8109844bf9601076e06824980ecf88453c6bbb40389a935@ec2-52-18-185-208.eu-west-1.compute.amazonaws.com:5432/dftjbgo66eimqh
-
-- SPRING_DATASOURCE_URL=jdbc:postgresql://ec2-52-18-185-208.eu-west-1.compute.amazonaws.com:5432/dftjbgo66eimqh
-- SPRING_DATASOURCE_USERNAME=nwbzloznxrrm
-- SPRING_DATASOURCE_PASSWORD=10d9a8893bc1eff8109844bf9601076e06824980ecf88453c6bbb40389a935
-- SPRING_DATASOURCE_DRIVER=org.postgresql.Driver
+## Backlog
+- добавить поля аудита в entity: created_at, created_by, updated_at, updated_by
+- добавить soft delete: подавить поле is_enabled в модель данных
+- добавить сервис генерации и валидации слаг
+- добавить мониторинг покрытия юнит тестами + определить целевое покрытие
+- оценить todo к коде
+- полная локалицаия сайта (сейчас частияная)
+- добавить функцию по уведолмению пользователей
+- добавить актуатор и админку для мониторинга работы приложения 
+- удаление временных пользователей (TEMP_USER) с определенной периодичностью 
+- добавить входе через mail.ru, vk
+- создание пользоателя при первом входе через внешние сервисы (mail.ru, vk, google)
+- обогащение данных пользователей при входе через внешние сервисы (mail.ru, vk, google)
+- восстановление пароля
+- покупка книги
+- выгрузка книг
+- сделать код чистым в модуле security
+- защита от ddos атак
+- добавить https
+- get token model where read token from string
+- рефакторинг решения по попыткам входа в систему 
+- валидация (validated) модели формы регистрации
