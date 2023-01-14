@@ -39,7 +39,6 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
 
     @Override
     public boolean isBlocked(UserContact userContact) {
-        //todo вернуть значение
         return false;
     }
 }

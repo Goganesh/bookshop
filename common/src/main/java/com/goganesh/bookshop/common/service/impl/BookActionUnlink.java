@@ -24,8 +24,8 @@ public class BookActionUnlink implements BookAction {
     @Override
     public void execute(User user, List<Book> books) {
 
-        Book2UserType kept = book2UserTypeReaRepository.findByCode("KEPT").get();
-        Book2UserType cart = book2UserTypeReaRepository.findByCode("CART").get();
+        Book2UserType kept = book2UserTypeReaRepository.findByCode("KEPT").orElse(null);
+        Book2UserType cart = book2UserTypeReaRepository.findByCode("CART").orElse(null);
 
         List<Book2User> keptBook2Users = books.stream()
                 .map(book -> book2UserReadRepository.findByUserAndBook(user, book))

@@ -7,8 +7,7 @@ import lombok.Builder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -21,7 +20,7 @@ public class ProfileController {
     private final UserRegisterService userRegisterService;
 
     @PreAuthorize("hasAnyRole('USER')")
-    @RequestMapping(value = "/change-profile", method = RequestMethod.GET)
+    @GetMapping("/change-profile")
     public RedirectView changeProfile(@RequestParam MultiValueMap<String,String> paramMap,
                                       RedirectAttributes attributes) {
         User user = userRegisterService.getCurrentUser();

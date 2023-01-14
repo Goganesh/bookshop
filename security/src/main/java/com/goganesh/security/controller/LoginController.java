@@ -44,7 +44,6 @@ public class LoginController {
     @PreAuthorize("hasRole('TEMP_USER')")
     @PostMapping("/send-login-otp")
     public SendOtpLoginResponse sendLoginOtp(@Valid @RequestBody SendOtpLoginRequest payload) {
-        //todo check mail or phone format
         final SendOtpLoginResponse response = SendOtpLoginResponse.builder()
                 .result("false")
                 .build();

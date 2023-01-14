@@ -29,6 +29,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Import({OtpConfiguration.class})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private static final String LOGIN_RESOURCE = "/signin";
+
     private final UserDetailsService userDetailsService;
     private final String authTokenName;
     private final CustomLogoutHandler logoutHandler;
@@ -80,7 +82,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() throws Exception {
         return JwtAuthenticationProcessingFilter.builder()
                 .authTokenName(authTokenName)
-                .userDetailsService(userDetailsService)
                 .jwtService(jwtService)
                 .jwtAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler)
                 .authenticationManager(authenticationManagerBean())
@@ -133,13 +134,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/signin")
-                .failureUrl("/signin")
+                .loginPage(LOGIN_RESOURCE)
+                .failureUrl(LOGIN_RESOURCE)
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .addLogoutHandler(logoutHandler)
-                .logoutSuccessUrl("/signin")
+                .logoutSuccessUrl(LOGIN_RESOURCE)
                 .deleteCookies(authTokenName);
         http
                 .addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);

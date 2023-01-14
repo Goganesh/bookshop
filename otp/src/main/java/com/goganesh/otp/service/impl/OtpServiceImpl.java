@@ -60,7 +60,7 @@ public class OtpServiceImpl implements OtpService {
                 smsService.sendMessage(sendMessage);
                 break;
             default:
-                throw new RuntimeException("dfdf");//todo
+                throw new IllegalArgumentException(String.format("Can`t send otp for contact type %s", contact.getContactType()));
         }
 
         userContactWriteRepository.save(contact);
@@ -88,7 +88,7 @@ public class OtpServiceImpl implements OtpService {
                 result = userContact.getCodeTime().plusSeconds(otpSmsExpireSecond).isBefore(LocalDateTime.now());
                 break;
             default:
-                throw new RuntimeException("dfdf"); //todo
+                throw new IllegalArgumentException(String.format("Can`t verify otp for contact type %s", userContact.getContactType()));
         }
 
         return result;

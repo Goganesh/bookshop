@@ -45,7 +45,6 @@ public class ContactApproveController {
                 .build();
 
         final UserContact.ContactType contactType = userContactReadRepository.defineContactType(payload.getType());
-        //todo check mail or phone format
         final String contact = contactType == UserContact.ContactType.PHONE ?
                 phoneNumberService.formatPhoneNumber(payload.getContact()) : payload.getContact();
 
@@ -84,7 +83,6 @@ public class ContactApproveController {
 
         final String code = payload.getCode();
         final UserContact.ContactType contactType = userContactReadRepository.defineContactType(payload.getType());
-        //todo check mail or phone format
         final String contact = contactType == UserContact.ContactType.PHONE ?
                 phoneNumberService.formatPhoneNumber(payload.getContact()) : payload.getContact();
 

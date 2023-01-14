@@ -66,10 +66,8 @@ public class WebApiClientConfiguration {
     }
 
     @Bean
-    public GenreApiMapper genreApiMapper(GenreReadRepository genreReadRepository) {
-        GenreApiMapper genreApiMapper = new GenreApiMapperImpl();
-
-        return genreApiMapper;
+    public GenreApiMapper genreApiMapper() {
+        return new GenreApiMapperImpl();
     }
 
     @Bean

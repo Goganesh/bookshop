@@ -48,15 +48,11 @@ public class UserRegisterServiceImpl implements UserRegisterService {
                     .forEach(book2UserWriteRepository::delete);
 
             userWriteRepository.delete(tempUser);
-        } else {
-            //todo throw some exception;
         }
-
     }
 
     private void mergeTempUserToUser(User tempUser, User realUser) {
         mergeContactData(tempUser, realUser);
-        //todo business data should be another place
         mergeBook2UserData(tempUser, realUser);
     }
 
@@ -113,19 +109,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 
             return jwtService.generateToken(realUser.getHash());
         }
-
-        throw new RuntimeException("9090");//todo
-    }
-
-    private void saveContact(User user, UserContact.ContactType contactType, String contact) {
-        UserContact userContact = UserContact.builder()
-                .contactType(contactType)
-                .user(user)
-                .approved(true)
-                .contact(contact)
-                .build();
-
-        userContactWriteRepository.save(userContact);
+        throw new IllegalArgumentException("No approved contact data in register form " + registrationForm);
     }
 
     @Override
@@ -135,7 +119,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
         user.setHash(UUID.randomUUID().toString());
         user.setRegTime(LocalDateTime.now());
         user.setEnabled(true);
-        user.setRole("TEMP_USER"); //todo
+        user.setRole("TEMP_USER");
 
         return userWriteRepository.save(user);
     }

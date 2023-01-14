@@ -44,7 +44,7 @@ public class CartPageController {
     @GetMapping("/cart")
     public String handleCartRequest(Model model) {
         User user = userRegisterService.getCurrentUser();
-        Book2UserType cartType = book2UserTypeReaRepository.findByCode("CART").get();
+        Book2UserType cartType = book2UserTypeReaRepository.findByCode("CART").orElse(null);
 
         List<BookPageDto> bookCart = book2UserReadRepository.findByUser(user)
                 .stream()

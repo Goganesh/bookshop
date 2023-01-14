@@ -44,7 +44,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus status, WebRequest request) {
 
         Map<String, List<String>> body = new HashMap<>();
-        //todo think how organize message info
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()

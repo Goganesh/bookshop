@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 public class Activity extends BaseEntity {
 
-    private String activity;
+    private String name;
 
     private LocalDate date;
 

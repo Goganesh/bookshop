@@ -14,7 +14,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
 
     @Override
     public boolean isValidPhoneNumber(String phoneNumber) {
-        String regex = "^[0-9]{10}$";
+        String regex = "^\\d{10}$";
         return phoneNumber.matches(regex);
     }
 }

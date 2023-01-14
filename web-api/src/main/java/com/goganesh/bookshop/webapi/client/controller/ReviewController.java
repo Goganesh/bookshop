@@ -48,14 +48,16 @@ public class ReviewController {
     @GetMapping("/reviews/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ReviewApiResponseDto getBook(@PathVariable("id") Integer id) {
-        BookReview bookReview = reviewRestService.findById(id).orElseThrow(() -> new NoSuchReviewException("No such review with id " + id));
+        BookReview bookReview = reviewRestService.findById(id)
+                .orElseThrow(() -> new NoSuchReviewException(NoSuchReviewException.NO_REVIEW_ID + id));
         return reviewApiMapper.toDto(bookReview);
     }
 
     @DeleteMapping("/reviews/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id) {
-        BookReview bookReview = reviewRestService.findById(id).orElseThrow(() -> new NoSuchReviewException("No such review with id " + id));
+        BookReview bookReview = reviewRestService.findById(id)
+                .orElseThrow(() -> new NoSuchReviewException(NoSuchReviewException.NO_REVIEW_ID + id));
         reviewRestService.delete(bookReview);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -70,7 +72,7 @@ public class ReviewController {
             reviewApiRequestDto.setId(null);
         } else {
             existedReview = reviewRestService.findById(reviewApiRequestDto.getId())
-                    .orElseThrow(() -> new NoSuchReviewException("No such review with id " + reviewApiRequestDto.getId()));
+                    .orElseThrow(() -> new NoSuchReviewException(NoSuchReviewException.NO_REVIEW_ID + reviewApiRequestDto.getId()));
         }
 
         BookReview bookReview = reviewApiMapper.toModel(reviewApiRequestDto);

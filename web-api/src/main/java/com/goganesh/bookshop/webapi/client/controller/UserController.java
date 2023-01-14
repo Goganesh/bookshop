@@ -34,13 +34,15 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserApiResponseDto getUser(@PathVariable("id") Integer id) {
-        User user = userRestService.findById(id).orElseThrow(() -> new NoSuchUserException("No such user with id " + id));
+        User user = userRestService.findById(id)
+                .orElseThrow(() -> new NoSuchUserException(NoSuchUserException.NO_USER_ID + id));
         return userApiMapper.toDto(user);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
-        User user = userRestService.findById(id).orElseThrow(() -> new NoSuchUserException("No such user with id " + id));
+        User user = userRestService.findById(id)
+                .orElseThrow(() -> new NoSuchUserException(NoSuchUserException.NO_USER_ID + id));
         userRestService.delete(user);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,7 +56,7 @@ public class UserController {
             userApiRequestDto.setId(null);
         } else {
             existedUser = userRestService.findById(userApiRequestDto.getId())
-                    .orElseThrow(() -> new NoSuchUserException("No such user with id " + userApiRequestDto.getId()));
+                    .orElseThrow(() -> new NoSuchUserException(NoSuchUserException.NO_USER_ID + userApiRequestDto.getId()));
         }
 
         User user = userApiMapper.toModel(userApiRequestDto);

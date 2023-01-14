@@ -32,17 +32,11 @@ public class JwtTokenAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        try {
-            if (authentication instanceof JwtTokenAuthentication) {
-                return processAuthentication((JwtTokenAuthentication) authentication);
-            } else {
-                return authentication;
-            }
-        } catch (Exception ex) {
-            if (ex instanceof AuthenticationServiceException)
-                throw ex;
+        if (authentication instanceof JwtTokenAuthentication) {
+            return processAuthentication((JwtTokenAuthentication) authentication);
+        } else {
+            return authentication;
         }
-        return authentication;
     }
 
     private JwtTokenAuthentication processAuthentication(JwtTokenAuthentication authentication) throws AuthenticationException {

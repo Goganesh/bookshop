@@ -69,7 +69,7 @@ public class PaymentController {
                         TimeZone.getDefault().toZoneId()))
                 .value(money)
                 .build();
-        //todo hide by service puMoney to account operation
+
         balanceTransactionWriteRepository.save(balanceTransaction);
 
         return ResponseDto.builder()

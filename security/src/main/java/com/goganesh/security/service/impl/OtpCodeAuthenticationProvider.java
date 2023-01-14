@@ -36,17 +36,11 @@ public class OtpCodeAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        try {
-            if (authentication instanceof OtpCodeAuthentication) {
-                return processAuthentication((OtpCodeAuthentication) authentication);
-            } else {
-                return authentication;
-            }
-        } catch (Exception ex) {
-            if (ex instanceof AuthenticationException)
-                throw ex;
+        if (authentication instanceof OtpCodeAuthentication) {
+            return processAuthentication((OtpCodeAuthentication) authentication);
+        } else {
+            return authentication;
         }
-        return authentication;
     }
 
     private OtpCodeAuthentication processAuthentication(OtpCodeAuthentication authentication) throws AuthenticationException {
@@ -77,7 +71,6 @@ public class OtpCodeAuthenticationProvider implements AuthenticationProvider {
                     userDetails);
 
             fullTokenAuthentication.setAuthenticated(true);
-            //loginAttemptService.loginSucceeded(user[0]);
 
             return fullTokenAuthentication;
 

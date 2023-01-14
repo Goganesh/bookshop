@@ -24,7 +24,7 @@ public class ActivityCounterServiceImpl implements ActivityCounterService {
             activity.setCount(count);
         } else {
             activity = Activity.builder()
-                    .activity(activityName)
+                    .name(activityName)
                     .count(1)
                     .date(LocalDate.now())
                     .build();

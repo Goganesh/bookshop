@@ -1,7 +1,6 @@
 package com.goganesh.bookshop.webapi.client.converter;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -18,9 +17,7 @@ import java.util.List;
 public class ChangeBookStatusDtoDeserializer extends JsonDeserializer<ChangeBookStatusDto> {
 
     @Override
-    public ChangeBookStatusDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-
-        //todo add exception
+    public ChangeBookStatusDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         List<String> booksIds = new ArrayList<>();
 
         TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);

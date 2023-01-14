@@ -34,13 +34,15 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     public AuthorApiResponseDto getAuthor(@PathVariable("id") Integer id) {
-        Author author = authorRestService.findById(id).orElseThrow(() -> new NoSuchAuthorException("No such author with id " + id));
+        Author author = authorRestService.findById(id)
+                .orElseThrow(() -> new NoSuchAuthorException(NoSuchAuthorException.NO_AUTHOR_ID + id));
         return authorApiMapper.toDto(author);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable("id") Integer id) {
-        Author author = authorRestService.findById(id).orElseThrow(() -> new NoSuchAuthorException("No such author with id " + id));
+        Author author = authorRestService.findById(id)
+                .orElseThrow(() -> new NoSuchAuthorException(NoSuchAuthorException.NO_AUTHOR_ID + id));
         authorRestService.delete(author);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,7 +56,7 @@ public class AuthorController {
             authorApiRequestDto.setId(null);
         } else {
             existedAuthor = authorRestService.findById(authorApiRequestDto.getId())
-                    .orElseThrow(() -> new NoSuchAuthorException("No such author with id " + authorApiRequestDto.getId()));
+                    .orElseThrow(() -> new NoSuchAuthorException(NoSuchAuthorException.NO_AUTHOR_ID + authorApiRequestDto.getId()));
         }
 
         Author author = authorApiMapper.toModel(authorApiRequestDto);

@@ -27,7 +27,7 @@ public class LoginServiceImpl implements LoginService {
     public String login(LoginRequest payload) {
         Authentication authentication;
 
-        String code = payload.getCode().replace(" ", ""); //todo
+        String code = payload.getCode().replace(" ", "");
         String contact = payload.getContact();
         final UserDetailsImpl tempUserDetails = new UserDetailsImpl(userRegisterService.getCurrentUser());
 
@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginService {
                 authentication = new UsernamePasswordAuthenticationToken(contact, code);
                 break;
             default:
-                throw new RuntimeException("ddf");//todo
+                throw new IllegalArgumentException("No such login type - " + payload.getType());
         }
 
         authentication = authenticationManager.authenticate(authentication);

@@ -1,7 +1,9 @@
 package com.goganesh.otp.service.impl;
 
 import com.goganesh.otp.service.CodeGeneratorService;
+import lombok.SneakyThrows;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class CodeGeneratorServiceImpl implements CodeGeneratorService {
@@ -12,9 +14,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         this.symbols = symbols;
     }
 
+    @SneakyThrows
     @Override
     public String generateCode() {
-        Random random = new Random();
+        Random random = SecureRandom.getInstanceStrong();
         StringBuilder sb = new StringBuilder();
         while (sb.length() < symbols) {
             sb.append(random.nextInt(9));

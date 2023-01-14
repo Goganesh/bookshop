@@ -53,7 +53,7 @@ public class JpaUserContactReadRepository implements UserContactReadRepository {
         } else if (type.equals("mail")) {
             contactType = UserContact.ContactType.EMAIL;
         } else {
-            throw new RuntimeException("sd"); //todo
+            throw new IllegalArgumentException("Can`t define contact type for " + type);
         }
 
         return contactType;

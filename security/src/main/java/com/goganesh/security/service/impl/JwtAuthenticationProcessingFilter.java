@@ -13,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -33,14 +32,12 @@ public class JwtAuthenticationProcessingFilter extends AbstractAuthenticationPro
     public static final String DEFAULT_FILTER_PROCESSES_URI = "/**";
     private final String authTokenName;
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
     private final UserRegisterService userRegisterService;
     private final CookieService cookieService;
     private final int cookieLifetimeDay;
 
     @Builder
     public JwtAuthenticationProcessingFilter(String authTokenName,
-                                             UserDetailsService userDetailsService,
                                              JwtService jwtService,
                                              JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler,
                                              AuthenticationManager authenticationManager,
@@ -50,7 +47,6 @@ public class JwtAuthenticationProcessingFilter extends AbstractAuthenticationPro
         super(DEFAULT_FILTER_PROCESSES_URI);
         this.authTokenName = authTokenName;
         this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
         this.userRegisterService = userRegisterService;
         this.cookieService = cookieService;
         this.cookieLifetimeDay = cookieLifetimeDay;
@@ -82,7 +78,6 @@ public class JwtAuthenticationProcessingFilter extends AbstractAuthenticationPro
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         JwtTokenAuthentication jwtTokenAuthentication;
-        String username;
         UserDetailsImpl userDetails;
 
         Optional<String> jwtToken = getTokenByRequest(request);
@@ -90,7 +85,8 @@ public class JwtAuthenticationProcessingFilter extends AbstractAuthenticationPro
         if (jwtToken.isPresent()) {
             try {
                 String usernameHash = jwtService.extractUsername(jwtToken.get());
-                User user = userRegisterService.getUserByHash(usernameHash).get();
+                User user = userRegisterService.getUserByHash(usernameHash)
+                        .orElseThrow(() -> new UsernameNotFoundException("No such user with username - " + usernameHash));
                 userDetails = new UserDetailsImpl(user);
                 jwtTokenAuthentication = new JwtTokenAuthentication(jwtToken.get(), userDetails);
             } catch (UsernameNotFoundException | ExpiredJwtException | SignatureException e) {

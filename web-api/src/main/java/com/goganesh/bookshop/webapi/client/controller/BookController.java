@@ -34,13 +34,15 @@ public class BookController {
 
     @GetMapping("/{id}")
     public BookApiResponseDto getBook(@PathVariable("id") Integer id) {
-        Book book = bookRestService.findById(id).orElseThrow(() -> new NoSuchBookException("No such book with id " + id));
+        Book book = bookRestService.findById(id)
+                .orElseThrow(() -> new NoSuchBookException(NoSuchBookException.NO_BOOK_ID + id));
         return bookApiMapper.toDto(book);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id) {
-        Book book = bookRestService.findById(id).orElseThrow(() -> new NoSuchBookException("No such book with id " + id));
+        Book book = bookRestService.findById(id)
+                .orElseThrow(() -> new NoSuchBookException(NoSuchBookException.NO_BOOK_ID + id));
         bookRestService.delete(book);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,7 +56,7 @@ public class BookController {
             bookApiRequestDto.setId(null);
         } else {
             existedBook = bookRestService.findById(bookApiRequestDto.getId())
-                    .orElseThrow(() -> new NoSuchBookException("No such book with id " + bookApiRequestDto.getId()));
+                    .orElseThrow(() -> new NoSuchBookException(NoSuchBookException.NO_BOOK_ID + bookApiRequestDto.getId()));
         }
 
         Book book = bookApiMapper.toModel(bookApiRequestDto);

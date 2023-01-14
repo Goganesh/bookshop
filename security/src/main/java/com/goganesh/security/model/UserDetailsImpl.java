@@ -33,19 +33,16 @@ public class UserDetailsImpl implements UserDetails {
         return user.getHash();
     }
 
-    //todo
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    //todo
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    //todo
     @Override
     public boolean isCredentialsNonExpired() {
         return true;

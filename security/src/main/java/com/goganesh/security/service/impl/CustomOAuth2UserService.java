@@ -44,8 +44,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .contact(email)
                     .build();
             userContactWriteRepository.save(userContact);
-        } else {
-            //todo updateExistUser
         }
 
         return oAuth2User;

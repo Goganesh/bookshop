@@ -55,7 +55,8 @@ public class BookPageController {
                 .book(book)
                 .user(user)
                 .isEnabled(true)
-                .book2UserType(book2UserTypeReaRepository.findByCode("VIEWED").get())
+                .book2UserType(book2UserTypeReaRepository.findByCode("VIEWED")
+                        .orElse(null))
                 .time(LocalDateTime.now())
                 .build();
         book2UserWriteRepository.save(book2User);
