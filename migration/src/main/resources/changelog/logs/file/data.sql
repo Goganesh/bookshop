@@ -3034,7 +3034,7 @@ insert into book2genre (id, book_id, genre_id) values (1000, 1000, 2);
 
 insert into users (balance, hash, name, reg_time, role)
 values
-    (6080, '2e9d1c974a75d0c7512b8477374e28d9426dbe0d', 'admin', '2021-02-28', 'USER'),
+    (6080, '2e9d1c974a75d0c7512b8477374e28d9426dbe0d', 'admin', '2021-02-28', 'ADMIN'),
     (7805, 'cfd5f287ac30089f183acde79c104344328bf423', 'Rolf', '2021-11-06', 'USER'),
     (5014, '4753a574546923878aa37e78726231573866d5f9', 'Cecilio', '2021-04-14', 'USER'),
     (7095, 'b3798359cc4c7bf05cdf5383cc86170106b9a5ff', 'Petronille', '2022-02-06', 'USER'),
@@ -3046,6 +3046,7 @@ values
 insert into user_contact(user_id, contact_type, approved, contact)
 values
     (1, 'EMAIL', true, 'admin@mail.ru'),
+    (1, 'PHONE', true, '9267777777'),
     (2, 'EMAIL', true, 'basiladze@mail.ru'),
     (2, 'PHONE', true, '9168313181'),
     (3, 'EMAIL', true, 'basiladzegeorge89@gmail.com'),

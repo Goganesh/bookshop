@@ -40,17 +40,20 @@ public class ReviewController {
 
 
     @GetMapping("/reviews")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Page<ReviewApiResponseDto> getReviews(@PageableDefault(value = 20) Pageable pageable) {
         return reviewRestService.findAll(pageable).map(reviewApiMapper::toDto);
     }
 
     @GetMapping("/reviews/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ReviewApiResponseDto getBook(@PathVariable("id") Integer id) {
         BookReview bookReview = reviewRestService.findById(id).orElseThrow(() -> new NoSuchReviewException("No such review with id " + id));
         return reviewApiMapper.toDto(bookReview);
     }
 
     @DeleteMapping("/reviews/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id) {
         BookReview bookReview = reviewRestService.findById(id).orElseThrow(() -> new NoSuchReviewException("No such review with id " + id));
         reviewRestService.delete(bookReview);
@@ -59,6 +62,7 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ReviewApiResponseDto postBook(@Validated @RequestBody ReviewApiRequestDto reviewApiRequestDto) {
         BookReview existedReview = null;
 

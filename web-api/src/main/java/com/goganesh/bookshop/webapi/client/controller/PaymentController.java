@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
+@PreAuthorize("hasRole('USER')")
 @AllArgsConstructor
 public class PaymentController {
 
@@ -32,7 +33,6 @@ public class PaymentController {
     private final BalanceTransactionWriteRepository balanceTransactionWriteRepository;
     private final BalanceTransactionMapper transactionMapper;
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/transactions")
     public TransactionsDto getTransactions(@RequestParam("offset") Integer offset,
                                            @RequestParam("limit") Integer limit,
@@ -56,7 +56,6 @@ public class PaymentController {
         return transactionsDto;
     }
 
-    @PreAuthorize("hasRole('USER')")
     @PostMapping("/payment")
     public ResponseDto makePayment(@Valid @RequestBody PaymentDto paymentDto) {
         User user = userRegisterService.getCurrentUser();
