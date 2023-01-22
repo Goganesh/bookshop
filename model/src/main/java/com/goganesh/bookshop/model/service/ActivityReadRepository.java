@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface ActivityReadRepository {
 
-    Optional<Activity> findByActivityAndDate(String activity, LocalDate today);
+    Optional<Activity> findByNameAndDate(String activity, LocalDate today);
 }

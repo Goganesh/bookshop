@@ -358,8 +358,8 @@
         </createTable>
 
         <addUniqueConstraint
-                columnNames="activity, date"
-                constraintName="activity_activity_date"
+                columnNames="name, date"
+                constraintName="activity_name_date"
                 tableName="activity"
         />
 

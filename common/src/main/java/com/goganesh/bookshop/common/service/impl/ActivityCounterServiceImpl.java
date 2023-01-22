@@ -17,7 +17,7 @@ public class ActivityCounterServiceImpl implements ActivityCounterService {
     @Override
     public void incrementCounterByActivityName(String activityName) {
         LocalDate today = LocalDate.now();
-        Activity activity = activityReadRepository.findByActivityAndDate(activityName, today).orElse(null);
+        Activity activity = activityReadRepository.findByNameAndDate(activityName, today).orElse(null);
 
         if (Objects.nonNull(activity)) {
             int count = activity.getCount() + 1;

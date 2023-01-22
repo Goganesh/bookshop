@@ -14,7 +14,7 @@ public class JpaActivityReadRepository implements ActivityReadRepository {
     private final JpaActivityRepository jpaActivityRepository;
 
     @Override
-    public Optional<Activity> findByActivityAndDate(String activity, LocalDate today) {
-        return jpaActivityRepository.findByActivityAndDate(activity, today);
+    public Optional<Activity> findByNameAndDate(String activity, LocalDate today) {
+        return jpaActivityRepository.findByNameAndDate(activity, today);
     }
 }

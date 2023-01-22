@@ -8,5 +8,5 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface JpaActivityRepository extends JpaRepository<Activity, Integer> {
-    Optional<Activity> findByActivityAndDate(String activity, LocalDate today);
+    Optional<Activity> findByNameAndDate(String activity, LocalDate today);
 }
