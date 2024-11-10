@@ -7,7 +7,6 @@ import com.goganesh.otp.service.OtpService;
 import com.goganesh.security.model.OtpCodeAuthentication;
 import com.goganesh.security.model.UserDetailsImpl;
 import com.goganesh.security.service.LoginAttemptService;
-import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,19 +14,26 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.logging.Logger;
 
 import static com.goganesh.bookshop.model.domain.UserContact.ContactType.PHONE;
 
-@AllArgsConstructor
+@Service
 public class OtpCodeAuthenticationProvider implements AuthenticationProvider {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final OtpService otpService;
     private final LoginAttemptService loginAttemptService;
+
+
+    public OtpCodeAuthenticationProvider(OtpService otpService, LoginAttemptService loginAttemptService) {
+        this.otpService = otpService;
+        this.loginAttemptService = loginAttemptService;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {

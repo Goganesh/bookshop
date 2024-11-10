@@ -1,7 +1,9 @@
 package com.goganesh.security.service.impl;
 
 import com.goganesh.security.service.PhoneNumberService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PhoneNumberServiceImpl implements PhoneNumberService {
 
     @Override

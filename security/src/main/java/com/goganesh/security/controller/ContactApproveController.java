@@ -1,35 +1,45 @@
 package com.goganesh.security.controller;
 
 import com.goganesh.bookshop.model.domain.UserContact;
-import com.goganesh.bookshop.model.service.UserContactReadRepository;
-import com.goganesh.bookshop.model.service.UserContactWriteRepository;
+import com.goganesh.bookshop.model.repository.UserContactRepository;
 import com.goganesh.otp.service.OtpService;
 import com.goganesh.security.controller.dto.ApproveContactRequest;
 import com.goganesh.security.controller.dto.ApproveContactResponse;
 import com.goganesh.security.controller.dto.ContactConfirmationRequest;
 import com.goganesh.security.controller.dto.ContactConfirmationResponse;
 import com.goganesh.security.service.PhoneNumberService;
+import com.goganesh.security.service.UserContactService;
 import com.goganesh.security.service.UserRegisterService;
-import lombok.Builder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.logging.Logger;
 
 @RestController
-@Builder
 public class ContactApproveController {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final UserRegisterService userRegisterService;
     private final OtpService otpService;
-    private final UserContactReadRepository userContactReadRepository;
-    private final UserContactWriteRepository userContactWriteRepository;
+    private final UserContactRepository userContactRepository;
+    private final UserContactService userContactService;
     private final PhoneNumberService phoneNumberService;
+
+    public ContactApproveController(UserRegisterService userRegisterService,
+                                    OtpService otpService,
+                                    UserContactRepository userContactRepository,
+                                    UserContactService userContactService,
+                                    PhoneNumberService phoneNumberService) {
+        this.userRegisterService = userRegisterService;
+        this.otpService = otpService;
+        this.userContactRepository = userContactRepository;
+        this.userContactService = userContactService;
+        this.phoneNumberService = phoneNumberService;
+    }
 
     /**
      * Send confirmation otp to new contact
@@ -44,11 +54,11 @@ public class ContactApproveController {
                 .result("true")
                 .build();
 
-        final UserContact.ContactType contactType = userContactReadRepository.defineContactType(payload.getType());
+        final UserContact.ContactType contactType = userContactService.defineContactType(payload.getType());
         final String contact = contactType == UserContact.ContactType.PHONE ?
                 phoneNumberService.formatPhoneNumber(payload.getContact()) : payload.getContact();
 
-        userContactReadRepository.getApprovedContact(contact, contactType).ifPresentOrElse(
+        userContactRepository.findByContactAndContactTypeAndApproved(contact, contactType, true).ifPresentOrElse(
                 userContact -> {
                     response.setResult("false");
                     logger.info(String.format("Can not send confirmation otp for approved contact - %s", userContact));
@@ -61,7 +71,7 @@ public class ContactApproveController {
                             .approved(false)
                             .build();
 
-                    userContactWriteRepository.save(userContact);
+                    userContactRepository.save(userContact);
                     otpService.sendOtp(userContact);
                 });
 
@@ -82,7 +92,7 @@ public class ContactApproveController {
                 .build();
 
         final String code = payload.getCode();
-        final UserContact.ContactType contactType = userContactReadRepository.defineContactType(payload.getType());
+        final UserContact.ContactType contactType = userContactService.defineContactType(payload.getType());
         final String contact = contactType == UserContact.ContactType.PHONE ?
                 phoneNumberService.formatPhoneNumber(payload.getContact()) : payload.getContact();
 
@@ -90,7 +100,7 @@ public class ContactApproveController {
                 .ifPresentOrElse(
                         userContact -> {
                             userContact.setApproved(true);
-                            userContactWriteRepository.save(userContact);
+                            userContactRepository.save(userContact);
                             response.setResult("true");
                         },
                         () -> logger.info(String.format("Verification failed for contact %s %s by code %s", contactType, contact, code))

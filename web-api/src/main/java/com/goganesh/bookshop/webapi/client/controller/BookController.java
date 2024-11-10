@@ -6,7 +6,6 @@ import com.goganesh.bookshop.webapi.client.dto.BookApiResponseDto;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchBookException;
 import com.goganesh.bookshop.webapi.client.mapper.BookApiMapper;
 import com.goganesh.bookshop.webapi.client.service.BookRestService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,14 +17,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
-@AllArgsConstructor
 @PreAuthorize("hasAnyRole('ADMIN')")
+//todo
 @RestController
 @RequestMapping("/api/v1/books")
 public class BookController {
 
     private final BookRestService bookRestService;
     private final BookApiMapper bookApiMapper;
+
+    public BookController(BookRestService bookRestService, BookApiMapper bookApiMapper) {
+        this.bookRestService = bookRestService;
+        this.bookApiMapper = bookApiMapper;
+    }
 
     @GetMapping()
     public Page<BookApiResponseDto> getBooks(@PageableDefault(value = 20) Pageable pageable) {

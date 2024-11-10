@@ -3,31 +3,38 @@ package com.goganesh.security.service.impl;
 import com.goganesh.bookshop.model.domain.LoginAttempt;
 import com.goganesh.bookshop.model.domain.User;
 import com.goganesh.bookshop.model.domain.UserContact;
-import com.goganesh.bookshop.model.service.LoginAttemptReadRepository;
-import com.goganesh.bookshop.model.service.LoginAttemptWriteRepository;
+import com.goganesh.bookshop.model.repository.LoginAttemptRepository;
 import com.goganesh.security.service.LoginAttemptService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
+@Service
 public class LoginAttemptServiceImpl implements LoginAttemptService {
 
     private final int maxAttempt;
     private final int blockTimeMinutes;
-    private final LoginAttemptReadRepository loginAttemptReadRepository;
-    private final LoginAttemptWriteRepository loginAttemptWriteRepository;
+    private final LoginAttemptRepository loginAttemptRepository;
+
+    public LoginAttemptServiceImpl(@Value("${com.goganesh.bookshop.login-attempt.max-attempt}") int maxAttempt,
+                                   @Value("${com.goganesh.bookshop.login-attempt.block-time-minutes}") int blockTimeMinutes,
+                                   LoginAttemptRepository loginAttemptRepository) {
+        this.maxAttempt = maxAttempt;
+        this.blockTimeMinutes = blockTimeMinutes;
+        this.loginAttemptRepository = loginAttemptRepository;
+    }
 
     @Override
     public void loginFailed(User user, LoginAttempt.LoginType loginType) {
-        loginAttemptReadRepository.findByUserAndLoginType(user, loginType)
+        loginAttemptRepository.findByUserAndLoginType(user, loginType)
                 .ifPresentOrElse(
                         loginAttempt -> {
                             int increment = loginAttempt.getAttemptCount() + 1;
                             loginAttempt.setAttemptCount(increment);
-                            loginAttemptWriteRepository.save(loginAttempt);
+                            loginAttemptRepository.save(loginAttempt);
                         },
-                        () -> loginAttemptWriteRepository.save(
+                        () -> loginAttemptRepository.save(
                                 LoginAttempt.builder()
                                         .user(user)
                                         .attemptCount(0)

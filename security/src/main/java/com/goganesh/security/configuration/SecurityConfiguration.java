@@ -1,6 +1,6 @@
 package com.goganesh.security.configuration;
 
-import com.goganesh.otp.configuration.OtpConfiguration;
+import com.goganesh.otp.OtpConfiguration;
 import com.goganesh.security.service.*;
 import com.goganesh.security.service.impl.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,37 +8,33 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
-)
 @Import({OtpConfiguration.class})
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
 
     private static final String LOGIN_RESOURCE = "/signin";
+    private static final String LOGOUT_RESOURCE = "/logout";
 
-    private final UserDetailsService userDetailsService;
     private final String authTokenName;
     private final CustomLogoutHandler logoutHandler;
     private final JwtTokenAuthenticationProvider jwtTokenAuthenticationProvider;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2UserService oAuth2UserService;
     private final OtpCodeAuthenticationProvider otpCodeAuthenticationProvider;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
     private final UserRegisterService userRegisterService;
@@ -46,14 +42,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final CookieService cookieService;
     private final PhoneNumberService phoneNumberService;
 
-    public SecurityConfiguration(UserDetailsService userDetailsService,
-                                 @Value("${com.goganesh.bookshop.auth.token.name}") String authTokenName,
+    public SecurityConfiguration(@Value("${com.goganesh.bookshop.auth.token.name}") String authTokenName,
                                  CustomLogoutHandler logoutHandler,
                                  JwtTokenAuthenticationProvider jwtTokenAuthenticationProvider,
                                  OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
                                  OAuth2UserService oAuth2UserService,
                                  OtpCodeAuthenticationProvider otpCodeAuthenticationProvider,
-                                 PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
                                  JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler,
                                  UserRegisterService userRegisterService,
@@ -62,14 +56,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                  PhoneNumberService phoneNumberService
 
     ) {
-        this.userDetailsService = userDetailsService;
         this.authTokenName = authTokenName;
         this.logoutHandler = logoutHandler;
         this.jwtTokenAuthenticationProvider = jwtTokenAuthenticationProvider;
         this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
         this.oAuth2UserService = oAuth2UserService;
         this.otpCodeAuthenticationProvider = otpCodeAuthenticationProvider;
-        this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.jwtAuthenticationSuccessHandler = jwtAuthenticationSuccessHandler;
         this.userRegisterService = userRegisterService;
@@ -79,77 +71,61 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() throws Exception {
-        return JwtAuthenticationProcessingFilter.builder()
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public LoginService loginService(AuthenticationManager authenticationManager) {
+        return LoginServiceImpl.builder()
+                .phoneNumberService(phoneNumberService)
+                .jwtService(jwtService)
+                .authenticationManager(authenticationManager)
+                .userRegisterService(userRegisterService)
+                .build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(List.of(jwtTokenAuthenticationProvider, otpCodeAuthenticationProvider));
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+        var jwtAuthenticationProcessingFilter = JwtAuthenticationProcessingFilter.builder()
                 .authTokenName(authTokenName)
                 .jwtService(jwtService)
                 .jwtAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler)
-                .authenticationManager(authenticationManagerBean())
+                .authenticationManager(authenticationManager)
                 .userRegisterService(userRegisterService)
                 .cookieLifetimeDay(cookieLifetimeDay)
                 .cookieService(cookieService)
                 .build();
-    }
 
-    @Bean
-    public LoginService loginService() throws Exception {
-        return LoginServiceImpl.builder()
-                .phoneNumberService(phoneNumberService)
-                .jwtService(jwtService)
-                .authenticationManager(authenticationManagerBean())
-                .userRegisterService(userRegisterService)
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                //.cors(CorsConfigurer::disable)
+                .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests((authorize) ->
+                        authorize.requestMatchers("/my", "/myarchive", "/profile", "/viewed").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/**").permitAll())
+                .formLogin((loginForm) -> {
+                    loginForm.loginPage(LOGIN_RESOURCE);
+                    loginForm.failureForwardUrl(LOGIN_RESOURCE);
+                })
+                .logout((logout) -> {
+                    logout.logoutUrl(LOGOUT_RESOURCE);
+                    logout.addLogoutHandler(logoutHandler);
+                    logout.logoutSuccessUrl(LOGIN_RESOURCE);
+                    logout.deleteCookies(authTokenName);
+                })
+                .addFilterBefore(jwtAuthenticationProcessingFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login((oauth2Login) -> {
+                    oauth2Login.userInfoEndpoint(subconfig -> subconfig.userService(oAuth2UserService));
+                    oauth2Login.successHandler(oAuth2AuthenticationSuccessHandler);
+                })
                 .build();
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .authenticationProvider(jwtTokenAuthenticationProvider)
-                .authenticationProvider(otpCodeAuthenticationProvider)
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf()
-                .disable();
-
-        http
-                .authorizeRequests()
-                .antMatchers("/my", "/myarchive", "/profile", "/viewed").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/**").permitAll()
-                .and()
-                .formLogin()
-                .loginPage(LOGIN_RESOURCE)
-                .failureUrl(LOGIN_RESOURCE)
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .addLogoutHandler(logoutHandler)
-                .logoutSuccessUrl(LOGIN_RESOURCE)
-                .deleteCookies(authTokenName);
-        http
-                .addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        http
-                .oauth2Login(config -> {
-                    config.userInfoEndpoint(subconfig -> subconfig.userService(oAuth2UserService));
-                    config.successHandler(oAuth2AuthenticationSuccessHandler);
-                });
     }
 
 }

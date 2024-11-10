@@ -1,24 +1,33 @@
 package com.goganesh.security.service.impl;
 
 import com.goganesh.bookshop.model.domain.InvalidToken;
-import com.goganesh.bookshop.model.service.InvalidTokenWriteRepository;
+import com.goganesh.bookshop.model.repository.InvalidTokenRepository;
 import com.goganesh.security.exception.NoJwtTokenException;
 import com.goganesh.security.service.CookieService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 
-@AllArgsConstructor
+@Service
 public class CustomLogoutHandler implements LogoutHandler {
 
     private final String authTokenName;
-    private final InvalidTokenWriteRepository invalidTokenWriteRepository;
+    private final InvalidTokenRepository invalidTokenRepository;
     private final CookieService cookieService;
+
+    public CustomLogoutHandler(@Value("${com.goganesh.bookshop.auth.token.name}") String authTokenName,
+                               InvalidTokenRepository invalidTokenRepository,
+                               CookieService cookieService) {
+        this.authTokenName = authTokenName;
+        this.invalidTokenRepository = invalidTokenRepository;
+        this.cookieService = cookieService;
+    }
 
     @Override
     @Transactional
@@ -26,6 +35,6 @@ public class CustomLogoutHandler implements LogoutHandler {
                        Authentication authentication) {
 
         Cookie cookie = cookieService.getCookie(request, authTokenName).orElseThrow(() -> new NoJwtTokenException("There is no jwt token in cookies"));
-        invalidTokenWriteRepository.save(InvalidToken.builder().token(cookie.getValue()).build());
+        invalidTokenRepository.save(InvalidToken.builder().token(cookie.getValue()).build());
     }
 }

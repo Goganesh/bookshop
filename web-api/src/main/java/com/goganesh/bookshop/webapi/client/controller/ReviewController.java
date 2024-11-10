@@ -4,14 +4,14 @@ import com.goganesh.bookshop.model.domain.Book;
 import com.goganesh.bookshop.model.domain.BookReview;
 import com.goganesh.bookshop.model.domain.BookReviewLike;
 import com.goganesh.bookshop.model.domain.User;
-import com.goganesh.bookshop.model.service.*;
+import com.goganesh.bookshop.model.repository.BookRepository;
+import com.goganesh.bookshop.model.repository.BookReviewLikeRepository;
 import com.goganesh.bookshop.webapi.client.dto.*;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchBookException;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchReviewException;
 import com.goganesh.bookshop.webapi.client.mapper.ReviewApiMapper;
 import com.goganesh.bookshop.webapi.client.service.ReviewRestService;
 import com.goganesh.security.service.UserRegisterService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,23 +21,32 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1")
-@AllArgsConstructor
 public class ReviewController {
 
-    private final BookReviewLikeReadRepository bookReviewLikeReadRepository;
-    private final BookReviewLikeWriteRepository bookReviewLikeWriteRepository;
-    private final BookReadRepository bookReadRepository;
+    private final BookReviewLikeRepository bookReviewLikeRepository;
+    private final BookRepository bookRepository;
     private final UserRegisterService userRegisterService;
 
     private final ReviewRestService reviewRestService;
     private final ReviewApiMapper reviewApiMapper;
 
+    public ReviewController(BookReviewLikeRepository bookReviewLikeRepository,
+                            BookRepository bookRepository,
+                            UserRegisterService userRegisterService,
+                            ReviewRestService reviewRestService,
+                            ReviewApiMapper reviewApiMapper) {
+        this.bookReviewLikeRepository = bookReviewLikeRepository;
+        this.bookRepository = bookRepository;
+        this.userRegisterService = userRegisterService;
+        this.reviewRestService = reviewRestService;
+        this.reviewApiMapper = reviewApiMapper;
+    }
 
     @GetMapping("/reviews")
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -94,7 +103,7 @@ public class ReviewController {
         User user = userRegisterService.getCurrentUser();
 
         String slug = bookReviewDto.getBookId();
-        Book book = bookReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchBookException("No such book with slug - " + slug));
+        Book book = bookRepository.findBySlug(slug).orElseThrow(() -> new NoSuchBookException("No such book with slug - " + slug));
 
         String text = bookReviewDto.getText();
 
@@ -121,7 +130,7 @@ public class ReviewController {
                 () -> new NoSuchReviewException("No such book review with id - " + reviewId));
         byte value = (byte) bookReviewRateDto.getValue();
 
-        BookReviewLike bookReviewLike = bookReviewLikeReadRepository.findByUserAndBookReview(user, bookReview).orElse(null);
+        BookReviewLike bookReviewLike = bookReviewLikeRepository.findByUserAndBookReview(user, bookReview).orElse(null);
         if (Objects.isNull(bookReviewLike)) {
             bookReviewLike = BookReviewLike.builder()
                     .user(user)
@@ -132,7 +141,7 @@ public class ReviewController {
         bookReviewLike.setValue(value);
         bookReviewLike.setTime(LocalDateTime.now());
 
-        bookReviewLikeWriteRepository.save(bookReviewLike);
+        bookReviewLikeRepository.save(bookReviewLike);
 
         return ResponseDto.builder()
                 .result(true)

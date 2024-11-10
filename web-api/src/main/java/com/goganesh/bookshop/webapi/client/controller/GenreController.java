@@ -6,7 +6,6 @@ import com.goganesh.bookshop.webapi.client.dto.GenreApiResponseDto;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchGenreException;
 import com.goganesh.bookshop.webapi.client.mapper.GenreApiMapper;
 import com.goganesh.bookshop.webapi.client.service.GenreRestService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,12 +17,16 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @PreAuthorize("hasAnyRole('ADMIN')")
-@AllArgsConstructor
 @RequestMapping("/api/v1/genres")
 public class GenreController {
 
     private final GenreRestService genreRestService;
     private final GenreApiMapper genreApiMapper;
+
+    public GenreController(GenreRestService genreRestService, GenreApiMapper genreApiMapper) {
+        this.genreRestService = genreRestService;
+        this.genreApiMapper = genreApiMapper;
+    }
 
     @GetMapping()
     public Page<GenreApiResponseDto> getGenres(@PageableDefault(value = 20) Pageable pageable) {

@@ -2,7 +2,7 @@ package com.goganesh.bookshop.webapi.client.controller;
 
 import com.goganesh.bookshop.model.domain.BalanceTransaction;
 import com.goganesh.bookshop.model.domain.User;
-import com.goganesh.bookshop.model.service.BalanceTransactionWriteRepository;
+import com.goganesh.bookshop.model.repository.BalanceTransactionRepository;
 import com.goganesh.bookshop.webapi.client.dto.PaymentDto;
 import com.goganesh.bookshop.webapi.client.dto.ResponseDto;
 import com.goganesh.bookshop.webapi.client.dto.TransactionDto;
@@ -10,12 +10,11 @@ import com.goganesh.bookshop.webapi.client.dto.TransactionsDto;
 import com.goganesh.bookshop.webapi.client.service.BalanceTransactionRestService;
 import com.goganesh.bookshop.webapi.client.mapper.BalanceTransactionMapper;
 import com.goganesh.security.service.UserRegisterService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,13 +24,22 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1")
 @PreAuthorize("hasRole('USER')")
-@AllArgsConstructor
 public class PaymentController {
 
     private final UserRegisterService userRegisterService;
     private final BalanceTransactionRestService balanceTransactionRestService;
-    private final BalanceTransactionWriteRepository balanceTransactionWriteRepository;
+    private final BalanceTransactionRepository balanceTransactionRepository;
     private final BalanceTransactionMapper transactionMapper;
+
+    public PaymentController(UserRegisterService userRegisterService,
+                             BalanceTransactionRestService balanceTransactionRestService,
+                             BalanceTransactionRepository balanceTransactionRepository,
+                             BalanceTransactionMapper transactionMapper) {
+        this.userRegisterService = userRegisterService;
+        this.balanceTransactionRestService = balanceTransactionRestService;
+        this.balanceTransactionRepository = balanceTransactionRepository;
+        this.transactionMapper = transactionMapper;
+    }
 
     @GetMapping("/transactions")
     public TransactionsDto getTransactions(@RequestParam("offset") Integer offset,
@@ -48,7 +56,7 @@ public class PaymentController {
         List<TransactionDto> transactionDtos = balanceTransactionRestService.getPageByUser(user, offset, limit, sortOrder)
                 .stream()
                 .map(transactionMapper::toDto)
-                 .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         transactionsDto.setTransactions(transactionDtos);
         transactionsDto.setCount(transactionDtos.size());
@@ -70,7 +78,7 @@ public class PaymentController {
                 .value(money)
                 .build();
 
-        balanceTransactionWriteRepository.save(balanceTransaction);
+        balanceTransactionRepository.save(balanceTransaction);
 
         return ResponseDto.builder()
                 .result(true)

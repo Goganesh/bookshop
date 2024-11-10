@@ -2,34 +2,37 @@ package com.goganesh.bookshop.common.service.impl;
 
 import com.goganesh.bookshop.common.service.ActivityCounterService;
 import com.goganesh.bookshop.model.domain.Activity;
-import com.goganesh.bookshop.model.service.ActivityReadRepository;
-import com.goganesh.bookshop.model.service.ActivityWriteRepository;
-import lombok.AllArgsConstructor;
+import com.goganesh.bookshop.model.repository.ActivityRepository;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Objects;
 
-@AllArgsConstructor
+@Transactional
+@Service
 public class ActivityCounterServiceImpl implements ActivityCounterService {
-    private final ActivityWriteRepository activityWriteRepository;
-    private final ActivityReadRepository activityReadRepository;
+
+    private final ActivityRepository activityRepository;
+
+    public ActivityCounterServiceImpl(ActivityRepository activityRepository) {
+        this.activityRepository = activityRepository;
+    }
 
     @Override
     public void incrementCounterByActivityName(String activityName) {
-        LocalDate today = LocalDate.now();
-        Activity activity = activityReadRepository.findByNameAndDate(activityName, today).orElse(null);
-
-        if (Objects.nonNull(activity)) {
-            int count = activity.getCount() + 1;
-            activity.setCount(count);
-        } else {
-            activity = Activity.builder()
-                    .name(activityName)
-                    .count(1)
-                    .date(LocalDate.now())
-                    .build();
-        }
-
-        activityWriteRepository.save(activity);
+        var today = LocalDate.now();
+        activityRepository.findByNameAndDate(activityName, today)
+                .ifPresentOrElse(
+                        activity -> {
+                            var count = activity.getCount() + 1;
+                            activity.setCount(count);
+                            activityRepository.save(activity);
+                        }, () -> activityRepository.save(
+                                Activity.builder()
+                                        .name(activityName)
+                                        .count(1)
+                                        .date(LocalDate.now())
+                                        .build())
+                );
     }
 }

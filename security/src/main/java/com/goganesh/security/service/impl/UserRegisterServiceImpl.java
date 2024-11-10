@@ -2,34 +2,43 @@ package com.goganesh.security.service.impl;
 
 import com.goganesh.bookshop.model.domain.User;
 import com.goganesh.bookshop.model.domain.UserContact;
-import com.goganesh.bookshop.model.service.*;
+import com.goganesh.bookshop.model.repository.Book2UserRepository;
+import com.goganesh.bookshop.model.repository.UserContactRepository;
+import com.goganesh.bookshop.model.repository.UserRepository;
 import com.goganesh.security.controller.dto.RegistrationFormRequest;
 import com.goganesh.security.model.UserDetailsImpl;
 import com.goganesh.security.service.JwtService;
 import com.goganesh.security.service.PhoneNumberService;
 import com.goganesh.security.service.UserRegisterService;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-@Builder
-@AllArgsConstructor
+@Service
 public class UserRegisterServiceImpl implements UserRegisterService {
 
     private final JwtService jwtService;
     private final PhoneNumberService phoneNumberService;
 
-    private final Book2UserReadRepository book2UserReadRepository;
-    private final Book2UserWriteRepository book2UserWriteRepository;
-    private final UserContactWriteRepository userContactWriteRepository;
-    private final UserContactReadRepository userContactReadRepository;
-    private final UserWriteRepository userWriteRepository;
-    private final UserReadRepository userReadRepository;
+    private final Book2UserRepository book2UserRepository;
+    private final UserContactRepository userContactRepository;
+    private final UserRepository userRepository;
+
+    public UserRegisterServiceImpl(JwtService jwtService,
+                                   PhoneNumberService phoneNumberService,
+                                   Book2UserRepository book2UserRepository,
+                                   UserContactRepository userContactRepository,
+                                   UserRepository userRepository) {
+        this.jwtService = jwtService;
+        this.phoneNumberService = phoneNumberService;
+        this.book2UserRepository = book2UserRepository;
+        this.userContactRepository = userContactRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Transactional
@@ -37,17 +46,17 @@ public class UserRegisterServiceImpl implements UserRegisterService {
         mergeTempUserToUser(tempUser, realUser);
 
         tempUser.setEnabled(false);
-        userWriteRepository.save(tempUser);
+        userRepository.save(tempUser);
     }
 
     @Override
     @Transactional
     public void deleteBlockedTempUser(User tempUser) {
         if (!tempUser.isEnabled()) {
-            book2UserReadRepository.findByUser(tempUser)
-                    .forEach(book2UserWriteRepository::delete);
+            book2UserRepository.findByUser(tempUser)
+                    .forEach(book2UserRepository::delete);
 
-            userWriteRepository.delete(tempUser);
+            userRepository.delete(tempUser);
         }
     }
 
@@ -57,24 +66,24 @@ public class UserRegisterServiceImpl implements UserRegisterService {
     }
 
     private void mergeBook2UserData(User tempUser, User realUser) {
-        book2UserReadRepository.findByUser(tempUser)
+        book2UserRepository.findByUser(tempUser)
                 .forEach(book2User -> {
                     book2User.setUser(realUser);
-                    book2UserWriteRepository.save(book2User);
+                    book2UserRepository.save(book2User);
                 });
     }
 
     private void mergeContactData(User tempUser, User realUser) {
-        userContactReadRepository.getApprovedContacts(tempUser)
+        userContactRepository.findByUserAndApproved(tempUser, true)
                 .forEach(userContact -> {
                     userContact.setUser(realUser);
-                    userContactWriteRepository.save(userContact);
+                    userContactRepository.save(userContact);
                 });
     }
 
     @Override
     public Optional<User> getUserByHash(String hash) {
-        return userReadRepository.findByHash(hash);
+        return userRepository.findByHash(hash);
     }
 
 
@@ -95,8 +104,8 @@ public class UserRegisterServiceImpl implements UserRegisterService {
         final String phone = phoneNumberService.formatPhoneNumber(registrationForm.getPhone());
 
         User tempUser = getCurrentUser();
-        if (userContactReadRepository.getApprovedContact(phone, UserContact.ContactType.PHONE, tempUser).isPresent() &&
-                userContactReadRepository.getApprovedContact(email, UserContact.ContactType.EMAIL, tempUser).isPresent()) {
+        if (userContactRepository.findByContactAndContactTypeAndApprovedAndUser(phone, UserContact.ContactType.PHONE, true, tempUser).isPresent() &&
+                userContactRepository.findByContactAndContactTypeAndApprovedAndUser(email, UserContact.ContactType.EMAIL, true, tempUser).isPresent()) {
             User realUser = new User();
             realUser.setName(registrationForm.getName());
             realUser.setHash(UUID.randomUUID().toString());
@@ -104,7 +113,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
             realUser.setEnabled(true);
             realUser.setRole("USER");
 
-            userWriteRepository.save(realUser);
+            userRepository.save(realUser);
             blockTempUser(tempUser, realUser);
 
             return jwtService.generateToken(realUser.getHash());
@@ -121,6 +130,6 @@ public class UserRegisterServiceImpl implements UserRegisterService {
         user.setEnabled(true);
         user.setRole("TEMP_USER");
 
-        return userWriteRepository.save(user);
+        return userRepository.save(user);
     }
 }

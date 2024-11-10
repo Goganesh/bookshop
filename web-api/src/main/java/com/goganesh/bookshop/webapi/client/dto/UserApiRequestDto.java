@@ -2,8 +2,8 @@ package com.goganesh.bookshop.webapi.client.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 @Data
 public class UserApiRequestDto {

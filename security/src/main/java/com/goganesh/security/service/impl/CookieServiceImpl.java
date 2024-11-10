@@ -1,17 +1,18 @@
 package com.goganesh.security.service.impl;
 
 import com.goganesh.security.service.CookieService;
-import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
-import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Optional;
 
+@Service
 public class CookieServiceImpl implements CookieService {
 
     private static final Boolean HTTP_ONLY = Boolean.TRUE;
@@ -41,10 +42,7 @@ public class CookieServiceImpl implements CookieService {
         cookie.setSecure(SECURE);
         cookie.setMaxAge((int) maxAge.toSeconds());
 
-        Rfc6265CookieProcessor processor = new Rfc6265CookieProcessor();
-        String cookieString = processor.generateHeader(cookie);
-
-        response.addHeader(HttpHeaders.SET_COOKIE, cookieString);
+        response.addCookie(cookie);
     }
 
     @Override

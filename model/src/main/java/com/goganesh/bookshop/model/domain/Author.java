@@ -1,8 +1,14 @@
 package com.goganesh.bookshop.model.domain;
 
-import lombok.*;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @NoArgsConstructor
 @AllArgsConstructor

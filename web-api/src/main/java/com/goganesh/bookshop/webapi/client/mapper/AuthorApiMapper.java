@@ -6,7 +6,7 @@ import com.goganesh.bookshop.webapi.client.dto.AuthorApiResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AuthorApiMapper {
 
     @Mapping(target = "id",

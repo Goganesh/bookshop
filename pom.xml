@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.1</version>
+        <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -21,17 +21,16 @@
         <module>common</module>
         <module>model</module>
         <module>web-api</module>
-        <module>web-ui-client</module>
-        <module>web-ui-admin</module>
+        <module>web-ui</module>
         <module>migration</module>
         <module>security</module>
         <module>otp</module>
     </modules>
 
     <properties>
-        <java-version>13</java-version>
-        <maven.compiler.source>13</maven.compiler.source>
-        <maven.compiler.target>13</maven.compiler.target>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 

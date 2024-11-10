@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.time.ZoneOffset;
 
-@Mapper(imports = {ZoneOffset.class})
+@Mapper(componentModel = "spring", imports = {ZoneOffset.class})
 public interface BalanceTransactionMapper {
 
     @Mapping(target = "description",

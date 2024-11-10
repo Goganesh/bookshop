@@ -6,10 +6,15 @@ import com.goganesh.bookshop.common.service.BookActionService;
 import com.goganesh.bookshop.model.domain.Book;
 import com.goganesh.bookshop.model.domain.User;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 
 @AllArgsConstructor
+@Transactional
+@Service
+//todo
 public class BookActionServiceImpl implements BookActionService {
 
     private final BookActionKept bookActionKept;
@@ -18,20 +23,12 @@ public class BookActionServiceImpl implements BookActionService {
 
     @Override
     public void execute(String action, User user, List<Book> books) {
-        BookAction bookAction;
-        switch (action) {
-            case "KEPT":
-                bookAction = bookActionKept;
-                break;
-            case "UNLINK":
-                bookAction = bookActionUnlink;
-                break;
-            case "CART":
-                bookAction = bookActionCart;
-                break;
-            default:
-                throw new NoSuchBookActionException("There is no action - " + action);
-        }
+        BookAction bookAction = switch (action) {
+            case "KEPT" -> bookActionKept;
+            case "UNLINK" -> bookActionUnlink;
+            case "CART" -> bookActionCart;
+            default -> throw new NoSuchBookActionException("There is no action - " + action);
+        };
 
         bookAction.execute(user, books);
     }

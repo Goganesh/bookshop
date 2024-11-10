@@ -5,12 +5,11 @@ import com.goganesh.bookshop.common.aop.annotation.Logger;
 import com.goganesh.bookshop.common.service.BookActionService;
 import com.goganesh.bookshop.model.domain.Book;
 import com.goganesh.bookshop.model.domain.User;
-import com.goganesh.bookshop.model.service.BookReadRepository;
+import com.goganesh.bookshop.model.repository.BookRepository;
 import com.goganesh.bookshop.webapi.client.dto.ChangeBookStatusDto;
 import com.goganesh.bookshop.webapi.client.dto.ResponseDto;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchBookException;
 import com.goganesh.security.service.UserRegisterService;
-import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +21,19 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
-@AllArgsConstructor
 public class ShopApiController {
 
     private final UserRegisterService userRegisterService;
     private final BookActionService bookActionService;
-    private final BookReadRepository bookReadRepository;
+    private final BookRepository bookRepository;
+
+    public ShopApiController(UserRegisterService userRegisterService,
+                             BookActionService bookActionService,
+                             BookRepository bookRepository) {
+        this.userRegisterService = userRegisterService;
+        this.bookActionService = bookActionService;
+        this.bookRepository = bookRepository;
+    }
 
     @PreAuthorize("hasAnyRole('USER','TEMP_USER')")
     @PostMapping("/books/changeBookStatus")
@@ -38,7 +44,7 @@ public class ShopApiController {
         User user = userRegisterService.getCurrentUser();
         List<Book> books = changeBookStatusDto.getBooksIds()
                 .stream()
-                .map(slug -> bookReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchBookException("No such book with slug - " + slug)))
+                .map(slug -> bookRepository.findBySlug(slug).orElseThrow(() -> new NoSuchBookException("No such book with slug - " + slug)))
                 .collect(Collectors.toList());
 
         bookActionService.execute(action, user, books);

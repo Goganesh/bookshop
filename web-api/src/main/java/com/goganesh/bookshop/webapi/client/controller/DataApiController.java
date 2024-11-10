@@ -4,9 +4,9 @@ import com.goganesh.bookshop.model.domain.Author;
 import com.goganesh.bookshop.model.domain.Genre;
 import com.goganesh.bookshop.model.domain.Tag;
 import com.goganesh.bookshop.model.domain.User;
-import com.goganesh.bookshop.model.service.AuthorReadRepository;
-import com.goganesh.bookshop.model.service.GenreReadRepository;
-import com.goganesh.bookshop.model.service.TagReadRepository;
+import com.goganesh.bookshop.model.repository.AuthorRepository;
+import com.goganesh.bookshop.model.repository.GenreRepository;
+import com.goganesh.bookshop.model.repository.TagRepository;
 import com.goganesh.bookshop.webapi.client.dto.BooksDto;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchAuthorException;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchGenreException;
@@ -14,7 +14,6 @@ import com.goganesh.bookshop.webapi.client.exception.NoSuchTagException;
 import com.goganesh.bookshop.webapi.client.mapper.BookMapper;
 import com.goganesh.bookshop.webapi.client.service.BookRestService;
 import com.goganesh.security.service.UserRegisterService;
-import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +22,29 @@ import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/api/v1")
 public class DataApiController {
 
     private final BookRestService bookRestService;
-    private final GenreReadRepository genreReadRepository;
-    private final AuthorReadRepository authorReadRepository;
-    private final TagReadRepository tagReadRepository;
+    private final GenreRepository genreRepository;
+    private final AuthorRepository authorRepository;
+    private final TagRepository tagRepository;
     private final UserRegisterService userRegisterService;
     private final BookMapper bookMapper;
+
+    public DataApiController(BookRestService bookRestService,
+                             GenreRepository genreRepository,
+                             AuthorRepository authorRepository,
+                             TagRepository tagRepository,
+                             UserRegisterService userRegisterService,
+                             BookMapper bookMapper) {
+        this.bookRestService = bookRestService;
+        this.genreRepository = genreRepository;
+        this.authorRepository = authorRepository;
+        this.tagRepository = tagRepository;
+        this.userRegisterService = userRegisterService;
+        this.bookMapper = bookMapper;
+    }
 
     @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/books/user/{status}")
@@ -54,7 +66,7 @@ public class DataApiController {
     public BooksDto getBooksTag(@RequestParam("offset") Integer offset,
                                 @RequestParam("limit") Integer limit,
                                 @PathVariable(value = "slug", required = true) String slug) {
-        Tag tag = tagReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchTagException("No Such tag with slug - " + slug));
+        Tag tag = tagRepository.findBySlug(slug).orElseThrow(() -> new NoSuchTagException("No Such tag with slug - " + slug));
         return new BooksDto(bookRestService.getPageOfTagBooks(tag, offset, limit).getContent()
                 .stream()
                 .map(bookMapper::toDto)
@@ -67,7 +79,7 @@ public class DataApiController {
     public BooksDto getBooksAuthor(@RequestParam("offset") Integer offset,
                                    @RequestParam("limit") Integer limit,
                                    @PathVariable(value = "slug", required = true) String slug) {
-        Author author = authorReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchAuthorException("No  such author with slug " + slug));
+        Author author = authorRepository.findBySlug(slug).orElseThrow(() -> new NoSuchAuthorException("No  such author with slug " + slug));
         return new BooksDto(bookRestService.getPageOfAuthorBooks(author, offset, limit).getContent()
                 .stream()
                 .map(bookMapper::toDto)
@@ -80,7 +92,7 @@ public class DataApiController {
     public BooksDto getBooksGenre(@RequestParam("offset") Integer offset,
                                   @RequestParam("limit") Integer limit,
                                   @PathVariable(value = "slug", required = true) String slug) {
-        Genre genre = genreReadRepository.findBySlug(slug).orElseThrow(() -> new NoSuchGenreException("No such genre with slug " + slug));
+        Genre genre = genreRepository.findBySlug(slug).orElseThrow(() -> new NoSuchGenreException("No such genre with slug " + slug));
         return new BooksDto(bookRestService.getPageOfGenreBooks(genre, offset, limit).getContent()
                 .stream()
                 .map(bookMapper::toDto)

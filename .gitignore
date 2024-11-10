@@ -40,5 +40,4 @@ build/
 /otp/target/
 /security/target/
 /web-api/target/
-/web-ui-admin/target/
-/web-ui-client/target/
+/web-ui/target/

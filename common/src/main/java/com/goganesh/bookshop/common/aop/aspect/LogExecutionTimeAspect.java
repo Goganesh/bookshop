@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 @Aspect
 public class LogExecutionTimeAspect {
-
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Around("@annotation(com.goganesh.bookshop.common.aop.annotation.LogExecutionTime)")

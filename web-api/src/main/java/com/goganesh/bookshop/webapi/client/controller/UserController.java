@@ -6,7 +6,6 @@ import com.goganesh.bookshop.webapi.client.dto.UserApiResponseDto;
 import com.goganesh.bookshop.webapi.client.exception.NoSuchUserException;
 import com.goganesh.bookshop.webapi.client.mapper.UserApiMapper;
 import com.goganesh.bookshop.webapi.client.service.UserRestService;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,12 +19,16 @@ import java.util.Objects;
 
 @RestController
 @PreAuthorize("hasAnyRole('ADMIN')")
-@AllArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
 
     private final UserRestService userRestService;
     private final UserApiMapper userApiMapper;
+
+    public UserController(UserRestService userRestService, UserApiMapper userApiMapper) {
+        this.userRestService = userRestService;
+        this.userApiMapper = userApiMapper;
+    }
 
     @GetMapping()
     public Page<UserApiResponseDto> getUsers(@PageableDefault(value = 20) Pageable pageable) {

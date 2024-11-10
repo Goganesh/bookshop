@@ -11,7 +11,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @AllArgsConstructor
 public class ActivityCounterMetricAspect {
 
-    ActivityCounterService activityCounterService;
+    private final ActivityCounterService activityCounterService;
 
     @Pointcut("within(@org.springframework.stereotype.Controller *)" +
             " || within(@org.springframework.web.bind.annotation.RestController *)")

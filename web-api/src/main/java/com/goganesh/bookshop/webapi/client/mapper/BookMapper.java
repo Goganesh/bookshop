@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-@Mapper(imports = {Comparator.class, Collectors.class, Book2Author.class})
+@Mapper(componentModel = "spring", imports = {Comparator.class, Collectors.class, Book2Author.class})
 @Getter
 @Setter
 public abstract class BookMapper {
