@@ -3,7 +3,7 @@ package com.goganesh.bookshop.webui.mapper;
 import com.goganesh.bookshop.common.service.BookRatingService;
 import com.goganesh.bookshop.model.domain.Book;
 import com.goganesh.bookshop.model.domain.Book2Author;
-import com.goganesh.bookshop.webui.client.dto.BookPageDto;
+import com.goganesh.bookshop.webui.dto.BookPageDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapstruct.Mapper;

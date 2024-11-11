@@ -1,7 +1,7 @@
 package com.goganesh.bookshop.webui.mapper;
 
 import com.goganesh.bookshop.model.domain.BookReview;
-import com.goganesh.bookshop.webui.client.dto.BookReviewDto;
+import com.goganesh.bookshop.webui.dto.BookReviewDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

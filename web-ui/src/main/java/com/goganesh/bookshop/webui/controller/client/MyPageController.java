@@ -2,10 +2,10 @@ package com.goganesh.bookshop.webui.controller.client;
 
 import com.goganesh.bookshop.model.domain.User;
 import com.goganesh.bookshop.webapi.client.service.BookRestService;
-import com.goganesh.bookshop.webui.client.dto.BooksPageDto;
-import com.goganesh.bookshop.webui.client.dto.SearchWordDto;
-import com.goganesh.bookshop.webui.client.mapper.BookPageMapper;
-import com.goganesh.bookshop.webui.client.mapper.UserMapper;
+import com.goganesh.bookshop.webui.dto.BooksPageDto;
+import com.goganesh.bookshop.webui.dto.SearchWordDto;
+import com.goganesh.bookshop.webui.mapper.BookPageMapper;
+import com.goganesh.bookshop.webui.mapper.UserMapper;
 import com.goganesh.security.service.UserRegisterService;
 import lombok.Builder;
 import org.springframework.stereotype.Controller;

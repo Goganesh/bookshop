@@ -2,7 +2,7 @@ package com.goganesh.bookshop.webui.mapper;
 
 import com.goganesh.bookshop.model.domain.Author;
 import com.goganesh.bookshop.model.repository.BookRepository;
-import com.goganesh.bookshop.webui.client.dto.AuthorPageDto;
+import com.goganesh.bookshop.webui.dto.AuthorPageDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapstruct.Mapper;

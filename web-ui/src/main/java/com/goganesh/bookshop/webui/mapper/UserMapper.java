@@ -4,7 +4,7 @@ import com.goganesh.bookshop.model.domain.User;
 import com.goganesh.bookshop.model.domain.UserContact;
 import com.goganesh.bookshop.model.repository.Book2UserRepository;
 import com.goganesh.bookshop.model.repository.UserContactRepository;
-import com.goganesh.bookshop.webui.client.dto.UserPageDto;
+import com.goganesh.bookshop.webui.dto.UserPageDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapstruct.Mapper;

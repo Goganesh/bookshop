@@ -2,8 +2,8 @@ package com.goganesh.bookshop.webui.service.impl;
 
 import com.goganesh.bookshop.model.domain.Tag;
 import com.goganesh.bookshop.model.repository.BookRepository;
-import com.goganesh.bookshop.webui.client.service.TagSizeConfig;
-import com.goganesh.bookshop.webui.client.service.TagSizeService;
+import com.goganesh.bookshop.webui.service.TagSizeConfig;
+import com.goganesh.bookshop.webui.service.TagSizeService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

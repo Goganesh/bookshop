@@ -112,8 +112,10 @@ public class SecurityConfiguration {
                                 .requestMatchers("/**").permitAll())
                 .formLogin((loginForm) -> {
                     loginForm.loginPage(LOGIN_RESOURCE);
+                    //loginForm.successHandler(new SavedRequestAwareAuthenticationSuccessHandler());
                     loginForm.failureForwardUrl(LOGIN_RESOURCE);
                 })
+                .exceptionHandling((handler) -> handler.accessDeniedPage(LOGIN_RESOURCE))
                 .logout((logout) -> {
                     logout.logoutUrl(LOGOUT_RESOURCE);
                     logout.addLogoutHandler(logoutHandler);

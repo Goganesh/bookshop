@@ -1,6 +1,6 @@
 package com.goganesh.bookshop.webui.service.impl;
 
-import com.goganesh.bookshop.webui.client.service.TagSizeConfig;
+import com.goganesh.bookshop.webui.service.TagSizeConfig;
 import org.springframework.stereotype.Service;
 
 @Service

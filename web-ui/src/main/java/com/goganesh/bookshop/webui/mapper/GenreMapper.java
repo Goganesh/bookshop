@@ -3,7 +3,7 @@ package com.goganesh.bookshop.webui.mapper;
 import com.goganesh.bookshop.model.domain.Genre;
 import com.goganesh.bookshop.model.repository.BookRepository;
 import com.goganesh.bookshop.model.repository.GenreRepository;
-import com.goganesh.bookshop.webui.client.dto.GenrePageDto;
+import com.goganesh.bookshop.webui.dto.GenrePageDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapstruct.Mapper;

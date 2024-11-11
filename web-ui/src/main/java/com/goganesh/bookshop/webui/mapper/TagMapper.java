@@ -2,8 +2,8 @@ package com.goganesh.bookshop.webui.mapper;
 
 import com.goganesh.bookshop.model.domain.Tag;
 import com.goganesh.bookshop.model.repository.BookRepository;
-import com.goganesh.bookshop.webui.client.dto.TagPageDto;
-import com.goganesh.bookshop.webui.client.service.TagSizeService;
+import com.goganesh.bookshop.webui.dto.TagPageDto;
+import com.goganesh.bookshop.webui.service.TagSizeService;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapstruct.Mapper;

@@ -28,17 +28,20 @@ import java.util.Locale;
 public class WebUiConfiguration implements WebMvcConfigurer {
 
     private final String adminTemplatePrefix;
+    private final String adminTemplateSuffix;
     private final String adminStaticResourcePrefix;
     private final String clientTemplatePrefix;
     private final String clientTemplateSuffix;
     private final String clientStaticResourcePrefix;
 
     public WebUiConfiguration(@Value("${com.goganesh.bookshop.webui-admin.template-prefix}") String adminTemplatePrefix,
+                              @Value("${com.goganesh.bookshop.webui-admin.template-suffix}") String adminTemplateSuffix,
                               @Value("${com.goganesh.bookshop.webui-admin.static-resources-prefix}") String adminStaticResourcePrefix,
                               @Value("${com.goganesh.bookshop.webui-client.template-prefix}") String clientTemplatePrefix,
                               @Value("${com.goganesh.bookshop.webui-client.template-suffix}") String clientTemplateSuffix,
                               @Value("${com.goganesh.bookshop.webui-client.static-resources-prefix}") String clientStaticResourcePrefix) {
         this.adminTemplatePrefix = adminTemplatePrefix;
+        this.adminTemplateSuffix = adminTemplateSuffix;
         this.adminStaticResourcePrefix = adminStaticResourcePrefix;
         this.clientTemplatePrefix = clientTemplatePrefix;
         this.clientTemplateSuffix = clientTemplateSuffix;
@@ -49,10 +52,10 @@ public class WebUiConfiguration implements WebMvcConfigurer {
     public SpringResourceTemplateResolver webUiAdminTemplateResolver() {
         var templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setPrefix(adminTemplatePrefix);
-        templateResolver.setSuffix(".html");
+        templateResolver.setSuffix(adminTemplateSuffix);
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setOrder(1);
+        //templateResolver.setOrder(1);
         templateResolver.setCheckExistence(true);
         templateResolver.setCacheable(true);
 
@@ -66,8 +69,9 @@ public class WebUiConfiguration implements WebMvcConfigurer {
         templateResolver.setSuffix(clientTemplateSuffix);
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setOrder(0);
+        //templateResolver.setOrder(0);
         templateResolver.setCheckExistence(true);
+        templateResolver.setCacheable(true);
 
         return templateResolver;
     }

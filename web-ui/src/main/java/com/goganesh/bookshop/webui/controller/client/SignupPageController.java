@@ -1,9 +1,9 @@
 package com.goganesh.bookshop.webui.controller.client;
 
 import com.goganesh.bookshop.model.domain.User;
-import com.goganesh.bookshop.webui.client.dto.SearchWordDto;
-import com.goganesh.bookshop.webui.client.dto.UserPageDto;
-import com.goganesh.bookshop.webui.client.mapper.UserMapper;
+import com.goganesh.bookshop.webui.dto.SearchWordDto;
+import com.goganesh.bookshop.webui.dto.UserPageDto;
+import com.goganesh.bookshop.webui.mapper.UserMapper;
 import com.goganesh.security.controller.dto.RegistrationFormRequest;
 import com.goganesh.security.service.UserRegisterService;
 import lombok.AllArgsConstructor;

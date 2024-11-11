@@ -1,7 +1,7 @@
 package com.goganesh.bookshop.webui.mapper;
 
 import com.goganesh.bookshop.model.domain.BookFile;
-import com.goganesh.bookshop.webui.client.dto.BookFilePageDto;
+import com.goganesh.bookshop.webui.dto.BookFilePageDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

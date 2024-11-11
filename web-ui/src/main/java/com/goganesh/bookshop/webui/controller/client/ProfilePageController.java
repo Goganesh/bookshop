@@ -2,11 +2,11 @@ package com.goganesh.bookshop.webui.controller.client;
 
 import com.goganesh.bookshop.model.domain.User;
 import com.goganesh.bookshop.webapi.client.service.BalanceTransactionRestService;
-import com.goganesh.bookshop.webui.client.dto.BalanceTransactionDto;
-import com.goganesh.bookshop.webui.client.dto.SearchWordDto;
-import com.goganesh.bookshop.webui.client.dto.UserPageDto;
-import com.goganesh.bookshop.webui.client.mapper.BalanceTransactionUiMapper;
-import com.goganesh.bookshop.webui.client.mapper.UserMapper;
+import com.goganesh.bookshop.webui.dto.BalanceTransactionDto;
+import com.goganesh.bookshop.webui.dto.SearchWordDto;
+import com.goganesh.bookshop.webui.dto.UserPageDto;
+import com.goganesh.bookshop.webui.mapper.BalanceTransactionUiMapper;
+import com.goganesh.bookshop.webui.mapper.UserMapper;
 import com.goganesh.security.service.UserRegisterService;
 import lombok.Builder;
 import org.springframework.data.domain.Sort;

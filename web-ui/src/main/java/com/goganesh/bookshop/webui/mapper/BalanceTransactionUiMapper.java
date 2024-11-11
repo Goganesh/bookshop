@@ -1,7 +1,7 @@
 package com.goganesh.bookshop.webui.mapper;
 
 import com.goganesh.bookshop.model.domain.BalanceTransaction;
-import com.goganesh.bookshop.webui.client.dto.BalanceTransactionDto;
+import com.goganesh.bookshop.webui.dto.BalanceTransactionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
